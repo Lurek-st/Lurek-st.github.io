@@ -36,7 +36,7 @@ const skillsContent = document.getElementsByClassName('skills__content'),
 function toggleSkills() {
   let itemClass = this.className
 
-  for (i = 0; i < skillsContent.length; i++) {
+  for (let i = 0; i < skillsContent.length; i++) {
     skillsContent[i].className = 'skills__content skills__close'
   }
   if (itemClass === 'skills__content skills__close') {
@@ -173,11 +173,13 @@ function scrollActive() {
     const sectionHeight = current.clientHeight
     const sectionTop = current.getBoundingClientRect().top;
     const sectionId = current.getAttribute('id')
+    const navLink = document.querySelector('.nav__menu a[href*="' + sectionId + '"]')
+    if (!navLink) return
     // section 位于视口中间时添加样式 active-link
     if (sectionTop <= window.innerHeight / 2 && sectionTop + sectionHeight >= window.innerHeight / 2) {
-      document.querySelector('.nav__menu a[href*=' + sectionId + ']').classList.add('active-link')
+      navLink.classList.add('active-link')
     } else {
-      document.querySelector('.nav__menu a[href*=' + sectionId + ']').classList.remove('active-link')
+      navLink.classList.remove('active-link')
     }
   })
 }
