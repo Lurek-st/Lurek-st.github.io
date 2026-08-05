@@ -1,7 +1,13 @@
+// 同步 <html lang> 与当前语言：中文 -> zh-CN，英文 -> en
+function updateDocumentLanguage(lang) {
+    document.documentElement.lang = lang === 'cn' ? 'zh-CN' : 'en';
+}
+
 $(document).ready(function () {
     /*默认语言*/
     const lang = localStorage.getItem("lang");
     const defaultLang = lang ? lang : "en";
+    updateDocumentLanguage(defaultLang);
     $("[i18n]").i18n({
         defaultLang: defaultLang,
         filePath: "assets/i18n/",
@@ -36,6 +42,7 @@ $(document).ready(function () {
         const targetLang = currentLang == "cn" ? "en" : "cn";
         const text = targetLang == "cn" ? "中/En" : "En/中";
         $("#nav__translate").text(text);
+        updateDocumentLanguage(targetLang);
 
         $("[i18n]").i18n({
             defaultLang: targetLang,
