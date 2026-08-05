@@ -5,17 +5,19 @@ const navMenu = document.getElementById('nav-menu'),
 
 /*===== MENU SHOW =====*/
 /* Validate if constant exists */
-if (navToggle) {
+if (navToggle && navMenu) {
   navToggle.addEventListener('click', () => {
     navMenu.classList.add('show-menu')
+    navToggle.setAttribute('aria-expanded', 'true')
   })
 }
 
 /*===== MENU HIDDEN =====*/
 /* Validate if constant exists */
-if (navClose) {
+if (navClose && navMenu) {
   navClose.addEventListener('click', () => {
     navMenu.classList.remove('show-menu')
+    if (navToggle) navToggle.setAttribute('aria-expanded', 'false')
   })
 }
 
@@ -24,8 +26,10 @@ const navLink = document.querySelectorAll('.nav__link')
 
 function linkAction() {
   const navMenu = document.getElementById('nav-menu')
+  if (!navMenu) return
   // 点击每个菜单链接后收起菜单栏
   navMenu.classList.remove('show-menu')
+  if (navToggle) navToggle.setAttribute('aria-expanded', 'false')
 }
 navLink.forEach(n => n.addEventListener('click', linkAction))
 
@@ -106,6 +110,7 @@ function animateQualificationContent(targetContent) {
 tabs.forEach(tab => {
   tab.addEventListener('click', () => {
     const target = document.querySelector(tab.dataset.target)
+    if (!target) return
 
     // Hide current content with fade out
     const currentActive = document.querySelector('.qualification__active[data-content]')
@@ -149,20 +154,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 /*==================== PORTFOLIO SWIPER  ====================*/
-let swiperPortfolio = new Swiper('.portfolio__container', {
-  cssMode: true,
-  loop: true,
+let swiperPortfolio = null
+const swiperContainer = document.querySelector('.portfolio__container')
+if (typeof Swiper !== 'undefined' && swiperContainer) {
+  swiperPortfolio = new Swiper('.portfolio__container', {
+    cssMode: true,
+    loop: true,
 
-  navigation: {
-    nextEl: '.swiper-button-next',
-    prevEl: '.swiper-button-prev',
-  },
+    navigation: {
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev',
+    },
 
-  pagination: {
-    el: '.swiper-pagination',
-    clickable: true,
-  },
-});
+    pagination: {
+      el: '.swiper-pagination',
+      clickable: true,
+    },
+  });
+}
 
 
 /*==================== SCROLL SECTIONS ACTIVE LINK ====================*/
@@ -188,6 +197,7 @@ window.addEventListener('scroll', scrollActive)
 /*==================== CHANGE BACKGROUND HEADER ====================*/
 function scrollHeader() {
   const nav = document.getElementById('header')
+  if (!nav) return
   if (this.scrollY >= 80) nav.classList.add('scroll-header'); else nav.classList.remove('scroll-header')
 }
 window.addEventListener('scroll', scrollHeader)
@@ -195,6 +205,7 @@ window.addEventListener('scroll', scrollHeader)
 /*==================== SHOW SCROLL UP ====================*/
 function scrollUp() {
   const scrollUp = document.getElementById('scroll-up');
+  if (!scrollUp) return
   if (this.scrollY >= 560) scrollUp.classList.add('show-scroll'); else scrollUp.classList.remove('show-scroll')
 }
 window.addEventListener('scroll', scrollUp)
@@ -212,30 +223,32 @@ const selectedIcon = localStorage.getItem('selected-icon')
 
 // We obtain the current theme that the interface has by validating the dark-theme class
 const getCurrentTheme = () => document.body.classList.contains(darkTheme) ? 'dark' : 'light'
-const getCurrentIcon = () => themeButton.classList.contains(iconTheme) ? 'uil-moon' : 'uil-sun'
+const getCurrentIcon = () => (themeButton && themeButton.classList.contains(iconTheme)) ? 'uil-moon' : 'uil-sun'
 
 // Set default to dark theme if no previous selection
-if (selectedTheme) {
-  // If the validation is fulfilled, we ask what the issue was to know if we activated or deactivated the dark
-  document.body.classList[selectedTheme === 'dark' ? 'add' : 'remove'](darkTheme)
-  themeButton.classList[selectedIcon === 'uil-moon' ? 'add' : 'remove'](iconTheme)
-} else {
-  // Default to dark theme
-  document.body.classList.add(darkTheme)
-  themeButton.classList.add(iconTheme)
-  localStorage.setItem('selected-theme', 'dark')
-  localStorage.setItem('selected-icon', 'uil-sun')
-}
+if (themeButton) {
+  if (selectedTheme) {
+    // If the validation is fulfilled, we ask what the issue was to know if we activated or deactivated the dark
+    document.body.classList[selectedTheme === 'dark' ? 'add' : 'remove'](darkTheme)
+    themeButton.classList[selectedIcon === 'uil-moon' ? 'add' : 'remove'](iconTheme)
+  } else {
+    // Default to dark theme
+    document.body.classList.add(darkTheme)
+    themeButton.classList.add(iconTheme)
+    localStorage.setItem('selected-theme', 'dark')
+    localStorage.setItem('selected-icon', 'uil-sun')
+  }
 
-// Activate / deactivate the theme manually with the button
-themeButton.addEventListener('click', () => {
-  // Add or remove the dark / icon theme
-  document.body.classList.toggle(darkTheme)
-  themeButton.classList.toggle(iconTheme)
-  // We save the theme and the current icon that the user chose
-  localStorage.setItem('selected-theme', getCurrentTheme())
-  localStorage.setItem('selected-icon', getCurrentIcon())
-})
+  // Activate / deactivate the theme manually with the button
+  themeButton.addEventListener('click', () => {
+    // Add or remove the dark / icon theme
+    document.body.classList.toggle(darkTheme)
+    themeButton.classList.toggle(iconTheme)
+    // We save the theme and the current icon that the user chose
+    localStorage.setItem('selected-theme', getCurrentTheme())
+    localStorage.setItem('selected-icon', getCurrentIcon())
+  })
+}
 
 /*==================== WEB3 ANIMATIONS ====================*/
 
@@ -479,7 +492,10 @@ function handleLanguageChange() {
 }
 
 // Restart typing animation when language changes (menu translate button)
-document.getElementById('translate').addEventListener('click', handleLanguageChange)
+const translateBtn = document.getElementById('translate')
+if (translateBtn) {
+  translateBtn.addEventListener('click', handleLanguageChange)
+}
 
 // Add event listener for mobile translate button
 const mobileTranslateBtn = document.getElementById('mobile-translate')
@@ -487,7 +503,8 @@ if (mobileTranslateBtn) {
   mobileTranslateBtn.addEventListener('click', () => {
     // Only trigger the menu translate button click
     // The handleLanguageChange will be called automatically by the translate button's event listener
-    document.getElementById('translate').click()
+    const translateBtn = document.getElementById('translate')
+    if (translateBtn) translateBtn.click()
   })
 }
 

@@ -1990,3 +1990,141 @@ img {
   font-size: 1.08rem;
   line-height: 1.7;
 }
+
+/*==================== BUTTON RESETS ====================*/
+/* Reset native button styles for elements converted from div/i to button.
+   Only reset browser defaults; class-specific font-size/color still apply. */
+button.nav__link,
+button.nav__toggle,
+button.nav__close,
+button.mobile-translate {
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: inherit;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* Theme button: don't reset font so .uil can set font-family: 'unicons' */
+button.change-theme {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+button.nav__link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+button.nav__toggle,
+button.nav__close,
+button.change-theme,
+button.mobile-translate {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/*==================== FOCUS VISIBLE ====================*/
+/* Keyboard-only focus styles that don't show on mouse click */
+a:focus-visible,
+button:focus-visible,
+.nav__link:focus-visible,
+.footer__link:focus-visible,
+.home__social-icon:focus-visible,
+.scrollup:focus-visible,
+.qualification__button:focus-visible,
+.skills__header:focus-visible,
+.portfolio__button:focus-visible {
+  outline: 2px solid var(--first-color);
+  outline-offset: 2px;
+  border-radius: 0.25rem;
+}
+
+/*==================== ANIMATION FAILSAFE ====================*/
+/* When JavaScript is disabled, all pre-hidden content must be visible.
+   The .js-enabled class is added to <html> by an inline script in <head>
+   as early as possible so that pre-hiding only takes effect with JS. */
+:root:not(.js-enabled) .scroll-animate,
+:root:not(.js-enabled) .section__title,
+:root:not(.js-enabled) .section__subtitle,
+:root:not(.js-enabled) .about__card,
+:root:not(.js-enabled) .qualification__data,
+:root:not(.js-enabled) .qualification__rounder,
+:root:not(.js-enabled) .qualification__line,
+:root:not(.js-enabled) .footer,
+:root:not(.js-enabled) .home__title,
+:root:not(.js-enabled) .home__subtitle,
+:root:not(.js-enabled) .home__description,
+:root:not(.js-enabled) .skills__data {
+  opacity: 1;
+  transform: none;
+}
+
+:root:not(.js-enabled) .home__title,
+:root:not(.js-enabled) .home__subtitle,
+:root:not(.js-enabled) .home__description {
+  opacity: 1;
+}
+
+/*==================== REDUCED MOTION ====================*/
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Ensure animated content is immediately visible */
+  .scroll-animate,
+  .section__title,
+  .section__subtitle,
+  .about__card,
+  .qualification__data,
+  .qualification__rounder,
+  .qualification__line,
+  .footer,
+  .skills__data {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .home__title,
+  .home__subtitle,
+  .home__description {
+    opacity: 1 !important;
+  }
+
+  /* Disable infinite floating and pulse animations */
+  .home__img {
+    animation: none !important;
+  }
+
+  .skills__percentage::after {
+    animation: none !important;
+  }
+
+  .qualification__rounder.active {
+    animation: none !important;
+  }
+
+  .typing-text {
+    animation: none !important;
+    border-right: none !important;
+  }
+}
