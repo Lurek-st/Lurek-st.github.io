@@ -5,17 +5,19 @@ const navMenu = document.getElementById('nav-menu'),
 
 /*===== MENU SHOW =====*/
 /* Validate if constant exists */
-if (navToggle) {
+if (navToggle && navMenu) {
   navToggle.addEventListener('click', () => {
     navMenu.classList.add('show-menu')
+    navToggle.setAttribute('aria-expanded', 'true')
   })
 }
 
 /*===== MENU HIDDEN =====*/
 /* Validate if constant exists */
-if (navClose) {
+if (navClose && navMenu) {
   navClose.addEventListener('click', () => {
     navMenu.classList.remove('show-menu')
+    if (navToggle) navToggle.setAttribute('aria-expanded', 'false')
   })
 }
 
@@ -24,8 +26,10 @@ const navLink = document.querySelectorAll('.nav__link')
 
 function linkAction() {
   const navMenu = document.getElementById('nav-menu')
+  if (!navMenu) return
   // 点击每个菜单链接后收起菜单栏
   navMenu.classList.remove('show-menu')
+  if (navToggle) navToggle.setAttribute('aria-expanded', 'false')
 }
 navLink.forEach(n => n.addEventListener('click', linkAction))
 
@@ -33,19 +37,37 @@ navLink.forEach(n => n.addEventListener('click', linkAction))
 const skillsContent = document.getElementsByClassName('skills__content'),
   skillsContentElements = document.querySelectorAll('.skills__content')
 
-function toggleSkills() {
-  let itemClass = this.className
+function setSkillsExpanded(content, expanded) {
+  const header = content.querySelector('.skills__header')
+  if (header) header.setAttribute('aria-expanded', expanded ? 'true' : 'false')
+}
 
-  for (i = 0; i < skillsContent.length; i++) {
+function toggleSkills() {
+  const content = this.closest('.skills__content')
+  if (!content) return
+  const isOpen = content.classList.contains('skills__open')
+
+  for (let i = 0; i < skillsContent.length; i++) {
     skillsContent[i].className = 'skills__content skills__close'
+    setSkillsExpanded(skillsContent[i], false)
   }
-  if (itemClass === 'skills__content skills__close') {
-    this.className = 'skills__content skills__open'
+  if (!isOpen) {
+    content.className = 'skills__content skills__open'
+    setSkillsExpanded(content, true)
   }
 }
 
 skillsContentElements.forEach((el) => {
-  el.addEventListener('click', toggleSkills)
+  const header = el.querySelector('.skills__header')
+  if (header) {
+    header.addEventListener('click', toggleSkills)
+    header.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault()
+        toggleSkills.call(header)
+      }
+    })
+  }
 })
 
 /*==================== QUALIFICATION TABS ====================*/
@@ -103,39 +125,66 @@ function animateQualificationContent(targetContent) {
   }, 100)
 }
 
+function activateQualificationTab(tab) {
+  const target = document.querySelector(tab.dataset.target)
+  if (!target) return
+
+  // Hide current content with fade out
+  const currentActive = document.querySelector('.qualification__active[data-content]')
+  if (currentActive && currentActive !== target) {
+    const currentData = currentActive.querySelectorAll('.qualification__data')
+    const currentRounders = currentActive.querySelectorAll('.qualification__rounder')
+    const currentLines = currentActive.querySelectorAll('.qualification__line')
+
+    currentData.forEach(data => data.classList.remove('active'))
+    currentRounders.forEach(rounder => rounder.classList.remove('active'))
+    currentLines.forEach(line => line.classList.remove('active'))
+  }
+
+  // Switch active content after a brief delay
+  setTimeout(() => {
+    tabContents.forEach(tabContent => {
+      tabContent.classList.remove('qualification__active')
+    })
+    target.classList.add('qualification__active')
+
+    // Start animation for new content
+    animateQualificationContent(target)
+  }, currentActive && currentActive !== target ? 300 : 0)
+
+  tabs.forEach(t => {
+    t.classList.remove('qualification__active')
+    t.setAttribute('aria-selected', 'false')
+  })
+  tab.classList.add('qualification__active')
+  tab.setAttribute('aria-selected', 'true')
+}
+
 tabs.forEach(tab => {
   tab.addEventListener('click', () => {
-    const target = document.querySelector(tab.dataset.target)
-
-    // Hide current content with fade out
-    const currentActive = document.querySelector('.qualification__active[data-content]')
-    if (currentActive && currentActive !== target) {
-      const currentData = currentActive.querySelectorAll('.qualification__data')
-      const currentRounders = currentActive.querySelectorAll('.qualification__rounder')
-      const currentLines = currentActive.querySelectorAll('.qualification__line')
-
-      currentData.forEach(data => data.classList.remove('active'))
-      currentRounders.forEach(rounder => rounder.classList.remove('active'))
-      currentLines.forEach(line => line.classList.remove('active'))
-    }
-
-    // Switch active content after a brief delay
-    setTimeout(() => {
-      tabContents.forEach(tabContent => {
-        tabContent.classList.remove('qualification__active')
-      })
-      target.classList.add('qualification__active')
-
-      // Start animation for new content
-      animateQualificationContent(target)
-    }, currentActive && currentActive !== target ? 300 : 0)
-
-    tabs.forEach(tab => {
-      tab.classList.remove('qualification__active')
-    })
-    tab.classList.add('qualification__active')
+    activateQualificationTab(tab)
   })
 })
+
+// Keyboard navigation for the tablist (arrow keys)
+const tablist = document.querySelector('.qualification__tabs')
+if (tablist) {
+  tablist.addEventListener('keydown', (e) => {
+    const currentIndex = Array.from(tabs).findIndex(t => t.classList.contains('qualification__active'))
+    if (currentIndex === -1) return
+    let nextIndex = currentIndex
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+      nextIndex = (currentIndex + 1) % tabs.length
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      nextIndex = (currentIndex - 1 + tabs.length) % tabs.length
+    } else {
+      return
+    }
+    e.preventDefault()
+    activateQualificationTab(tabs[nextIndex])
+    tabs[nextIndex].focus()
+  })
+}
 
 // Initialize first tab animation on page load
 document.addEventListener('DOMContentLoaded', () => {
@@ -149,20 +198,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 /*==================== PORTFOLIO SWIPER  ====================*/
-let swiperPortfolio = new Swiper('.portfolio__container', {
-  cssMode: true,
-  loop: true,
+let swiperPortfolio = null
+const swiperContainer = document.querySelector('.portfolio__container')
+if (typeof Swiper !== 'undefined' && swiperContainer) {
+  swiperPortfolio = new Swiper('.portfolio__container', {
+    cssMode: true,
+    loop: true,
 
-  navigation: {
-    nextEl: '.swiper-button-next',
-    prevEl: '.swiper-button-prev',
-  },
+    navigation: {
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev',
+    },
 
-  pagination: {
-    el: '.swiper-pagination',
-    clickable: true,
-  },
-});
+    pagination: {
+      el: '.swiper-pagination',
+      clickable: true,
+    },
+  });
+}
 
 
 /*==================== SCROLL SECTIONS ACTIVE LINK ====================*/
@@ -173,11 +226,13 @@ function scrollActive() {
     const sectionHeight = current.clientHeight
     const sectionTop = current.getBoundingClientRect().top;
     const sectionId = current.getAttribute('id')
+    const navLink = document.querySelector('.nav__menu a[href*="' + sectionId + '"]')
+    if (!navLink) return
     // section 位于视口中间时添加样式 active-link
     if (sectionTop <= window.innerHeight / 2 && sectionTop + sectionHeight >= window.innerHeight / 2) {
-      document.querySelector('.nav__menu a[href*=' + sectionId + ']').classList.add('active-link')
+      navLink.classList.add('active-link')
     } else {
-      document.querySelector('.nav__menu a[href*=' + sectionId + ']').classList.remove('active-link')
+      navLink.classList.remove('active-link')
     }
   })
 }
@@ -186,6 +241,7 @@ window.addEventListener('scroll', scrollActive)
 /*==================== CHANGE BACKGROUND HEADER ====================*/
 function scrollHeader() {
   const nav = document.getElementById('header')
+  if (!nav) return
   if (this.scrollY >= 80) nav.classList.add('scroll-header'); else nav.classList.remove('scroll-header')
 }
 window.addEventListener('scroll', scrollHeader)
@@ -193,6 +249,7 @@ window.addEventListener('scroll', scrollHeader)
 /*==================== SHOW SCROLL UP ====================*/
 function scrollUp() {
   const scrollUp = document.getElementById('scroll-up');
+  if (!scrollUp) return
   if (this.scrollY >= 560) scrollUp.classList.add('show-scroll'); else scrollUp.classList.remove('show-scroll')
 }
 window.addEventListener('scroll', scrollUp)
@@ -210,30 +267,32 @@ const selectedIcon = localStorage.getItem('selected-icon')
 
 // We obtain the current theme that the interface has by validating the dark-theme class
 const getCurrentTheme = () => document.body.classList.contains(darkTheme) ? 'dark' : 'light'
-const getCurrentIcon = () => themeButton.classList.contains(iconTheme) ? 'uil-moon' : 'uil-sun'
+const getCurrentIcon = () => (themeButton && themeButton.classList.contains(iconTheme)) ? 'uil-moon' : 'uil-sun'
 
 // Set default to dark theme if no previous selection
-if (selectedTheme) {
-  // If the validation is fulfilled, we ask what the issue was to know if we activated or deactivated the dark
-  document.body.classList[selectedTheme === 'dark' ? 'add' : 'remove'](darkTheme)
-  themeButton.classList[selectedIcon === 'uil-moon' ? 'add' : 'remove'](iconTheme)
-} else {
-  // Default to dark theme
-  document.body.classList.add(darkTheme)
-  themeButton.classList.add(iconTheme)
-  localStorage.setItem('selected-theme', 'dark')
-  localStorage.setItem('selected-icon', 'uil-sun')
-}
+if (themeButton) {
+  if (selectedTheme) {
+    // If the validation is fulfilled, we ask what the issue was to know if we activated or deactivated the dark
+    document.body.classList[selectedTheme === 'dark' ? 'add' : 'remove'](darkTheme)
+    themeButton.classList[selectedIcon === 'uil-moon' ? 'add' : 'remove'](iconTheme)
+  } else {
+    // Default to dark theme
+    document.body.classList.add(darkTheme)
+    themeButton.classList.add(iconTheme)
+    localStorage.setItem('selected-theme', 'dark')
+    localStorage.setItem('selected-icon', 'uil-sun')
+  }
 
-// Activate / deactivate the theme manually with the button
-themeButton.addEventListener('click', () => {
-  // Add or remove the dark / icon theme
-  document.body.classList.toggle(darkTheme)
-  themeButton.classList.toggle(iconTheme)
-  // We save the theme and the current icon that the user chose
-  localStorage.setItem('selected-theme', getCurrentTheme())
-  localStorage.setItem('selected-icon', getCurrentIcon())
-})
+  // Activate / deactivate the theme manually with the button
+  themeButton.addEventListener('click', () => {
+    // Add or remove the dark / icon theme
+    document.body.classList.toggle(darkTheme)
+    themeButton.classList.toggle(iconTheme)
+    // We save the theme and the current icon that the user chose
+    localStorage.setItem('selected-theme', getCurrentTheme())
+    localStorage.setItem('selected-icon', getCurrentIcon())
+  })
+}
 
 /*==================== WEB3 ANIMATIONS ====================*/
 
@@ -295,6 +354,8 @@ window.addEventListener('scroll', () => {
 })
 
 // Typing Effect
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
 const typingTexts = [
   {
     element: document.querySelector('.home__title'),
@@ -305,8 +366,8 @@ const typingTexts = [
   },
   {
     element: document.querySelector('.home__subtitle'),
-    text: 'CityU-DG UG Student',
-    textCn: 'CityU-DG UG Student',
+    text: 'Undergraduate Student at City University of Hong Kong (Dongguan)',
+    textCn: '香港城市大学（东莞）本科生',
     delay: 0,
     speed: 60
   },
@@ -384,9 +445,27 @@ function stopAllAnimations() {
   })
 }
 
+// When the user prefers reduced motion, skip the typewriter entirely and
+// directly show the full final text in the current language.
+function displayFullTypingTexts() {
+  const currentLang = getCurrentLanguage()
+  typingTexts.forEach(item => {
+    if (!item.element) return
+    item.element.style.opacity = '1'
+    item.element.classList.remove('typing-text')
+    item.element.textContent = currentLang === 'cn' ? item.textCn : item.text
+  })
+}
+
 async function startTypingAnimation() {
   // Stop all existing animations first
   stopAllAnimations()
+
+  // Reduced motion: show complete text immediately, no typing.
+  if (prefersReducedMotion) {
+    displayFullTypingTexts()
+    return
+  }
 
   // Enable typing
   isTypingActive = true
@@ -439,6 +518,12 @@ function handleLanguageChange() {
   // Immediately stop all animations
   stopAllAnimations()
 
+  // Reduced motion: show the target language text immediately, no typing.
+  if (prefersReducedMotion) {
+    displayFullTypingTexts()
+    return
+  }
+
   languageChangeTimeout = setTimeout(() => {
     // Reset all text elements
     typingTexts.forEach(item => {
@@ -477,7 +562,10 @@ function handleLanguageChange() {
 }
 
 // Restart typing animation when language changes (menu translate button)
-document.getElementById('translate').addEventListener('click', handleLanguageChange)
+const translateBtn = document.getElementById('translate')
+if (translateBtn) {
+  translateBtn.addEventListener('click', handleLanguageChange)
+}
 
 // Add event listener for mobile translate button
 const mobileTranslateBtn = document.getElementById('mobile-translate')
@@ -485,7 +573,8 @@ if (mobileTranslateBtn) {
   mobileTranslateBtn.addEventListener('click', () => {
     // Only trigger the menu translate button click
     // The handleLanguageChange will be called automatically by the translate button's event listener
-    document.getElementById('translate').click()
+    const translateBtn = document.getElementById('translate')
+    if (translateBtn) translateBtn.click()
   })
 }
 
@@ -517,3 +606,9 @@ document.addEventListener('DOMContentLoaded', () => {
 window.addEventListener('resize', () => {
   setTimeout(handleScrollAnimation, 100)
 })
+
+/*==================== APP READY ====================*/
+// Mark the application as fully initialized. The inline watchdog in <head>
+// removes .js-enabled (restoring the no-JS fallback) if this flag is not set
+// within the timeout, e.g. when this script fails to run completely.
+window.__appReady = true
