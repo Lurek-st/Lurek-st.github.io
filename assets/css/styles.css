@@ -2024,14 +2024,23 @@ button.nav__link {
   width: 100%;
 }
 
-button.nav__toggle,
-button.nav__close,
-button.change-theme,
-button.mobile-translate {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+/* Qualification tab buttons (previously divs). Do not reset display here:
+   the .button--flex class provides the flex layout. */
+button.qualification__button {
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: inherit;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
 }
+
+/* NOTE: no display rule is set for nav__toggle / nav__close / mobile-translate
+   here on purpose. Their visibility is controlled exclusively by the media
+   queries (mobile: visible, >=768px: display:none) and the pre-existing
+   .mobile-translate / .nav__btns rules, so the desktop media query keeps
+   hiding the mobile controls. */
 
 /*==================== FOCUS VISIBLE ====================*/
 /* Keyboard-only focus styles that don't show on mouse click */
@@ -2073,6 +2082,46 @@ button:focus-visible,
 :root:not(.js-enabled) .home__subtitle,
 :root:not(.js-enabled) .home__description {
   opacity: 1;
+}
+
+/* No-JS: expand every skills accordion so all skill content is readable. */
+:root:not(.js-enabled) .skills__close .skills__list {
+  height: auto;
+  overflow: visible;
+}
+
+/* No-JS: hide the skills arrows since accordion toggling is unavailable. */
+:root:not(.js-enabled) .skills__arrow {
+  display: none;
+}
+
+/* No-JS: show every qualification panel (Education/Work/Certifications)
+   and hide the non-functional tab buttons. */
+:root:not(.js-enabled) .qualification__content[data-content] {
+  display: block;
+}
+
+:root:not(.js-enabled) .qualification__tabs {
+  display: none;
+}
+
+/* No-JS: render the portfolio slides as a static vertical list instead of a
+   horizontal Swiper track, and hide the now-inert navigation controls. */
+:root:not(.js-enabled) .swiper-wrapper {
+  display: block;
+}
+
+:root:not(.js-enabled) .swiper-slide {
+  display: block;
+  width: auto;
+  height: auto;
+  margin-bottom: 2rem;
+}
+
+:root:not(.js-enabled) .swiper-button-next,
+:root:not(.js-enabled) .swiper-button-prev,
+:root:not(.js-enabled) .swiper-pagination {
+  display: none;
 }
 
 /*==================== REDUCED MOTION ====================*/

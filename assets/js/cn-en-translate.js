@@ -10,11 +10,9 @@ $(document).ready(function () {
         forever: true,
         callback: function () {
             console.log("i18n is ready.");
-            // 强制用html渲染about__description和手动渲染qualification所有字段
-            const aboutDesc = $("[i18n='about__description']");
+            // 手动渲染qualification所有字段（education/work/certifications）
             const lang = localStorage.getItem("lang") || defaultLang;
             $.getJSON(`assets/i18n/i18n_${lang}.json`, function (data) {
-                aboutDesc.html(data['about__description']);
                 [
                     "qualification1__title", "qualification1__subtitle", "qualification1__date",
                     "qualification2__title", "qualification2__subtitle", "qualification2__date",
@@ -45,10 +43,8 @@ $(document).ready(function () {
             callback: function () {
                 localStorage.setItem("lang", targetLang);
                 console.log(localStorage.getItem("lang"));
-                // 强制用html渲染about__description和手动渲染qualification所有字段
-                const aboutDesc = $("[i18n='about__description']");
+                // 手动渲染qualification所有字段（education/work/certifications）
                 $.getJSON(`assets/i18n/i18n_${targetLang}.json`, function (data) {
-                    aboutDesc.html(data['about__description']);
                     [
                         "qualification1__title", "qualification1__subtitle", "qualification1__date",
                         "qualification2__title", "qualification2__subtitle", "qualification2__date",

@@ -20,9 +20,17 @@
 
   <title>Lurek Business Card</title>
   <script>
-    // Mark JS as enabled as early as possible so CSS only pre-hides animated
-    // elements when JavaScript is available (progressive enhancement).
+    // Progressive enhancement: mark JS as enabled as early as possible so CSS
+    // only pre-hides animated elements when JavaScript is available.
     document.documentElement.classList.add('js-enabled');
+    // Watchdog: if the main script fails to fully initialize (never sets
+    // window.__appReady), remove js-enabled so the no-JS fallback restores
+    // visibility of pre-hidden animated content.
+    window.setTimeout(function () {
+      if (!window.__appReady) {
+        document.documentElement.classList.remove('js-enabled');
+      }
+    }, 5000);
   </script>
 </head>
 
@@ -75,7 +83,7 @@
               <svg class="icon nav__icon-svg" aria-hidden="true">
                 <use xlink:href="#icon-fanyi"></use>
               </svg>
-              <span class="nav__link" id="nav__translate">翻译</span>
+              <span class="nav__translate-label" id="nav__translate">翻译</span>
             </button>
           </li>
         </ul>
@@ -141,7 +149,7 @@
               你好，我是 Lurek
             </h1>
             <h3 class="home__subtitle" i18n="home__subtitle">
-              CityU-DG UG Student
+              香港城市大学（东莞）本科生
             </h3>
             <p class="home__description" i18n="home__description">
               AI工具专家，Web3开发数字游民，港城大创新创业者
@@ -220,7 +228,7 @@
         <div>
           <!--==================== SKILLS 2 ====================-->
           <div class="skills__content skills__open">
-            <div class="skills__header">
+            <div class="skills__header" role="button" tabindex="0" aria-expanded="true" aria-controls="skills-list-1">
               <i class="uil uil-robot skills__icon"></i>
               <div>
                 <h1 class="skills__title" i18n="skills__title2">AI工具专家</h1>
@@ -228,7 +236,7 @@
               </div>
               <i class="uil uil-angle-down skills__arrow"></i>
             </div>
-            <div class="skills__list grid">
+            <div class="skills__list grid" id="skills-list-1">
               <div class="skills__data">
                 <div class="skills__titles">
                   <h3 class="skills__name" i18n="skills__genai">生成式AI</h3>
@@ -276,7 +284,7 @@
           </div>
           <!--==================== SKILLS 1 ====================-->
           <div class="skills__content skills__close">
-            <div class="skills__header">
+            <div class="skills__header" role="button" tabindex="0" aria-expanded="false" aria-controls="skills-list-2">
               <i class="uil uil-brackets-curly skills__icon"></i>
               <div>
                 <h1 class="skills__title" i18n="skills__title1">前端开发</h1>
@@ -284,7 +292,7 @@
               </div>
               <i class="uil uil-angle-down skills__arrow"></i>
             </div>
-            <div class="skills__list grid">
+            <div class="skills__list grid" id="skills-list-2">
               <div class="skills__data">
                 <div class="skills__titles">
                   <h3 class="skills__name">HTML-CSS-JS</h3>
@@ -339,7 +347,7 @@
 
           <!--==================== SKILLS 3 ====================-->
           <div class="skills__content skills__close">
-            <div class="skills__header">
+            <div class="skills__header" role="button" tabindex="0" aria-expanded="false" aria-controls="skills-list-3">
               <i class="uil uil-file-alt skills__icon"></i>
               <div>
                 <h1 class="skills__title" i18n="skills__title3">办公技能</h1>
@@ -347,7 +355,7 @@
               </div>
               <i class="uil uil-angle-down skills__arrow"></i>
             </div>
-            <div class="skills__list grid">
+            <div class="skills__list grid" id="skills-list-3">
               <div class="skills__data">
                 <div class="skills__titles">
                   <h3 class="skills__name" i18n="skills__office">办公三件套</h3>
@@ -395,7 +403,7 @@
 
           <!--==================== SKILLS 4 ====================-->
           <div class="skills__content skills__close">
-            <div class="skills__header">
+            <div class="skills__header" role="button" tabindex="0" aria-expanded="false" aria-controls="skills-list-4">
               <i class="uil uil-chart skills__icon"></i>
               <div>
                 <h1 class="skills__title" i18n="skills__title4">商业素养</h1>
@@ -403,7 +411,7 @@
               </div>
               <i class="uil uil-angle-down skills__arrow"></i>
             </div>
-            <div class="skills__list grid">
+            <div class="skills__list grid" id="skills-list-4">
               <div class="skills__data">
                 <div class="skills__titles">
                   <h3 class="skills__name" i18n="skills__finance">财务数据敏感度</h3>
@@ -452,7 +460,7 @@
 
           <!--==================== SKILLS 5 ====================-->
           <div class="skills__content skills__close">
-            <div class="skills__header">
+            <div class="skills__header" role="button" tabindex="0" aria-expanded="false" aria-controls="skills-list-5">
               <i class="uil uil-wrench skills__icon"></i>
               <div>
                 <h1 class="skills__title" i18n="skills__title5">工具开发</h1>
@@ -460,7 +468,7 @@
               </div>
               <i class="uil uil-angle-down skills__arrow"></i>
             </div>
-            <div class="skills__list grid">
+            <div class="skills__list grid" id="skills-list-5">
               <div class="skills__data">
                 <div class="skills__titles">
                   <h3 class="skills__name" i18n="skills__web3bot">Web3 Telegram Bot开发</h3>
@@ -487,7 +495,7 @@
 
           <!--==================== SKILLS 6 ====================-->
           <div class="skills__content skills__close">
-            <div class="skills__header">
+            <div class="skills__header" role="button" tabindex="0" aria-expanded="false" aria-controls="skills-list-6">
               <i class="uil uil-globe skills__icon"></i>
               <div>
                 <h1 class="skills__title" i18n="skills__title6">语言能力</h1>
@@ -495,7 +503,7 @@
               </div>
               <i class="uil uil-angle-down skills__arrow"></i>
             </div>
-            <div class="skills__list grid">
+            <div class="skills__list grid" id="skills-list-6">
               <div class="skills__data">
                 <div class="skills__titles">
                   <h3 class="skills__name" i18n="skills__mandarin">国语（Mandarin）</h3>
@@ -552,25 +560,25 @@
       </h2>
       <span class="section__subtitle" i18n="qualification__subtitle">我的个人旅程</span>
       <div class="qualification__container container scroll-animate">
-        <div class="qualification__tabs">
-          <div class="qualification__button button--flex qualification__active" data-target="#education">
+        <div class="qualification__tabs" role="tablist" aria-label="资格标签">
+          <button type="button" class="qualification__button button--flex qualification__active" data-target="#education" role="tab" aria-selected="true" aria-controls="education" id="qualification-tab-education">
             <i class="uil uil-graduation-cap qualification__icon"></i>
             <span i18n="education">教育经历</span>
-          </div>
+          </button>
 
-          <div class="qualification__button button--flex" data-target="#work">
+          <button type="button" class="qualification__button button--flex" data-target="#work" role="tab" aria-selected="false" aria-controls="work" id="qualification-tab-work">
             <i class="uil uil-briefcase-alt qualification__icon"></i>
             <span i18n="work">工作经历</span>
-          </div>
+          </button>
 
-          <div class="qualification__button button--flex" data-target="#certifications">
+          <button type="button" class="qualification__button button--flex" data-target="#certifications" role="tab" aria-selected="false" aria-controls="certifications" id="qualification-tab-certifications">
             <i class="uil uil-award qualification__icon"></i>
             <span i18n="certifications">证书认证</span>
-          </div>
+          </button>
         </div>
         <div class="qualification__sections">
           <!--==================== QUALIFICATION CONTENT 1 ====================-->
-          <div class="qualification__content qualification__active" data-content id="education">
+          <div class="qualification__content qualification__active" data-content id="education" role="tabpanel" aria-labelledby="qualification-tab-education">
             <!--==================== QUALIFICATION 1 ====================-->
             <div class="qualification__data">
               <div>
@@ -637,7 +645,7 @@
             </div>
           </div>
           <!--==================== QUALIFICATION CONTENT 2 ====================-->
-          <div class="qualification__content" data-content id="work">
+          <div class="qualification__content" data-content id="work" role="tabpanel" aria-labelledby="qualification-tab-work">
             <!-- 1. Digital Nomad -->
             <div class="qualification__data">
               <div>
@@ -668,7 +676,7 @@
                   i18n="qualification5__subtitle">协助校方组织招聘会、推文、海报等</span>
                 <div class="qualification__calendar">
                   <i class="uil uil-calendar-alt"></i>
-                  <span i18n="qualification5__date">2025.02 - 至今</span>
+                  <span i18n="qualification5__date">2025.02 - 2025.05</span>
                 </div>
               </div>
             </div>
@@ -681,7 +689,7 @@
                   i18n="qualification6__subtitle">美的、宝洁、中兴、蓝思科技等企业校园大使，协助招聘及竞赛宣传</span>
                 <div class="qualification__calendar">
                   <i class="uil uil-calendar-alt"></i>
-                  <span i18n="qualification6__date">2025.03 - 至今</span>
+                  <span i18n="qualification6__date">2025.02 - 至今</span>
                 </div>
               </div>
               <div>
@@ -717,7 +725,7 @@
                   i18n="qualification8__subtitle">营造创新创业氛围，组织活动，协助Tech300大赛</span>
                 <div class="qualification__calendar">
                   <i class="uil uil-calendar-alt"></i>
-                  <span i18n="qualification8__date">2025.04 - 至今</span>
+                  <span i18n="qualification8__date">2025.05 - 2025.12</span>
                 </div>
               </div>
               <div>
@@ -728,7 +736,7 @@
           </div>
 
           <!--==================== QUALIFICATION CONTENT 3 ====================-->
-          <div class="qualification__content" data-content id="certifications">
+          <div class="qualification__content" data-content id="certifications" role="tabpanel" aria-labelledby="qualification-tab-certifications">
             <!-- 1. Tencent Product Manager Certificate -->
             <div class="qualification__data">
               <div>
@@ -919,7 +927,7 @@
       <div class="footer__container container grid">
         <div>
           <h1 class="footer__title">Lurek</h1>
-          <span class="footer__subtitle" i18n="home__subtitle">CityU-DG UG Student</span>
+          <span class="footer__subtitle" i18n="home__subtitle">香港城市大学（东莞）本科生</span>
         </div>
 
         <ul class="footer__links">
