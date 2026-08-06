@@ -1,132 +1,283 @@
 {
+  "nav": {
     "home": "Home",
-    "about": "About",
+    "selected_work": "Selected Work",
+    "focus": "Focus",
     "skills": "Skills",
-    "portfolio": "Portfolio",
-    "contact": "Contact",
-    "qualification": "Journey",
-    "home__title": "Hi, I'm Lurek",
-    "home__subtitle": "Undergraduate Student at City University of Hong Kong (Dongguan)",
-    "home__description": "AI Tools Expert, Web3 Development Digital Nomad, CityU Innovation & Entrepreneurship Leader",
-    "home__contact": "Contact Me",
-    "home__scroll-name": "Scroll down",
-    "about__title": "About Me",
-    "about__subtitle": "My introduction",
-    "about__card1_title": "Digital Nomad",
-    "about__card1_desc": "As a Digital Nomad, I specialize in providing remote support to North American B2B clients using AI tools.",
-    "about__card2_title": "Web2&3 Developer",
-    "about__card2_desc": "I am also a Web2&3 Developer with extensive experience in web design and development.",
-    "about__card3_title": "Innovation Community Leader",
-    "about__card3_desc": "As an Innovation Community Leader, I am dedicated to fostering an innovative and entrepreneurial atmosphere on campus.",
-    "about__info-name1": "Years of <br /> experience",
-    "about__info-name2": "Completed <br /> projects",
-    "about__info-name3": "Companies <br /> worked",
-    "download": "Download CV",
-    "skills__title": "Skills",
-    "skills__subtitle": "My technical level",
-    "skills__title1": "Frontend Development",
-    "skills__years": "More than 1 year",
-    "skills__title2": "AI Tools Expert",
-    "skills__years2": "More than 3 years",
-    "skills__ui": "UI Design",
-    "skills__title3": "Office Skills",
-    "skills__years3": "More than 3 years",
-    "skills__genai": "Generative AI",
-    "skills__genai_tools": "ChatGPT, Gemini, Deepseek",
-    "skills__aiimg": "AI Image/Video",
-    "skills__aiimg_tools": "Stable Diffusion, GPT4o",
-    "skills__aiwork": "AI Workflow",
-    "skills__aiwork_tools": "Coze",
-    "skills__aipro": "AI Programming",
-    "skills__aipro_tools": "Cursor",
-    "skills__office": "Microsoft Office Suite",
-    "skills__office_tools": "Word, Excel, PowerPoint",
-    "skills__xiumi": "WeChat Article Design",
-    "skills__xiumi_tools": "Xiumi",
-    "skills__canva": "Poster Design",
-    "skills__canva_tools": "Canva",
-    "skills__email": "Corporate Email Management",
-    "skills__title4": "Business Acumen",
-    "skills__years4": "More than 1 year",
-    "skills__finance": "Financial Data Sensitivity",
-    "skills__finance_tools": "Financial Analysis, Budget Management",
-    "skills__market": "Market & Customer Insights",
-    "skills__market_tools": "Market Research, Customer Analysis",
-    "skills__strategy": "Strategic Thinking & Built-to-Last Perspective",
-    "skills__strategy_tools": "Strategic Planning, Long-term Vision",
-    "skills__decision": "Decision Making & Priority Execution",
-    "skills__decision_tools": "Decision Making, Priority Management",
-    "skills__title5": "Tool Development",
-    "skills__years5": "More than 1 year",
-    "skills__web3bot": "Web3 Telegram Bot Development",
-    "skills__web3bot_tools": "Telegram Bot API, Web3.js, Solidity",
-    "skills__vscode": "VSCode Plugin Development",
-    "skills__vscode_tools": "TypeScript, VS Code Extension API, Node.js",
-    "skills__title6": "Language Proficiency",
-    "skills__years6": "Multilingual Communication",
-    "skills__mandarin": "Mandarin (Native)",
-    "skills__mandarin_tools": "Native Speaker",
-    "skills__english": "English",
-    "skills__english_tools": "Business Fluent, Academic Writing",
-    "skills__cantonese": "Cantonese",
-    "skills__cantonese_tools": "Daily Communication",
-    "skills__spanish": "Spanish",
-    "skills__spanish_tools": "Basic Conversation",
-    "qualification__title": "Qualification",
-    "qualification__subtitle": "My personal journey",
+    "journey": "Journey",
+    "contact": "Contact"
+  },
+  "translate": {
+    "aria_label": "Switch language",
+    "title": "Switch language"
+  },
+  "theme": {
+    "aria_label": "Switch dark/light theme",
+    "title": "Switch dark/light theme"
+  },
+  "menu": {
+    "open": "Open menu",
+    "close": "Close menu"
+  },
+  "scroll": {
+    "up": "Back to top"
+  },
+  "home": {
+    "eyebrow": "Industrial Robotics · Research Engineering · AI-assisted Tooling",
+    "title": "Hi, I'm Lurek Lu.",
+    "subtitle": "Intelligent Manufacturing Engineering undergraduate at City University of Hong Kong (Dongguan).",
+    "focus": "Focused on industrial robotics, manufacturing automation, and AI-assisted engineering workflows.",
+    "approach": "I aim to turn calibration, research validation, and tooling into reproducible, deployable engineering systems.",
+    "cta_work": "View Selected Work",
+    "cta_contact": "Contact"
+  },
+  "work": {
+    "title": "Selected Work",
+    "subtitle": "From models, data, and workflows to validation and delivery",
+    "robot": {
+      "title": "Six-Axis Robot Offline Kinematic Calibration",
+      "alt": "Offline validation metrics and field-validation status for the six-axis robot calibration project",
+      "metrics_alt": "Offline validation metrics panel for the six-axis robot calibration project",
+      "desc": "An offline kinematic parameter calibration project for a six-axis industrial robot. It combines standard DH modeling, Kabsch/SVD registration, bounded nonlinear least squares, and repeated-split validation to identify parameters and assess coupling, stability, and identifiability.",
+      "work_title": "My Work",
+      "work": "Kinematic modeling, parameter identification, validation design, stability analysis, GUI delivery, and project reporting.",
+      "metric1_label": "Full-data RMS",
+      "metric2_label": "Fixed holdout RMS",
+      "metric3_label": "20-split median RMS",
+      "status1": "Software Frozen",
+      "status2": "Field Validation Pending",
+      "status3": "Industrial Robotics",
+      "status_note": "The offline software version is frozen; real-controller field validation remains pending.",
+      "cta_report": "View Report"
+    },
+    "paperforge": {
+      "alt": "A paper-analysis workflow connecting Zotero, PaperForge, agents, and Obsidian",
+      "desc": "PaperForge turns papers and PDFs from Zotero into traceable analysis workspaces, guides agents through structured evidence review, and exports the results to Obsidian as a long-term knowledge network.",
+      "work_title": "My Work",
+      "work": "Workflow architecture, CLI design, research profiles, data boundaries, structural validation, Obsidian export, and documentation.",
+      "tagline": "A local-first workflow for deep paper analysis and long-term knowledge building",
+      "status1": "Active Project",
+      "status2": "Local-first",
+      "status3": "Research Tooling",
+      "cta": "View Project"
+    },
+    "weather": {
+      "title": "Weather–Market Data Audit and Reproducible Research System",
+      "alt": "A weather and market research pipeline from collection and validation to partial ingestion and rejection traceability",
+      "desc": "A multi-city weather and market research pipeline evolved from an Excel logging prototype, using structured weekly packages, schemas, deterministic recalculation, partial ingestion, and rejection records to keep data traceable and auditable.",
+      "work_title": "My Work",
+      "work": "Research protocol design, data structures, schemas, validation scripts, weekly ingestion, rejection traceability, and GitHub Actions validation.",
+      "status1": "Active Research",
+      "status2": "Data Audit",
+      "status3": "Reproducible Workflow",
+      "cta": "View Research System"
+    },
+    "codex": {
+      "title": "Codex Naiwa Pet — Windows Enhanced Edition",
+      "alt": "Sprite animation and Windows patch workflow for the enhanced Codex Naiwa desktop pet",
+      "desc": "A Windows enhancement of an open-source Codex desktop pet, adding interactive animations, local audio, and drag effects, supported by a delivery workflow with dry runs, compatibility validation, targeted ASAR patching, installation, and acceptance checks.",
+      "work_title": "My Work",
+      "work": "Interaction enhancements, sprite processing, patch scripts, compatibility guards, MSIX packaging and installation, and acceptance procedures.",
+      "status1": "Creative Engineering",
+      "status2": "Windows Tooling",
+      "status3": "Open-source Enhancement",
+      "cta": "View Project"
+    }
+  },
+  "about": {
+    "title": "About",
+    "subtitle": "My Engineering Focus",
+    "statement": "I care not only about whether an algorithm works on ideal data, but whether it remains reliable under real hardware, measurement noise, cross-platform environments, and deployment constraints.",
+    "card1": {
+      "title": "Industrial Robotics & Automation",
+      "desc": "I study the sources of industrial robot accuracy through kinematic modeling, parameter identification, and validation, while continuing to develop practical knowledge of TCPs, coordinate systems, servo motion control, ROS2, and workstation integration."
+    },
+    "card2": {
+      "title": "Research Engineering & Reproducibility",
+      "desc": "I design research tasks as traceable, reproducible, and auditable workflows, with clear distinctions between internal validation, external validation, failure records, and conclusions that remain unconfirmed."
+    },
+    "card3": {
+      "title": "AI-assisted Engineering & Tooling",
+      "desc": "I use ChatGPT for problem decomposition, solution design, and review, delegate repository and environment execution to agents, and constrain generated results through Git, pull requests, acceptance criteria, and deterministic tests."
+    }
+  },
+  "skills": {
+    "title": "Skills & Methods",
+    "subtitle": "Capabilities grounded in project practice",
+    "note": "Percentages reflect current applied capability, not examination scores or formal certification.",
+    "cat1": {
+      "title": "Robotics & Control",
+      "scope": "DH · FK · TCP · Coordinate Systems · ROS2 · Servo Loops"
+    },
+    "cat2": {
+      "title": "Software & Automation",
+      "scope": "Python · C++ · JavaScript · TypeScript · Git · GitHub Actions"
+    },
+    "cat3": {
+      "title": "Research & Data",
+      "scope": "Experiment Design · Schema · Evidence Audit · Validation · Documentation"
+    },
+    "cat4": {
+      "title": "AI-assisted Engineering",
+      "scope": "ChatGPT · Codex · WorkBuddy · Acceptance Criteria · Automated Reports"
+    },
+    "item1": {
+      "name": "Robot Kinematics",
+      "evidence": "DH, FK, TCPs, coordinate systems, and six-axis calibration",
+      "alt": "Robot Kinematics 78 percent"
+    },
+    "item2": {
+      "name": "Robot Calibration",
+      "evidence": "Parameter identification, Kabsch/SVD, and holdout validation",
+      "alt": "Robot Calibration 76 percent"
+    },
+    "item3": {
+      "name": "ROS2",
+      "evidence": "Robot development environments and project practice",
+      "alt": "ROS2 75 percent"
+    },
+    "item4": {
+      "name": "Servo & Motion Control",
+      "evidence": "Cascade control loops, feedforward, and servo motion-control training",
+      "alt": "Servo and Motion Control 70 percent"
+    },
+    "item5": {
+      "name": "Python",
+      "evidence": "Robot calibration, PaperForge, data validation, and CLI development",
+      "alt": "Python 86 percent"
+    },
+    "item6": {
+      "name": "Git / GitHub",
+      "evidence": "Branching, draft pull requests, reviews, CI, and version freezes",
+      "alt": "Git and GitHub 88 percent"
+    },
+    "item7": {
+      "name": "JavaScript / TypeScript",
+      "evidence": "Personal websites, VS Code tooling, and desktop-pet patches",
+      "alt": "JavaScript and TypeScript 78 percent"
+    },
+    "item8": {
+      "name": "C++",
+      "evidence": "Foundations for ROS2 and robot software development",
+      "alt": "C++ 72 percent"
+    },
+    "item9": {
+      "name": "Reproducible Workflows",
+      "evidence": "PaperForge and weather–market research workflows",
+      "alt": "Reproducible Workflows 88 percent"
+    },
+    "item10": {
+      "name": "Data Validation",
+      "evidence": "Schemas, rejection traceability, deterministic recalculation, and repeated validation",
+      "alt": "Data Validation 85 percent"
+    },
+    "item11": {
+      "name": "Technical Documentation",
+      "evidence": "READMEs, protocols, reports, and acceptance documentation",
+      "alt": "Technical Documentation 90 percent"
+    },
+    "item12": {
+      "name": "Numerical Optimization",
+      "evidence": "Nonlinear least squares and robot parameter identification",
+      "alt": "Numerical Optimization 76 percent"
+    },
+    "item13": {
+      "name": "Agent Workflow Design",
+      "evidence": "Task separation between the ChatGPT control plane and agent execution plane",
+      "alt": "Agent Workflow Design 90 percent"
+    },
+    "item14": {
+      "name": "Prompt & Acceptance Design",
+      "evidence": "Constraints, acceptance criteria, commit structure, and review loops",
+      "alt": "Prompt and Acceptance Design 90 percent"
+    },
+    "item15": {
+      "name": "AI-assisted Programming",
+      "evidence": "Multi-repository implementation, debugging, review, and iteration",
+      "alt": "AI-assisted Programming 88 percent"
+    },
+    "item16": {
+      "name": "Automated Reports & AIGC",
+      "evidence": "Reports, documentation, presentations, visuals, and structured-content workflows",
+      "alt": "Automated Reports and AIGC 86 percent"
+    }
+  },
+  "qualification": {
+    "title": "Qualification",
+    "subtitle": "My personal journey",
     "education": "Education",
     "work": "Work",
     "certifications": "Certifications",
-    "qualification1__title": "AI Tools Application Technology",
-    "qualification1__subtitle": "Self-Study",
-    "qualification1__date": "2023 – Present",
-    "qualification2__title": "Intelligent Manufacturing Engineering",
-    "qualification2__subtitle": "City University of Hong Kong (Dongguan) - Undergraduate",
-    "qualification2__date": "2024 – Present",
-    "qualification3__title": "Web3 Design & Development",
-    "qualification3__subtitle": "Self-Study",
-    "qualification3__date": "Mar 2025",
-    "qualification9__title": "MBA",
-    "qualification9__subtitle": "Wharton School Remote Program",
-    "qualification9__date": "May 2025",
-    "qualification4__title": "Digital Nomad",
-    "qualification4__subtitle": "Providing remote AI support for North American B2B clients: business PPT slides, Reddit content, etc.",
-    "qualification4__date": "2024 – Present",
-    "qualification5__title": "Student Assistant at CityU-DG SDO",
-    "qualification5__subtitle": "Assisted in organizing job fairs, WeChat posts, event posters, etc.",
-    "qualification5__date": "Feb 2025 – May 2025",
-    "qualification6__title": "Enterprise Campus Ambassador",
-    "qualification6__subtitle": "Campus ambassador for Midea, P&G, ZTE, Lens Technology, supporting recruitment and competition promotion.",
-    "qualification6__date": "Feb 2025 – Present",
-    "qualification7__title": "Xbotpark CRM Intern & Campus Ambassador",
-    "qualification7__subtitle": "Responsible for recruiting entrepreneurs, CRM research, organizing minicamps, workshops, summer camps.",
-    "qualification7__date": "Mar 2025 – Present",
-    "qualification8__title": "CityU-DG Innovation & Entrepreneurship Intern",
-    "qualification8__subtitle": "Fostering innovation atmosphere, organizing activities, assisting Tech300 competition.",
-    "qualification8__date": "May 2025 – Dec 2025",
-    "cert1__title": "Tencent Product Manager Advanced Certificate",
-    "cert1__subtitle": "Tencent Academy - Professional Product Management Certification, mastering 0-to-1 product design thinking and UX optimization",
-    "cert1__date": "2024",
-    "cert2__title": "United Nations ESG Registration Certificate",
-    "cert2__subtitle": "UN Global Compact - Environmental, Social & Governance sustainability certification, deep understanding of ESG framework and practice",
-    "cert2__date": "2025",
-    "cert3__title": "City University of Hong Kong Summer Program Advanced Certificate",
-    "cert3__subtitle": "City University of Hong Kong - Innovation Technology & Business Application Summer Program, focusing on frontier tech commercialization",
-    "cert3__date": "Summer 2025",
-    "portfolio__title": "Portfolio",
-    "portfolio__subtitle": "Most recent works",
-    "portfolio1__title": "Web3 Design",
-    "portfolio1__description": "Responsive web design with modern UI components",
-    "portfolio2__title": "Philosophy Blog",
-    "portfolio2__description": "Personal philosophical essays and thoughts guided by Marxism",
-    "portfolio3__title": "Poetry Works",
-    "portfolio3__description": "Chinese poetry works reflecting urban sentiments",
-    "portfolio4__title": "VSCode Plugin",
-    "portfolio4__description": "Professional docx editor plugin providing efficient document editing functionality and user experience.",
-    "contact__title": "Contact Me",
-    "contact__subtitle": "Get in touch",
+    "1": {
+      "title": "AI Tools Application Technology",
+      "subtitle": "Self-Study",
+      "date": "2023 - Present"
+    },
+    "2": {
+      "title": "Intelligent Manufacturing Engineering",
+      "subtitle": "City University of Hong Kong (Dongguan) - Undergraduate",
+      "date": "2024 - Present"
+    },
+    "3": {
+      "title": "Web3 Design & Development",
+      "subtitle": "Self-Study",
+      "date": "Mar 2025"
+    },
+    "9": {
+      "title": "MBA",
+      "subtitle": "Wharton School Remote Program",
+      "date": "May 2025"
+    },
+    "4": {
+      "title": "Digital Nomad",
+      "subtitle": "Providing remote AI support for North American B2B clients: business PPT slides, Reddit content, etc.",
+      "date": "2024 - Present"
+    },
+    "5": {
+      "title": "Student Assistant at CityU-DG SDO",
+      "subtitle": "Assisted in organizing job fairs, WeChat posts, event posters, etc.",
+      "date": "Feb 2025 – May 2025"
+    },
+    "6": {
+      "title": "Enterprise Campus Ambassador",
+      "subtitle": "Campus ambassador for Midea, P&G, ZTE, Lens Technology, supporting recruitment and competition promotion.",
+      "date": "Feb 2025 – Present"
+    },
+    "7": {
+      "title": "Xbotpark CRM Intern & Campus Ambassador",
+      "subtitle": "Responsible for recruiting entrepreneurs, CRM research, organizing minicamps, workshops, summer camps.",
+      "date": "Mar 2025 – Present"
+    },
+    "8": {
+      "title": "CityU-DG Innovation & Entrepreneurship Intern",
+      "subtitle": "Fostering innovation atmosphere, organizing activities, assisting Tech300 competition.",
+      "date": "May 2025 – Dec 2025"
+    }
+  },
+  "cert1": {
+    "title": "Tencent Product Manager Advanced Certificate",
+    "subtitle": "Tencent Academy - Professional Product Management Certification, mastering 0-to-1 product design thinking and UX optimization",
+    "date": "2024"
+  },
+  "cert2": {
+    "title": "United Nations ESG Registration Certificate",
+    "subtitle": "UN Global Compact - Environmental, Social & Governance sustainability certification, deep understanding of ESG framework and practice",
+    "date": "2025"
+  },
+  "cert3": {
+    "title": "City University of Hong Kong Summer Program Advanced Certificate",
+    "subtitle": "City University of Hong Kong - Innovation Technology & Business Application Summer Program, focusing on frontier tech commercialization",
+    "date": "Summer 2025"
+  },
+  "contact": {
+    "title": "Contact",
+    "subtitle": "Get in touch",
     "email": "E-mail",
-    "email__address": "lurek.st@outlook.com<br>lurek.st2077@gmail.com",
+    "email_address": "lurek.st@outlook.com<br>lurek.st2077@gmail.com",
     "location": "Location",
-    "location__detail": "Guangdong, China"
+    "location_detail": "Guangdong, China"
+  },
+  "social": {
+    "github": "GitHub profile"
+  }
 }

@@ -1,132 +1,283 @@
 {
-    "home": "主页",
-    "about": "关于",
+  "nav": {
+    "home": "首页",
+    "selected_work": "代表项目",
+    "focus": "方向",
     "skills": "技能",
-    "portfolio": "项目集",
-    "contact": "联系方式",
-    "qualification": "经历",
-    "home__title": "你好，我是 Lurek",
-    "home__subtitle": "香港城市大学（东莞）本科生",
-    "home__description": "AI工具专家，Web3开发数字游民，港城大创新创业者",
-    "home__contact": "联系我",
-    "home__scroll-name": "向下滚动",
-    "about__title": "关于我",
-    "about__subtitle": "我的介绍",
-    "about__card1_title": "数字游民",
-    "about__card1_desc": "作为一名数字游民，我专注于使用AI工具为北美B端客户提供各类远程支持。",
-    "about__card2_title": "Web2&3开发者",
-    "about__card2_desc": "同时，我也是一名Web2&3开发者，拥有丰富的网页设计和开发经验。",
-    "about__card3_title": "创新创业社群领袖",
-    "about__card3_desc": "作为创新创业社群领袖，致力于构建校内创新创业氛围。",
-    "about__info-name1": "年工作<br/>经验",
-    "about__info-name2": "完整<br/>项目",
-    "about__info-name3": "公司 <br /> 任职",
-    "download": "查看简历",
-    "skills__title": "技能",
-    "skills__subtitle": "我的专业水平",
-    "skills__years": "超过1年",
-    "skills__title1": "前端开发",
-    "skills__title2": "AI工具专家",
-    "skills__years2": "超过3年",
-    "skills__ui": "UI设计",
-    "skills__title3": "办公技能",
-    "skills__years3": "超过3年",
-    "skills__genai": "生成式AI",
-    "skills__genai_tools": "ChatGPT, Gemini, Deepseek",
-    "skills__aiimg": "AI图像/视频",
-    "skills__aiimg_tools": "Stable Diffusion, GPT4o",
-    "skills__aiwork": "AI工作流",
-    "skills__aiwork_tools": "Coze",
-    "skills__aipro": "AI编程",
-    "skills__aipro_tools": "Cursor",
-    "skills__office": "办公三件套",
-    "skills__office_tools": "Word、Excel、PowerPoint",
-    "skills__xiumi": "公众号推文设计",
-    "skills__xiumi_tools": "秀米",
-    "skills__canva": "海报设计",
-    "skills__canva_tools": "可画",
-    "skills__email": "企业电邮配置管理",
-    "skills__title4": "商业素养",
-    "skills__years4": "超过1年",
-    "skills__finance": "财务数据敏感度",
-    "skills__finance_tools": "财务分析、预算管理",
-    "skills__market": "市场及客户洞察",
-    "skills__market_tools": "市场调研、客户分析",
-    "skills__strategy": "战略思维与基业长青视角",
-    "skills__strategy_tools": "战略规划、长远愿景",
-    "skills__decision": "决策及优先级执行力",
-    "skills__decision_tools": "决策制定、优先级管理",
-    "skills__title5": "工具开发",
-    "skills__years5": "超过1年",
-    "skills__web3bot": "Web3 Telegram Bot开发",
-    "skills__web3bot_tools": "Telegram Bot API, Web3.js, Solidity",
-    "skills__vscode": "VSCode插件开发",
-    "skills__vscode_tools": "TypeScript, VS Code Extension API, Node.js",
-    "skills__title6": "语言能力",
-    "skills__years6": "多语种交流",
-    "skills__mandarin": "国语（Mandarin）",
-    "skills__mandarin_tools": "母语水平",
-    "skills__english": "英语（English）",
-    "skills__english_tools": "商务流利，学术写作",
-    "skills__cantonese": "粤语（Cantonese）",
-    "skills__cantonese_tools": "日常交流",
-    "skills__spanish": "西班牙语（Spanish）",
-    "skills__spanish_tools": "基础对话",
-    "qualification__title": "资历",
-    "qualification__subtitle": "我的个人旅程",
+    "journey": "经历",
+    "contact": "联系"
+  },
+  "translate": {
+    "aria_label": "切换中英文",
+    "title": "切换中英文"
+  },
+  "theme": {
+    "aria_label": "切换深色/浅色主题",
+    "title": "切换深色/浅色主题"
+  },
+  "menu": {
+    "open": "打开菜单",
+    "close": "关闭菜单"
+  },
+  "scroll": {
+    "up": "回到顶部"
+  },
+  "home": {
+    "eyebrow": "工业机器人 · 研究工程 · AI 辅助工具",
+    "title": "你好，我是陆成洋（Lurek Lu）",
+    "subtitle": "香港城市大学（东莞）智能制造工程本科生",
+    "focus": "聚焦工业机器人、智能制造自动化与 AI 辅助工程工作流。",
+    "approach": "我希望把机器人标定、研究验证和工具开发，转化为可复现、可部署的工程系统。",
+    "cta_work": "查看代表项目",
+    "cta_contact": "联系我"
+  },
+  "work": {
+    "title": "代表项目",
+    "subtitle": "从模型、数据与工作流走向验证和交付",
+    "robot": {
+      "title": "六轴机器人离线运动学参数标定",
+      "alt": "六轴机器人标定项目的离线验证指标与现场验证状态",
+      "metrics_alt": "六轴机器人标定项目的离线验证指标卡",
+      "desc": "面向六轴工业机器人的离线运动学参数标定项目。结合标准 DH、Kabsch/SVD、有界非线性最小二乘和重复划分验证，识别参数并评估关节耦合、稳定性与可辨识性。",
+      "work_title": "我的工作",
+      "work": "运动学建模、参数辨识、验证设计、稳定性分析、GUI 与项目报告。",
+      "metric1_label": "Full-data RMS",
+      "metric2_label": "Fixed holdout RMS",
+      "metric3_label": "20-split median RMS",
+      "status1": "Software Frozen",
+      "status2": "Field Validation Pending",
+      "status3": "Industrial Robotics",
+      "status_note": "离线软件版本已冻结，真实机器人控制器验证待完成。",
+      "cta_report": "查看项目报告"
+    },
+    "paperforge": {
+      "alt": "Zotero、PaperForge、Agent 和 Obsidian 构成的论文分析工作流",
+      "desc": "将 Zotero 中的论文与 PDF 组织为可追溯分析工作区，约束 Agent 完成结构化证据审查，并导出到 Obsidian 形成长期知识网络。",
+      "work_title": "我的工作",
+      "work": "工作流架构、CLI、研究 Profile、数据边界、结构验证、Obsidian 导出与项目文档。",
+      "tagline": "本地优先的论文深度分析与知识工作流",
+      "status1": "Active Project",
+      "status2": "Local-first",
+      "status3": "Research Tooling",
+      "cta": "查看项目"
+    },
+    "weather": {
+      "title": "天气—市场数据审计与可复现研究系统",
+      "alt": "天气与市场数据从采集、校验到部分入库和拒绝留痕的研究管线",
+      "desc": "从 Excel 记录原型扩展出的多城市天气—市场研究管线，通过结构化周包、Schema、确定性复算、部分入库和拒绝留痕保障数据可追溯、可校验。",
+      "work_title": "我的工作",
+      "work": "研究协议、数据结构、Schema、校验脚本、周入库流程、拒绝留痕和 GitHub Actions 验证。",
+      "status1": "Active Research",
+      "status2": "Data Audit",
+      "status3": "Reproducible Workflow",
+      "cta": "查看研究系统"
+    },
+    "codex": {
+      "title": "Codex 奶蛙桌宠增强版",
+      "alt": "Codex 奶蛙桌宠增强版的精灵动画与 Windows 补丁流程",
+      "desc": "基于开源桌宠项目构建的 Windows Codex Desktop 增强版本，增加交互动画、本地音频和拖动效果，并建立包含 dry run、兼容性验证、ASAR 定向补丁和安装验收的交付流程。",
+      "work_title": "我的工作",
+      "work": "交互增强、精灵素材处理、补丁脚本、兼容性保护、MSIX 打包安装和验收流程。",
+      "status1": "Creative Engineering",
+      "status2": "Windows Tooling",
+      "status3": "Open-source Enhancement",
+      "cta": "查看项目"
+    }
+  },
+  "about": {
+    "title": "关于我",
+    "subtitle": "我的工程取向",
+    "statement": "我关心的不只是算法能否在理想数据上工作，更关心它在真实设备、测量噪声、跨平台环境和部署约束下是否仍然可靠。",
+    "card1": {
+      "title": "工业机器人与自动化",
+      "desc": "我通过机器人运动学建模、参数辨识和验证流程理解工业机器人的精度来源，并持续学习 TCP、坐标系、伺服运动控制、ROS2 与真实工位集成。"
+    },
+    "card2": {
+      "title": "研究工程与可复现性",
+      "desc": "我倾向于把研究任务设计成可追溯、可复算、可审计的工作流，并明确区分内部验证、外部验证、失败记录和仍待确认的结论。"
+    },
+    "card3": {
+      "title": "AI 辅助工程与工具开发",
+      "desc": "我使用 ChatGPT 参与目标拆解、方案设计和审查，让 Agent 负责仓库与环境执行，并通过 Git、PR、验收标准和确定性测试约束生成结果。"
+    }
+  },
+  "skills": {
+    "title": "技能与方法",
+    "subtitle": "由项目实践支撑的能力结构",
+    "note": "百分比表示当前项目应用能力，不是考试成绩或官方认证。",
+    "cat1": {
+      "title": "机器人与控制",
+      "scope": "DH · FK · TCP · Coordinate Systems · ROS2 · Servo Loops"
+    },
+    "cat2": {
+      "title": "软件与自动化",
+      "scope": "Python · C++ · JavaScript · TypeScript · Git · GitHub Actions"
+    },
+    "cat3": {
+      "title": "研究与数据",
+      "scope": "Experiment Design · Schema · Evidence Audit · Validation · Documentation"
+    },
+    "cat4": {
+      "title": "AI 辅助工程",
+      "scope": "ChatGPT · Codex · WorkBuddy · Acceptance Criteria · Automated Reports"
+    },
+    "item1": {
+      "name": "Robot Kinematics",
+      "evidence": "DH、FK、TCP、坐标系与六轴机器人标定",
+      "alt": "Robot Kinematics 78 percent"
+    },
+    "item2": {
+      "name": "Robot Calibration",
+      "evidence": "参数辨识、Kabsch/SVD 与留出验证",
+      "alt": "Robot Calibration 76 percent"
+    },
+    "item3": {
+      "name": "ROS2",
+      "evidence": "机器人开发环境与项目实践",
+      "alt": "ROS2 75 percent"
+    },
+    "item4": {
+      "name": "Servo & Motion Control",
+      "evidence": "三环控制、前馈与伺服运动控制实训",
+      "alt": "Servo and Motion Control 70 percent"
+    },
+    "item5": {
+      "name": "Python",
+      "evidence": "机器人标定、PaperForge、数据验证与 CLI",
+      "alt": "Python 86 percent"
+    },
+    "item6": {
+      "name": "Git / GitHub",
+      "evidence": "分支、Draft PR、审查、CI 与版本冻结",
+      "alt": "Git and GitHub 88 percent"
+    },
+    "item7": {
+      "name": "JavaScript / TypeScript",
+      "evidence": "个人主页、VS Code 工具与桌宠补丁",
+      "alt": "JavaScript and TypeScript 78 percent"
+    },
+    "item8": {
+      "name": "C++",
+      "evidence": "ROS2 与机器人软件开发基础",
+      "alt": "C++ 72 percent"
+    },
+    "item9": {
+      "name": "Reproducible Workflows",
+      "evidence": "PaperForge 与天气—市场研究工作流",
+      "alt": "Reproducible Workflows 88 percent"
+    },
+    "item10": {
+      "name": "Data Validation",
+      "evidence": "Schema、拒绝留痕、确定性复算与重复验证",
+      "alt": "Data Validation 85 percent"
+    },
+    "item11": {
+      "name": "Technical Documentation",
+      "evidence": "README、协议、报告与验收文档",
+      "alt": "Technical Documentation 90 percent"
+    },
+    "item12": {
+      "name": "Numerical Optimization",
+      "evidence": "非线性最小二乘与机器人参数辨识",
+      "alt": "Numerical Optimization 76 percent"
+    },
+    "item13": {
+      "name": "Agent Workflow Design",
+      "evidence": "ChatGPT 控制面与 Agent 执行面的任务分层",
+      "alt": "Agent Workflow Design 90 percent"
+    },
+    "item14": {
+      "name": "Prompt & Acceptance Design",
+      "evidence": "约束、验收标准、提交拆分与审查循环",
+      "alt": "Prompt and Acceptance Design 90 percent"
+    },
+    "item15": {
+      "name": "AI-assisted Programming",
+      "evidence": "多仓库实现、调试、审查与迭代",
+      "alt": "AI-assisted Programming 88 percent"
+    },
+    "item16": {
+      "name": "Automated Reports & AIGC",
+      "evidence": "报告、文档、PPT、图像与结构化内容工作流",
+      "alt": "Automated Reports and AIGC 86 percent"
+    }
+  },
+  "qualification": {
+    "title": "资历",
+    "subtitle": "我的个人旅程",
     "education": "教育经历",
     "work": "工作经历",
     "certifications": "证书认证",
-    "qualification1__title": "AI工具运用技术",
-    "qualification1__subtitle": "自学",
-    "qualification1__date": "2023 - 至今",
-    "qualification2__title": "智能制造工程",
-    "qualification2__subtitle": "香港城市大学（东莞）- 本科",
-    "qualification2__date": "2024 - 至今",
-    "qualification3__title": "Web3设计与开发",
-    "qualification3__subtitle": "自学",
-    "qualification3__date": "2025.03",
-    "qualification9__title": "MBA",
-    "qualification9__subtitle": "沃顿商学院远程课程",
-    "qualification9__date": "2025.05",
-    "qualification4__title": "数字游民",
-    "qualification4__subtitle": "使用AI技术为北美B端客户提供远程支持，如制作商业PPT、Reddit图文等",
-    "qualification4__date": "2024 - 至今",
-    "qualification5__title": "港城大东莞学生处学助",
-    "qualification5__subtitle": "协助校方组织招聘会、推文、海报等",
-    "qualification5__date": "2025.02 - 2025.05",
-    "qualification6__title": "企业校园大使",
-    "qualification6__subtitle": "美的、宝洁、中兴、蓝思科技等企业校园大使，协助招聘及竞赛宣传",
-    "qualification6__date": "2025.02 - 至今",
-    "qualification7__title": "Xbotpark CRM实习&校园大使",
-    "qualification7__subtitle": "负责创业者招募、CRM调研，组织minicamp、工作坊、夏令营等",
-    "qualification7__date": "2025.03 - 至今",
-    "qualification8__title": "城大创新创业实习",
-    "qualification8__subtitle": "营造创新创业氛围，组织活动，协助Tech300大赛",
-    "qualification8__date": "2025.05 - 2025.12",
-    "cert1__title": "腾讯产品经理高级证书",
-    "cert1__subtitle": "腾讯学院 - 产品管理专业认证，掌握从0到1的产品设计思维与用户体验优化方法",
-    "cert1__date": "2024",
-    "cert2__title": "联合国ESG注册证明",
-    "cert2__subtitle": "联合国全球契约组织 - 环境、社会及治理可持续发展认证，深度理解ESG框架与实践",
-    "cert2__date": "2025",
-    "cert3__title": "香港城市大学暑期项目高级证书",
-    "cert3__subtitle": "香港城市大学 - 创新科技与商业应用暑期项目，专注前沿技术商业化转换",
-    "cert3__date": "2025夏季",
-    "portfolio__title": "作品集",
-    "portfolio__subtitle": "最近的作品",
-    "portfolio1__title": "Web3网页设计",
-    "portfolio1__description": "适配所有设备的显示，现代风格的Web UI设计",
-    "portfolio2__title": "哲学思考博客",
-    "portfolio2__description": "以马克思主义为指导的Lurek个人哲学论文及随笔",
-    "portfolio3__title": "诗作",
-    "portfolio3__description": "一些小市民伤感的中文诗词作品",
-    "portfolio4__title": "VSCode插件",
-    "portfolio4__description": "专业的docx editor插件，提供高效的文档编辑功能和用户体验。",
-    "contact__title": "联系我",
-    "contact__subtitle": "取得联系",
+    "1": {
+      "title": "AI工具运用技术",
+      "subtitle": "自学",
+      "date": "2023 - 至今"
+    },
+    "2": {
+      "title": "智能制造工程",
+      "subtitle": "香港城市大学（东莞）- 本科",
+      "date": "2024 - 至今"
+    },
+    "3": {
+      "title": "Web3设计与开发",
+      "subtitle": "自学",
+      "date": "2025.03"
+    },
+    "9": {
+      "title": "MBA",
+      "subtitle": "沃顿商学院远程课程",
+      "date": "2025.05"
+    },
+    "4": {
+      "title": "数字游民",
+      "subtitle": "使用AI技术为北美B端客户提供远程支持，如制作商业PPT、Reddit图文等",
+      "date": "2024 - 至今"
+    },
+    "5": {
+      "title": "港城大东莞学生处学助",
+      "subtitle": "协助校方组织招聘会、推文、海报等",
+      "date": "2025.02 - 2025.05"
+    },
+    "6": {
+      "title": "企业校园大使",
+      "subtitle": "美的、宝洁、中兴、蓝思科技等企业校园大使，协助招聘及竞赛宣传",
+      "date": "2025.02 - 至今"
+    },
+    "7": {
+      "title": "Xbotpark CRM实习&校园大使",
+      "subtitle": "负责创业者招募、CRM调研，组织minicamp、工作坊、夏令营等",
+      "date": "2025.03 - 至今"
+    },
+    "8": {
+      "title": "城大创新创业实习",
+      "subtitle": "营造创新创业氛围，组织活动，协助Tech300大赛",
+      "date": "2025.05 - 2025.12"
+    }
+  },
+  "cert1": {
+    "title": "腾讯产品经理高级证书",
+    "subtitle": "腾讯学院 - 产品管理专业认证，掌握从0到1的产品设计思维与用户体验优化方法",
+    "date": "2024"
+  },
+  "cert2": {
+    "title": "联合国ESG注册证明",
+    "subtitle": "联合国全球契约组织 - 环境、社会及治理可持续发展认证，深度理解ESG框架与实践",
+    "date": "2025"
+  },
+  "cert3": {
+    "title": "香港城市大学暑期项目高级证书",
+    "subtitle": "香港城市大学 - 创新科技与商业应用暑期项目，专注前沿技术商业化转换",
+    "date": "2025夏季"
+  },
+  "contact": {
+    "title": "联系我",
+    "subtitle": "取得联系",
     "email": "电子邮箱",
-    "email__address": "lurek.st@outlook.com<br>lurek.st2077@gmail.com",
+    "email_address": "lurek.st@outlook.com<br>lurek.st2077@gmail.com",
     "location": "位置",
-    "location__detail": "中国大陆 广东"
+    "location_detail": "中国大陆 广东"
+  },
+  "social": {
+    "github": "GitHub 主页"
+  }
 }

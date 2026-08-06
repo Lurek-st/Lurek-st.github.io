@@ -1,614 +1,401 @@
-/*==================== MENU SHOW Y HIDDEN ====================*/
-const navMenu = document.getElementById('nav-menu'),
-  navToggle = document.getElementById('nav-toggle'),
-  navClose = document.getElementById('nav-close');
+/* Lurek personal site main script.
+ * - No third-party UI library (Swiper removed).
+ * - Copy is owned by the DOM (data-i18n + JSON); the Home typewriter reads
+ *   the live, already-translated text rather than holding a third copy.
+ * - The i18n renderer lives in cn-en-translate.js (loadLanguage).
+ */
 
-/*===== MENU SHOW =====*/
-/* Validate if constant exists */
+/*==================== APP READY (cooperative) ==================== */
+// main.js initialises event wiring + observers -> __mainReady.
+// cn-en-translate.js sets __i18nReady after the first language JSON lands.
+// Only when BOTH are ready is __appReady set, satisfying the 5s watchdog.
+function markAppReady() {
+  if (window.__mainReady && window.__i18nReady && !window.__appReady) {
+    window.__appReady = true;
+  }
+}
+
+/*==================== MOBILE MENU ====================*/
+const navMenu = document.getElementById("nav-menu");
+const navToggle = document.getElementById("nav-toggle");
+const navClose = document.getElementById("nav-close");
+
+function setMenuOpen(open) {
+  if (!navMenu) return;
+  if (open) {
+    navMenu.classList.add("show-menu");
+    if (navToggle) navToggle.setAttribute("aria-expanded", "true");
+  } else {
+    navMenu.classList.remove("show-menu");
+    if (navToggle) navToggle.setAttribute("aria-expanded", "false");
+  }
+}
+
 if (navToggle && navMenu) {
-  navToggle.addEventListener('click', () => {
-    navMenu.classList.add('show-menu')
-    navToggle.setAttribute('aria-expanded', 'true')
-  })
+  navToggle.addEventListener("click", () => setMenuOpen(!navMenu.classList.contains("show-menu")));
 }
-
-/*===== MENU HIDDEN =====*/
-/* Validate if constant exists */
 if (navClose && navMenu) {
-  navClose.addEventListener('click', () => {
-    navMenu.classList.remove('show-menu')
-    if (navToggle) navToggle.setAttribute('aria-expanded', 'false')
-  })
+  navClose.addEventListener("click", () => setMenuOpen(false));
 }
+document.querySelectorAll(".nav__link").forEach((n) => n.addEventListener("click", () => setMenuOpen(false)));
 
-/*==================== REMOVE MENU MOBILE ====================*/
-const navLink = document.querySelectorAll('.nav__link')
+/*==================== SKILLS ACCORDION ====================*/
+// Native <details>/<summary> provide Enter + Space keyboard behaviour; we do
+// not override keydown. We only enforce "at most one open on mobile" via the
+// toggle event and keep desktop fully expanded.
+const skillGroups = Array.from(document.querySelectorAll(".skill-group"));
+const isMobileView = () => window.matchMedia("(max-width: 767px)").matches;
 
-function linkAction() {
-  const navMenu = document.getElementById('nav-menu')
-  if (!navMenu) return
-  // 点击每个菜单链接后收起菜单栏
-  navMenu.classList.remove('show-menu')
-  if (navToggle) navToggle.setAttribute('aria-expanded', 'false')
-}
-navLink.forEach(n => n.addEventListener('click', linkAction))
-
-/*==================== ACCORDION SKILLS ====================*/
-const skillsContent = document.getElementsByClassName('skills__content'),
-  skillsContentElements = document.querySelectorAll('.skills__content')
-
-function setSkillsExpanded(content, expanded) {
-  const header = content.querySelector('.skills__header')
-  if (header) header.setAttribute('aria-expanded', expanded ? 'true' : 'false')
-}
-
-function toggleSkills() {
-  const content = this.closest('.skills__content')
-  if (!content) return
-  const isOpen = content.classList.contains('skills__open')
-
-  for (let i = 0; i < skillsContent.length; i++) {
-    skillsContent[i].className = 'skills__content skills__close'
-    setSkillsExpanded(skillsContent[i], false)
+function syncSkillsState() {
+  if (!isMobileView()) {
+    // Desktop: everything visible (keep them all open).
+    skillGroups.forEach((g) => {
+      if (!g.open) g.open = true;
+    });
+    return;
   }
-  if (!isOpen) {
-    content.className = 'skills__content skills__open'
-    setSkillsExpanded(content, true)
+  // Mobile: keep at most one open; if several are open, collapse all but the
+  // first (or the most recently activated one — the toggle handler below
+  // collapses others before opening).
+  const openGroups = skillGroups.filter((g) => g.open);
+  if (openGroups.length > 1) {
+    openGroups.slice(1).forEach((g) => { g.open = false; });
   }
 }
 
-skillsContentElements.forEach((el) => {
-  const header = el.querySelector('.skills__header')
-  if (header) {
-    header.addEventListener('click', toggleSkills)
-    header.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault()
-        toggleSkills.call(header)
+skillGroups.forEach((group) => {
+  const summary = group.querySelector("summary");
+  if (summary) {
+    // Reflect open state on the summary for screen readers.
+    const reflect = () => {
+      summary.setAttribute("aria-expanded", group.open ? "true" : "false");
+    };
+    reflect();
+    group.addEventListener("toggle", () => {
+      reflect();
+      if (isMobileView() && group.open) {
+        // Close any other open group (one at a time rule).
+        skillGroups.forEach((other) => {
+          if (other !== group && other.open) other.open = false;
+        });
       }
-    })
+    });
   }
-})
+});
+
+window.addEventListener("resize", () => {
+  syncSkillsState();
+  setTimeout(scrollActive, 100);
+});
 
 /*==================== QUALIFICATION TABS ====================*/
-const tabs = document.querySelectorAll('[data-target]'),
-  tabContents = document.querySelectorAll('[data-content]')
+const tabs = document.querySelectorAll("[data-target]");
+const tabContents = document.querySelectorAll("[data-content]");
 
-// Animation function for qualification content
 function animateQualificationContent(targetContent) {
-  const qualificationData = targetContent.querySelectorAll('.qualification__data')
-  const rounders = targetContent.querySelectorAll('.qualification__rounder')
-  const lines = targetContent.querySelectorAll('.qualification__line')
-
-  // Reset all elements
-  qualificationData.forEach((data, index) => {
-    data.classList.remove('active', 'slide-in-left', 'slide-in-right')
-
-    // Determine if content is on left or right based on grid structure
-    const leftContent = data.children[0]
-    const rightContent = data.children[2]
-
-    if (leftContent && leftContent.innerHTML.trim() !== '') {
-      data.classList.add('slide-in-left')
-    } else if (rightContent && rightContent.innerHTML.trim() !== '') {
-      data.classList.add('slide-in-right')
-    }
-  })
-
-  rounders.forEach(rounder => {
-    rounder.classList.remove('active')
-  })
-
-  lines.forEach(line => {
-    line.classList.remove('active')
-  })
-
-  // Animate in sequence with staggered timing
+  const qualificationData = targetContent.querySelectorAll(".qualification__data");
+  const rounders = targetContent.querySelectorAll(".qualification__rounder");
+  const lines = targetContent.querySelectorAll(".qualification__line");
+  qualificationData.forEach((data) => {
+    data.classList.remove("active", "slide-in-left", "slide-in-right");
+    const leftContent = data.children[0];
+    const rightContent = data.children[2];
+    if (leftContent && leftContent.innerHTML.trim() !== "") data.classList.add("slide-in-left");
+    else if (rightContent && rightContent.innerHTML.trim() !== "") data.classList.add("slide-in-right");
+  });
+  rounders.forEach((r) => r.classList.remove("active"));
+  lines.forEach((l) => l.classList.remove("active"));
   setTimeout(() => {
     qualificationData.forEach((data, index) => {
-      setTimeout(() => {
-        data.classList.add('active')
-      }, index * 200) // 200ms delay between each card
-    })
-
-    rounders.forEach((rounder, index) => {
-      setTimeout(() => {
-        rounder.classList.add('active')
-      }, index * 150 + 100) // Slightly earlier than cards
-    })
-
-    lines.forEach((line, index) => {
-      setTimeout(() => {
-        line.classList.add('active')
-      }, index * 150 + 300) // After rounders start appearing
-    })
-  }, 100)
+      setTimeout(() => data.classList.add("active"), index * 200);
+    });
+    rounders.forEach((r, index) => setTimeout(() => r.classList.add("active"), index * 150 + 100));
+    lines.forEach((l, index) => setTimeout(() => l.classList.add("active"), index * 150 + 300));
+  }, 100);
 }
 
 function activateQualificationTab(tab) {
-  const target = document.querySelector(tab.dataset.target)
-  if (!target) return
-
-  // Hide current content with fade out
-  const currentActive = document.querySelector('.qualification__active[data-content]')
+  const target = document.querySelector(tab.dataset.target);
+  if (!target) return;
+  const currentActive = document.querySelector(".qualification__active[data-content]");
   if (currentActive && currentActive !== target) {
-    const currentData = currentActive.querySelectorAll('.qualification__data')
-    const currentRounders = currentActive.querySelectorAll('.qualification__rounder')
-    const currentLines = currentActive.querySelectorAll('.qualification__line')
-
-    currentData.forEach(data => data.classList.remove('active'))
-    currentRounders.forEach(rounder => rounder.classList.remove('active'))
-    currentLines.forEach(line => line.classList.remove('active'))
+    currentActive.querySelectorAll(".qualification__data").forEach((d) => d.classList.remove("active"));
+    currentActive.querySelectorAll(".qualification__rounder").forEach((r) => r.classList.remove("active"));
+    currentActive.querySelectorAll(".qualification__line").forEach((l) => l.classList.remove("active"));
   }
-
-  // Switch active content after a brief delay
   setTimeout(() => {
-    tabContents.forEach(tabContent => {
-      tabContent.classList.remove('qualification__active')
-    })
-    target.classList.add('qualification__active')
-
-    // Start animation for new content
-    animateQualificationContent(target)
-  }, currentActive && currentActive !== target ? 300 : 0)
-
-  tabs.forEach(t => {
-    t.classList.remove('qualification__active')
-    t.setAttribute('aria-selected', 'false')
-  })
-  tab.classList.add('qualification__active')
-  tab.setAttribute('aria-selected', 'true')
+    tabContents.forEach((c) => c.classList.remove("qualification__active"));
+    target.classList.add("qualification__active");
+    animateQualificationContent(target);
+  }, currentActive && currentActive !== target ? 300 : 0);
+  tabs.forEach((t) => {
+    t.classList.remove("qualification__active");
+    t.setAttribute("aria-selected", "false");
+  });
+  tab.classList.add("qualification__active");
+  tab.setAttribute("aria-selected", "true");
 }
 
-tabs.forEach(tab => {
-  tab.addEventListener('click', () => {
-    activateQualificationTab(tab)
-  })
-})
+tabs.forEach((tab) => tab.addEventListener("click", () => activateQualificationTab(tab)));
 
-// Keyboard navigation for the tablist (arrow keys)
-const tablist = document.querySelector('.qualification__tabs')
+const tablist = document.querySelector(".qualification__tabs");
 if (tablist) {
-  tablist.addEventListener('keydown', (e) => {
-    const currentIndex = Array.from(tabs).findIndex(t => t.classList.contains('qualification__active'))
-    if (currentIndex === -1) return
-    let nextIndex = currentIndex
-    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
-      nextIndex = (currentIndex + 1) % tabs.length
-    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
-      nextIndex = (currentIndex - 1 + tabs.length) % tabs.length
-    } else {
-      return
-    }
-    e.preventDefault()
-    activateQualificationTab(tabs[nextIndex])
-    tabs[nextIndex].focus()
-  })
-}
-
-// Initialize first tab animation on page load
-document.addEventListener('DOMContentLoaded', () => {
-  setTimeout(() => {
-    const firstActiveContent = document.querySelector('.qualification__active[data-content]')
-    if (firstActiveContent) {
-      animateQualificationContent(firstActiveContent)
-    }
-  }, 500)
-})
-
-
-/*==================== PORTFOLIO SWIPER  ====================*/
-let swiperPortfolio = null
-const swiperContainer = document.querySelector('.portfolio__container')
-if (typeof Swiper !== 'undefined' && swiperContainer) {
-  swiperPortfolio = new Swiper('.portfolio__container', {
-    cssMode: true,
-    loop: true,
-
-    navigation: {
-      nextEl: '.swiper-button-next',
-      prevEl: '.swiper-button-prev',
-    },
-
-    pagination: {
-      el: '.swiper-pagination',
-      clickable: true,
-    },
+  tablist.addEventListener("keydown", (e) => {
+    const currentIndex = Array.from(tabs).findIndex((t) => t.classList.contains("qualification__active"));
+    if (currentIndex === -1) return;
+    let nextIndex = currentIndex;
+    if (e.key === "ArrowRight" || e.key === "ArrowDown") nextIndex = (currentIndex + 1) % tabs.length;
+    else if (e.key === "ArrowLeft" || e.key === "ArrowUp") nextIndex = (currentIndex - 1 + tabs.length) % tabs.length;
+    else return;
+    e.preventDefault();
+    activateQualificationTab(tabs[nextIndex]);
+    tabs[nextIndex].focus();
   });
 }
 
-
-/*==================== SCROLL SECTIONS ACTIVE LINK ====================*/
-const sections = document.querySelectorAll('section[id]')
-
+/*==================== SCROLL ACTIVE / HEADER / SCROLL UP ====================*/
+const sections = document.querySelectorAll("section[id]");
 function scrollActive() {
-  sections.forEach(current => {
-    const sectionHeight = current.clientHeight
+  sections.forEach((current) => {
+    const sectionHeight = current.clientHeight;
     const sectionTop = current.getBoundingClientRect().top;
-    const sectionId = current.getAttribute('id')
-    const navLink = document.querySelector('.nav__menu a[href*="' + sectionId + '"]')
-    if (!navLink) return
-    // section 位于视口中间时添加样式 active-link
+    const sectionId = current.getAttribute("id");
+    const navLink = document.querySelector('.nav__menu a[href*="' + sectionId + '"]');
+    if (!navLink) return;
     if (sectionTop <= window.innerHeight / 2 && sectionTop + sectionHeight >= window.innerHeight / 2) {
-      navLink.classList.add('active-link')
+      navLink.classList.add("active-link");
     } else {
-      navLink.classList.remove('active-link')
+      navLink.classList.remove("active-link");
     }
-  })
+  });
 }
-window.addEventListener('scroll', scrollActive)
+window.addEventListener("scroll", scrollActive);
 
-/*==================== CHANGE BACKGROUND HEADER ====================*/
 function scrollHeader() {
-  const nav = document.getElementById('header')
-  if (!nav) return
-  if (this.scrollY >= 80) nav.classList.add('scroll-header'); else nav.classList.remove('scroll-header')
+  const nav = document.getElementById("header");
+  if (!nav) return;
+  if (window.scrollY >= 80) nav.classList.add("scroll-header");
+  else nav.classList.remove("scroll-header");
 }
-window.addEventListener('scroll', scrollHeader)
+window.addEventListener("scroll", scrollHeader);
 
-/*==================== SHOW SCROLL UP ====================*/
-function scrollUp() {
-  const scrollUp = document.getElementById('scroll-up');
-  if (!scrollUp) return
-  if (this.scrollY >= 560) scrollUp.classList.add('show-scroll'); else scrollUp.classList.remove('show-scroll')
+function scrollUpShow() {
+  const scrollUp = document.getElementById("scroll-up");
+  if (!scrollUp) return;
+  if (window.scrollY >= 560) scrollUp.classList.add("show-scroll");
+  else scrollUp.classList.remove("show-scroll");
 }
-window.addEventListener('scroll', scrollUp)
+window.addEventListener("scroll", scrollUpShow);
 
-/*==================== DARK LIGHT THEME & LANGUAGE====================*/
-
-const themeButton = document.getElementById('theme-button')
-const darkTheme = 'dark-theme'
-const iconTheme = 'uil-sun'
-const language = 'cn'
-
-// Previously selected topic (if user selected)
-const selectedTheme = localStorage.getItem('selected-theme')
-const selectedIcon = localStorage.getItem('selected-icon')
-
-// We obtain the current theme that the interface has by validating the dark-theme class
-const getCurrentTheme = () => document.body.classList.contains(darkTheme) ? 'dark' : 'light'
-const getCurrentIcon = () => (themeButton && themeButton.classList.contains(iconTheme)) ? 'uil-moon' : 'uil-sun'
-
-// Set default to dark theme if no previous selection
+/*==================== THEME ====================*/
+const themeButton = document.getElementById("theme-button");
+const darkTheme = "dark-theme";
+const iconTheme = "uil-sun";
+const selectedTheme = localStorage.getItem("selected-theme");
+const selectedIcon = localStorage.getItem("selected-icon");
+const getCurrentTheme = () => (document.body.classList.contains(darkTheme) ? "dark" : "light");
+const getCurrentIcon = () => (themeButton && themeButton.classList.contains(iconTheme) ? "uil-moon" : "uil-sun");
 if (themeButton) {
   if (selectedTheme) {
-    // If the validation is fulfilled, we ask what the issue was to know if we activated or deactivated the dark
-    document.body.classList[selectedTheme === 'dark' ? 'add' : 'remove'](darkTheme)
-    themeButton.classList[selectedIcon === 'uil-moon' ? 'add' : 'remove'](iconTheme)
+    document.body.classList[selectedTheme === "dark" ? "add" : "remove"](darkTheme);
+    themeButton.classList[selectedIcon === "uil-moon" ? "add" : "remove"](iconTheme);
   } else {
-    // Default to dark theme
-    document.body.classList.add(darkTheme)
-    themeButton.classList.add(iconTheme)
-    localStorage.setItem('selected-theme', 'dark')
-    localStorage.setItem('selected-icon', 'uil-sun')
+    document.body.classList.add(darkTheme);
+    themeButton.classList.add(iconTheme);
+    localStorage.setItem("selected-theme", "dark");
+    localStorage.setItem("selected-icon", "uil-sun");
   }
-
-  // Activate / deactivate the theme manually with the button
-  themeButton.addEventListener('click', () => {
-    // Add or remove the dark / icon theme
-    document.body.classList.toggle(darkTheme)
-    themeButton.classList.toggle(iconTheme)
-    // We save the theme and the current icon that the user chose
-    localStorage.setItem('selected-theme', getCurrentTheme())
-    localStorage.setItem('selected-icon', getCurrentIcon())
-  })
+  themeButton.addEventListener("click", () => {
+    document.body.classList.toggle(darkTheme);
+    themeButton.classList.toggle(iconTheme);
+    localStorage.setItem("selected-theme", getCurrentTheme());
+    localStorage.setItem("selected-icon", getCurrentIcon());
+  });
 }
 
-/*==================== WEB3 ANIMATIONS ====================*/
+/*==================== REVEAL + PIPELINE + CLOUD ANIMATIONS ====================*/
+const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const supportsObserver = "IntersectionObserver" in window;
 
-// Global variables to track animations
-let activeAnimations = []
-let isTypingActive = false
-
-// Scroll Animation Observer
-const scrollElements = document.querySelectorAll('.section__title, .section__subtitle, .scroll-animate, .skills__content, .qualification__data, .portfolio__content, .contact__information, .about__img, .about__card')
-
-const elementInView = (el, dividend = 1) => {
-  const elementTop = el.getBoundingClientRect().top
-  const elementVisible = elementTop <= ((window.innerHeight || document.documentElement.clientHeight) / dividend)
-  return elementVisible
-}
-
-const displayScrollElement = (element) => {
-  element.classList.add('active')
-}
-
-const handleScrollAnimation = () => {
-  scrollElements.forEach((el) => {
-    if (elementInView(el, 1.1)) {  // 更容易触发
-      displayScrollElement(el)
-    }
-  })
-
-  // Check if about section is in view and trigger card animations
-  const aboutSection = document.querySelector('.about.section')
-  if (aboutSection && elementInView(aboutSection, 1.2)) {
-    const aboutCards = document.querySelectorAll('.about__card')
-    aboutCards.forEach((card, index) => {
-      if (!card.classList.contains('active')) {
-        setTimeout(() => {
-          card.classList.add('active')
-        }, index * 200) // 依次显示，每张卡片间隔200ms
-      }
-    })
+function revealOnView(selector, activeClass) {
+  const elements = document.querySelectorAll(selector);
+  if (!supportsObserver || reducedMotion) {
+    elements.forEach((el) => el.classList.add(activeClass));
+    return;
   }
-}
-
-// Debug function to manually show elements (remove after testing)
-const forceShowAllElements = () => {
-  scrollElements.forEach((el) => {
-    displayScrollElement(el)
-  })
-}
-
-// Throttle scroll events for better performance
-let ticking = false
-window.addEventListener('scroll', () => {
-  if (!ticking) {
-    requestAnimationFrame(() => {
-      handleScrollAnimation()
-      ticking = false
-    })
-    ticking = true
-  }
-})
-
-// Typing Effect
-const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-
-const typingTexts = [
-  {
-    element: document.querySelector('.home__title'),
-    text: 'Hi, I\'m Lurek',
-    textCn: '你好，我是 Lurek',
-    delay: 500,
-    speed: 80
-  },
-  {
-    element: document.querySelector('.home__subtitle'),
-    text: 'Undergraduate Student at City University of Hong Kong (Dongguan)',
-    textCn: '香港城市大学（东莞）本科生',
-    delay: 0,
-    speed: 60
-  },
-  {
-    element: document.querySelector('.home__description'),
-    text: 'AI Tools Expert, Web3 Development Digital Nomad, CityU Innovation & Entrepreneurship Leader',
-    textCn: 'AI工具专家，Web3开发数字游民，港城大创新创业者',
-    delay: 0,
-    speed: 50
-  }
-]
-
-
-
-function typeWriter(element, text, speed = 50) {
-  return new Promise((resolve, reject) => {
-    if (!element) {
-      resolve()
-      return
-    }
-
-    element.style.opacity = '1'
-    element.innerHTML = ''
-    element.classList.add('typing-text')
-
-    let i = 0
-    let animationId
-
-    function type() {
-      // Check if animation should be stopped
-      if (!isTypingActive) {
-        element.classList.remove('typing-text')
-        reject('Animation stopped')
-        return
-      }
-
-      if (i < text.length) {
-        element.innerHTML += text.charAt(i)
-        i++
-        animationId = setTimeout(type, speed)
-        // Track this animation
-        activeAnimations.push(animationId)
-      } else {
-        element.classList.remove('typing-text')
-        resolve()
-      }
-    }
-
-    type()
-  })
-}
-
-function getCurrentLanguage() {
-  return localStorage.getItem('lang') || 'en'
-}
-
-function stopAllAnimations() {
-  // Stop typing flag
-  isTypingActive = false
-
-  // Clear all active timeouts
-  activeAnimations.forEach(id => clearTimeout(id))
-  activeAnimations = []
-
-  // Remove typing classes from all elements and reset their state
-  document.querySelectorAll('.typing-text').forEach(el => {
-    el.classList.remove('typing-text')
-  })
-
-  // Also reset typing texts elements specifically
-  typingTexts.forEach(item => {
-    if (item.element) {
-      item.element.classList.remove('typing-text')
-    }
-  })
-}
-
-// When the user prefers reduced motion, skip the typewriter entirely and
-// directly show the full final text in the current language.
-function displayFullTypingTexts() {
-  const currentLang = getCurrentLanguage()
-  typingTexts.forEach(item => {
-    if (!item.element) return
-    item.element.style.opacity = '1'
-    item.element.classList.remove('typing-text')
-    item.element.textContent = currentLang === 'cn' ? item.textCn : item.text
-  })
-}
-
-async function startTypingAnimation() {
-  // Stop all existing animations first
-  stopAllAnimations()
-
-  // Reduced motion: show complete text immediately, no typing.
-  if (prefersReducedMotion) {
-    displayFullTypingTexts()
-    return
-  }
-
-  // Enable typing
-  isTypingActive = true
-
-  const currentLang = getCurrentLanguage()
-
-  // First delay for initial start
-  await new Promise(resolve => setTimeout(resolve, 500))
-
-  try {
-    for (const item of typingTexts) {
-      if (!isTypingActive) break // Check if we should stop
-
-      const textToType = currentLang === 'cn' ? item.textCn : item.text
-      await typeWriter(item.element, textToType, item.speed)
-      // Small delay between each text for better visual flow
-      if (isTypingActive) {
-        await new Promise(resolve => setTimeout(resolve, 200))
-      }
-    }
-  } catch (error) {
-    // Animation was stopped, this is expected
-  } finally {
-    isTypingActive = false
-  }
-}
-
-
-
-// Start typing animation when page loads
-window.addEventListener('load', () => {
-  // Ensure clean start
-  stopAllAnimations()
-  setTimeout(startTypingAnimation, 1000)
-  // Also check scroll animations on load
-  setTimeout(handleScrollAnimation, 100)
-  setTimeout(handleScrollAnimation, 500)
-})
-
-// Debounce variable to prevent multiple rapid calls
-let languageChangeTimeout = null
-
-// Function to handle language change
-function handleLanguageChange() {
-  // Clear any existing timeout to prevent multiple rapid calls
-  if (languageChangeTimeout) {
-    clearTimeout(languageChangeTimeout)
-  }
-
-  // Immediately stop all animations
-  stopAllAnimations()
-
-  // Reduced motion: show the target language text immediately, no typing.
-  if (prefersReducedMotion) {
-    displayFullTypingTexts()
-    return
-  }
-
-  languageChangeTimeout = setTimeout(() => {
-    // Reset all text elements
-    typingTexts.forEach(item => {
-      if (item.element) {
-        item.element.style.opacity = '0'
-        item.element.innerHTML = ''
-        item.element.classList.remove('typing-text')
-      }
-    })
-
-    // Reset about cards
-    const aboutCards = document.querySelectorAll('.about__card')
-    aboutCards.forEach(card => {
-      card.classList.remove('active')
-    })
-
-    // Restart typing animation with increased delay
-    setTimeout(startTypingAnimation, 800)
-
-    // Re-trigger about card animations if section is visible
-    setTimeout(() => {
-      const aboutSection = document.querySelector('.about.section')
-      if (aboutSection && elementInView(aboutSection, 1.2)) {
-        const aboutCards = document.querySelectorAll('.about__card')
-        aboutCards.forEach((card, index) => {
-          setTimeout(() => {
-            card.classList.add('active')
-          }, index * 200)
-        })
-      }
-    }, 1000)
-
-    // Clear the timeout variable
-    languageChangeTimeout = null
-  }, 150)
-}
-
-// Restart typing animation when language changes (menu translate button)
-const translateBtn = document.getElementById('translate')
-if (translateBtn) {
-  translateBtn.addEventListener('click', handleLanguageChange)
-}
-
-// Add event listener for mobile translate button
-const mobileTranslateBtn = document.getElementById('mobile-translate')
-if (mobileTranslateBtn) {
-  mobileTranslateBtn.addEventListener('click', () => {
-    // Only trigger the menu translate button click
-    // The handleLanguageChange will be called automatically by the translate button's event listener
-    const translateBtn = document.getElementById('translate')
-    if (translateBtn) translateBtn.click()
-  })
-}
-
-// Initial scroll animation check
-document.addEventListener('DOMContentLoaded', () => {
-  // Check animations multiple times to ensure they work
-  handleScrollAnimation()
-  setTimeout(handleScrollAnimation, 300)
-  setTimeout(handleScrollAnimation, 600)
-  setTimeout(handleScrollAnimation, 1000)
-
-  // Manual check for about section after everything loads
-  setTimeout(() => {
-    const aboutSection = document.querySelector('.about.section')
-    if (aboutSection && elementInView(aboutSection, 1.5)) {
-      const aboutCards = document.querySelectorAll('.about__card')
-      aboutCards.forEach((card, index) => {
-        if (!card.classList.contains('active')) {
-          setTimeout(() => {
-            card.classList.add('active')
-          }, index * 200)
+  const io = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add(activeClass);
+          io.unobserve(entry.target);
         }
-      })
+      });
+    },
+    { threshold: 0.15, rootMargin: "0px 0px -8% 0px" }
+  );
+  elements.forEach((el) => io.observe(el));
+}
+
+if (supportsObserver && !reducedMotion) {
+  // Cards: reveal once on enter (stagger via CSS transition-delay on :nth).
+  document.querySelectorAll(".project, .about-card, .about__statement, .about__pipeline, .skill-group").forEach((el) =>
+    el.classList.add("reveal")
+  );
+  revealOnView(".reveal", "reveal--in");
+
+  // Skills progress bars fill once when in view.
+  const skillObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("skill--in-view");
+          skillObserver.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.3 }
+  );
+  document.querySelectorAll(".skill").forEach((el) => skillObserver.observe(el));
+
+  // Cloud alignment (Home hero + robot calibration): the "predicted" cloud
+  // slides onto the "measured" cloud once when the container is in view.
+  revealOnView(".cloud-align", "cloud-align--run");
+
+  // Pipeline / flow visuals: nodes light up in order when the container
+  // enters the viewport.
+  document.querySelectorAll(".flow").forEach((flow) => flow.classList.add("flow"));
+  revealOnView(".flow", "flow--run");
+
+  // Trajectory draw: hero arc draws once (stroke-dashoffset animation).
+  revealOnView(".trajectory-draw", "trajectory-draw--run");
+} else {
+  // reduced motion or no observer: show everything immediately.
+  document.querySelectorAll(".reveal").forEach((el) => el.classList.add("reveal--in"));
+  document.querySelectorAll(".skill").forEach((el) => el.classList.add("skill--in-view"));
+  document.querySelectorAll(".cloud-align").forEach((el) => el.classList.add("cloud-align--run"));
+  document.querySelectorAll(".flow").forEach((el) => el.classList.add("flow--run"));
+  document.querySelectorAll(".trajectory-draw").forEach((el) => el.classList.add("trajectory-draw--run"));
+}
+
+/*==================== HOME TYPEWRITER (single-run, cancellation-safe) ====================*/
+const homeFocus = document.querySelector(".home__focus");
+const homeApproach = document.querySelector(".home__approach");
+
+// Monotonic run id: every refresh() cancels any in-flight animation.
+let homeAnimationRun = 0;
+// Real "is animating" counter: > 0 only while a run is actually writing
+// characters. Cancelled runs decrement it in finally.
+let homeAnimatingCount = 0;
+
+function isHomeAnimating() {
+  return homeAnimatingCount > 0;
+}
+
+function typeIntoElement(el, text, speed, runId) {
+  return new Promise((resolve) => {
+    if (!el) {
+      resolve();
+      return;
     }
-  }, 2000)
-})
+    el.textContent = "";
+    el.classList.add("typing-text");
+    let i = 0;
+    function step() {
+      if (runId !== homeAnimationRun) {
+        // Cancelled: the new run owns the DOM and has already re-added
+        // the cursor class. Do NOT touch ANY DOM state (neither
+        // textContent nor typing-text) — otherwise this stale timer could
+        // remove the cursor the new run just added.
+        resolve();
+        return;
+      }
+      if (i >= text.length) {
+        el.classList.remove("typing-text");
+        resolve();
+        return;
+      }
+      el.textContent += text.charAt(i);
+      i += 1;
+      setTimeout(step, speed);
+    }
+    step();
+  });
+}
 
-// Add resize listener to recheck animations
-window.addEventListener('resize', () => {
-  setTimeout(handleScrollAnimation, 100)
-})
+async function playHomeFocus(runId) {
+  if (!homeFocus) return;
+  if (runId !== homeAnimationRun) return; // cancelled before it started
+  const text = homeFocus.dataset.fullText || homeFocus.textContent;
+  homeFocus.textContent = text;
+  if (reducedMotion) return;
+  await typeIntoElement(homeFocus, text, 28, runId);
+}
 
-/*==================== APP READY ====================*/
-// Mark the application as fully initialized. The inline watchdog in <head>
-// removes .js-enabled (restoring the no-JS fallback) if this flag is not set
-// within the timeout, e.g. when this script fails to run completely.
-window.__appReady = true
+async function playHomeApproach(runId) {
+  if (!homeApproach) return;
+  if (runId !== homeAnimationRun) return; // cancelled before it started
+  const text = homeApproach.dataset.fullText || homeApproach.textContent;
+  homeApproach.textContent = text;
+  if (reducedMotion) return;
+  await typeIntoElement(homeApproach, text, 18, runId);
+}
+
+function captureHomeText() {
+  if (homeFocus) homeFocus.dataset.fullText = homeFocus.textContent;
+  if (homeApproach) homeApproach.dataset.fullText = homeApproach.textContent;
+}
+
+// Called by cn-en-translate.js after every successful loadLanguage():
+// - capture the (already translated) DOM text,
+// - cancel any previous animation run (bump the generation),
+// - drop any leftover cursor class from a cancelled run,
+// - start exactly one new run for the new language.
+function refreshHome() {
+  const runId = ++homeAnimationRun;
+  [homeFocus, homeApproach].forEach((el) => {
+    if (el) el.classList.remove("typing-text");
+  });
+  captureHomeText();
+  if (reducedMotion) return; // full text already in place via capture
+  homeAnimatingCount += 1;
+  (async () => {
+    try {
+      await playHomeFocus(runId);
+      if (runId !== homeAnimationRun) return;
+      await new Promise((r) => setTimeout(r, 120));
+      await playHomeApproach(runId);
+    } finally {
+      homeAnimatingCount -= 1;
+    }
+  })();
+}
+
+window.__lurek = {
+  refreshHome: refreshHome,
+  isHomeAnimating: isHomeAnimating,
+};
+
+/*==================== BOOT ==================== */
+document.addEventListener("DOMContentLoaded", () => {
+  // Capture initial (Chinese fallback) text before i18n lands so the DOM
+  // never appears empty if the first JSON is slow.
+  captureHomeText();
+  // Layered Home entrance: static layers (eyebrow/title/subtitle/actions/
+  // tags) fade in via CSS transition-delay; focus/approach are driven by
+  // the typewriter instead, so they are intentionally not .home__layer.
+  document.documentElement.classList.add("home--entered");
+  // Initial scroll highlight.
+  setTimeout(scrollActive, 50);
+  // Event wiring + observers are now in place. The FIRST Home animation is
+  // triggered exactly once by cn-en-translate.js' initial loadLanguage()
+  // success callback — nothing here starts a second run.
+  syncSkillsState();
+  window.__mainReady = true;
+  markAppReady();
+});
+
+/*==================== APP READY ==================== */
+// __appReady is NOT set here at the end of the file. It is set by
+// markAppReady() only after BOTH __mainReady (this file) and __i18nReady
+// (cn-en-translate.js) are true.
