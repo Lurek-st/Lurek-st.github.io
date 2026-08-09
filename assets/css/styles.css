@@ -770,6 +770,21 @@ img {
   width: 95%;
 }
 
+/* Research & Experimental Skills */
+.skills__research_question,
+.skills__research_writing {
+  width: 80%;
+}
+
+.skills__research_experiment {
+  width: 75%;
+}
+
+.skills__research_robotics,
+.skills__research_data {
+  width: 70%;
+}
+
 .skills__ui {
   width: 80%;
 }
