@@ -374,8 +374,8 @@ const typingTexts = [
   },
   {
     element: document.querySelector('.home__description'),
-    text: 'AI Tools Expert, Web3 Development Digital Nomad, CityU Innovation & Entrepreneurship Leader',
-    textCn: 'AI工具专家，Web3开发数字游民，港城大创新创业者',
+    text: 'Long-term AI Practitioner · Independent Researcher · Entrepreneur',
+    textCn: 'AI 工具长期实践者 · 独立研究者 · 创业者',
     delay: 0,
     speed: 50
   }
