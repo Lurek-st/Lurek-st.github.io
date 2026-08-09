@@ -759,18 +759,14 @@ img {
 }
 
 .skills__genai {
-  width: 95%;
+  width: 100%;
 }
 
 .skills__aiimg {
   width: 80%;
 }
 
-.skills__aiwork {
-  width: 70%;
-}
-
-.skills__aipro {
+.skills__agent {
   width: 95%;
 }
 
@@ -819,23 +815,31 @@ img {
   width: 70%;
 }
 
-.skills__finance {
+.skills__customer_communication {
   width: 85%;
 }
 
-.skills__market {
+.skills__solution_presentation {
   width: 80%;
 }
 
-.skills__strategy {
+.skills__objection_negotiation {
   width: 75%;
 }
 
-.skills__decision {
-  width: 80%;
+.skills__customer_followup {
+  width: 70%;
 }
 
-/* Tool Development skills */
+.skills__skill_development {
+  width: 85%;
+}
+
+.skills__agent_automation {
+  width: 85%;
+}
+
+/* Plugins, Skills & Automation Development */
 .skills__web3bot {
   width: 75%;
 }
