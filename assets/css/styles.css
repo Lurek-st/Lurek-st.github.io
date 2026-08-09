@@ -564,6 +564,10 @@ img {
   transition-delay: 0.5s;
 }
 
+.about__card-4.active {
+  transition-delay: 0.7s;
+}
+
 .about__card::before {
   content: '';
   position: absolute;
@@ -1816,11 +1820,16 @@ img {
 
     .about__cards {
       gap: 2rem;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      align-items: stretch;
     }
 
     .about__card {
       padding: 2rem;
       gap: 1.5rem;
+      height: 100%;
+      flex-direction: column;
+      align-items: flex-start;
     }
 
     .about__card-icon {
