@@ -359,8 +359,8 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
 const typingTexts = [
   {
     element: document.querySelector('.home__title'),
-    text: 'Hi, I\'m Lurek',
-    textCn: '你好，我是 Lurek',
+    text: 'Hi, I\'m Lurek Lu',
+    textCn: '你好，我是 Lurek Lu',
     delay: 500,
     speed: 80
   },
