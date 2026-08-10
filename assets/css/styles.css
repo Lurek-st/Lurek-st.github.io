@@ -1946,7 +1946,7 @@ img {
     }
 
     .footer__container {
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: minmax(280px, 1fr) max-content max-content;
     }
 
     .footer__bg {
