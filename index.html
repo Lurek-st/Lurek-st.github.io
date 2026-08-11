@@ -986,6 +986,11 @@
     <!--==================== BEYOND WORK ====================-->
     <section class="beyond-work section" id="beyond-work">
       <div class="beyond-work__canvas">
+        <header class="beyond-work__header">
+          <h2 class="beyond-work__title" i18n="beyond_work_title" i18n-only="html">工作之外</h2>
+          <p class="beyond-work__subtitle" i18n="beyond_work_subtitle" i18n-only="html">运动、游戏、音乐、阅读、影视作品、旅行，以及一些持续很久的好奇心。</p>
+        </header>
+        <div class="beyond-work__opening">
         <article class="beyond-work__module beyond-work__module--think" aria-labelledby="beyond-work-think-label">
           <span class="beyond-work__folio" aria-hidden="true">01</span>
           <p class="beyond-work__module-label" id="beyond-work-think-label">THINK &amp; EXPLORE</p>
@@ -1007,6 +1012,7 @@
             <figure><img src="assets/img/beyond-work/companions/companions-bengal-lego-3x4.jpg" alt="Bengal cat beside LEGO bricks" loading="lazy" /></figure>
           </div>
         </article>
+        </div>
 
         <article class="beyond-work__module beyond-work__module--moving" aria-labelledby="beyond-work-moving-label">
           <span class="beyond-work__folio" aria-hidden="true">03</span>
@@ -1018,6 +1024,7 @@
           </div>
         </article>
 
+        <div class="beyond-work__play-brick">
         <article class="beyond-work__module beyond-work__module--play" aria-labelledby="beyond-work-play-label">
           <span class="beyond-work__folio" aria-hidden="true">04</span>
           <p class="beyond-work__module-label" id="beyond-work-play-label">PLAY / GAMES I LOVE</p>
@@ -1031,6 +1038,7 @@
           <p class="beyond-work__module-label" id="beyond-work-brick-label" i18n="beyond_work_05_label">BRICK BY BRICK / 从小玩到大的兴趣</p>
           <figure class="beyond-work__brick-media"><img src="assets/img/beyond-work/brick/brick-by-brick-lego-montage-1672x941.jpg" alt="LEGO build montage" loading="lazy" /></figure>
         </article>
+        </div>
 
         <article class="beyond-work__module beyond-work__module--stories" aria-labelledby="beyond-work-stories-label">
           <span class="beyond-work__folio" aria-hidden="true">06</span>
@@ -1040,7 +1048,11 @@
             <div class="beyond-work__stories-cluster" role="listbox" aria-label="Story selection" data-beyond-work-stories-cluster>
               <button type="button" role="option" aria-selected="true" disabled data-story="star-trek" i18n="beyond_work_06_story_01">星际迷航</button><button type="button" role="option" disabled data-story="rick" i18n="beyond_work_06_story_02">瑞克和莫蒂</button><button type="button" role="option" disabled data-story="orville" i18n="beyond_work_06_story_03">奥维尔号</button><button type="button" role="option" disabled data-story="futurama" i18n="beyond_work_06_story_04">飞出个未来</button><button type="button" role="option" disabled data-story="family" i18n="beyond_work_06_story_05">恶搞之家</button><button type="button" role="option" disabled data-story="dad" i18n="beyond_work_06_story_06">美国老爹！</button><button type="button" role="option" disabled data-story="bad-guys" i18n="beyond_work_06_story_07">坏蛋联盟</button><button type="button" role="option" disabled data-story="kingsman" i18n="beyond_work_06_story_08">王牌特工</button><button type="button" role="option" disabled data-story="pokemon" i18n="beyond_work_06_story_09">精灵宝可梦</button><button type="button" role="option" disabled data-story="star-vs" i18n="beyond_work_06_story_10">星蝶公主</button><button type="button" role="option" disabled data-story="star-wars" i18n="beyond_work_06_story_11">星球大战</button>
             </div>
-            <figure class="beyond-work__stories-preview" data-beyond-work-stories-preview aria-label="Selected story preview"></figure>
+            <figure class="beyond-work__stories-preview" data-beyond-work-stories-preview aria-label="Selected story preview">
+              <img class="beyond-work__stories-preview-ambient" src="assets/img/beyond-work/stories/star-trek.jpg" alt="" aria-hidden="true" loading="lazy" />
+              <img class="beyond-work__stories-preview-image" src="assets/img/beyond-work/stories/star-trek.jpg" alt="Star Trek preview image" loading="lazy" />
+              <figcaption i18n="beyond_work_06_story_01">星际迷航</figcaption>
+            </figure>
           </div>
         </article>
 
@@ -1050,7 +1062,7 @@
           <p class="beyond-work__copy" i18n="beyond_work_07_secondary">我的音乐库里，也已经慢慢攒下了 1900 多首歌。</p>
           <div class="beyond-work__soundtrack" data-beyond-work-soundtrack>
             <div><span>I Don't Know You</span><small>Noni</small></div>
-            <button type="button" disabled aria-label="Play I Don't Know You" data-beyond-work-soundtrack-toggle><span aria-hidden="true">Play</span></button>
+            <button type="button" disabled aria-label="Play I Don't Know You" data-beyond-work-soundtrack-toggle><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M8 5.5 18 12 8 18.5Z"></path><path class="beyond-work__soundtrack-pause" d="M7.5 5.5h3.5v13H7.5zm5.5 0h3.5v13H13z"></path></svg></button>
           </div>
         </article>
 
@@ -1063,7 +1075,14 @@
           <div class="beyond-work__travel-slider" data-beyond-work-travel-slider aria-label="Travel chapter selector">
             <span data-chapter-target="far" i18n="beyond_work_08_far">远方</span><span class="beyond-work__travel-rail" aria-hidden="true"><span class="beyond-work__travel-thumb"></span></span><span data-chapter-target="near" i18n="beyond_work_08_near">近乡</span>
           </div>
-          <div class="beyond-work__travel-stage" data-beyond-work-travel-mount aria-label="Travel destinations"></div>
+          <div class="beyond-work__travel-stage" data-beyond-work-travel-mount aria-label="Travel destinations">
+            <div class="beyond-work__travel-accordion" data-chapter="far">
+              <article class="beyond-work__travel-panel is-active" data-panel="japan" data-fit="contain"><img class="beyond-work__travel-ambient" src="assets/img/beyond-work/travel/far-japan.jpg" alt="" aria-hidden="true" loading="lazy" /><img class="beyond-work__travel-image" src="assets/img/beyond-work/travel/far-japan.jpg" alt="Travel photograph from Japan" loading="lazy" /><span class="beyond-work__travel-shade"></span><span class="beyond-work__travel-collapsed"><span lang="zh-CN">日本</span><span lang="en">JAPAN</span></span><span class="beyond-work__travel-meta"><time>2016.02</time><strong><span lang="zh-CN">日本</span><span lang="en">JAPAN</span></strong></span></article>
+              <article class="beyond-work__travel-panel" data-panel="germany-austria"><img class="beyond-work__travel-ambient" src="assets/img/beyond-work/travel/far-germany-austria.png" alt="" aria-hidden="true" loading="lazy" /><img class="beyond-work__travel-image" src="assets/img/beyond-work/travel/far-germany-austria.png" alt="Travel photograph from Germany and Austria" loading="lazy" /><span class="beyond-work__travel-shade"></span><span class="beyond-work__travel-collapsed"><span lang="zh-CN">德国 / 奥地利</span><span lang="en">GERMANY / AUSTRIA</span></span></article>
+              <article class="beyond-work__travel-panel" data-panel="malaysia-indonesia"><img class="beyond-work__travel-ambient" src="assets/img/beyond-work/travel/far-malaysia-indonesia.jpg" alt="" aria-hidden="true" loading="lazy" /><img class="beyond-work__travel-image" src="assets/img/beyond-work/travel/far-malaysia-indonesia.jpg" alt="Travel photograph from Malaysia and Indonesia" loading="lazy" /><span class="beyond-work__travel-shade"></span><span class="beyond-work__travel-collapsed"><span lang="zh-CN">马来西亚 / 印度尼西亚</span><span lang="en">MALAYSIA / INDONESIA</span></span></article>
+              <article class="beyond-work__travel-panel" data-panel="uae" data-fit="contain"><img class="beyond-work__travel-ambient" src="assets/img/beyond-work/travel/far-uae.jpg" alt="" aria-hidden="true" loading="lazy" /><img class="beyond-work__travel-image" src="assets/img/beyond-work/travel/far-uae.jpg" alt="Travel photograph from the UAE" loading="lazy" /><span class="beyond-work__travel-shade"></span><span class="beyond-work__travel-collapsed">UAE</span></article>
+            </div>
+          </div>
           <p class="beyond-work__travel-note" i18n="beyond_work_08_note">下一次出发也已经在筹备中——西亚、申根区，还有北美。。。</p>
         </article>
       </div>
