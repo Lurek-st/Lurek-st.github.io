@@ -266,3 +266,39 @@ html[lang="zh-CN"] #beyond-work [lang="en"] { display: none; }
 @media (max-width: 520px) {
   #beyond-work .beyond-work__stories-cluster.is-stories-runtime { display: block; height: 690px; min-height: 690px; }
 }
+
+/* 08 runtime enhancement: frozen Travel slider and two-chapter accordion. */
+#beyond-work .beyond-work__travel-slider.is-travel-runtime > button { appearance: none; border: 0; background: transparent; padding: 4px 0; color: rgba(241, 238, 247, .42); font: inherit; font-size: 11px; letter-spacing: .13em; white-space: nowrap; cursor: pointer; transition: color .22s ease, opacity .22s ease; }
+#beyond-work .beyond-work__travel-slider.is-travel-runtime > button.is-current { color: rgba(255, 255, 255, .96); }
+#beyond-work .beyond-work__travel-slider.is-travel-runtime .beyond-work__travel-rail { cursor: pointer; }
+#beyond-work .beyond-work__travel-slider.is-travel-runtime .beyond-work__travel-thumb { z-index: 2; padding: 0; color: #f1eaff; font: 400 17px/1 Georgia, serif; letter-spacing: .12em; cursor: grab; touch-action: pan-y; }
+#beyond-work .beyond-work__travel-slider.is-travel-runtime .beyond-work__travel-thumb::after { content: none; }
+#beyond-work .beyond-work__travel-slider.is-travel-runtime .beyond-work__travel-thumb:active { cursor: grabbing; }
+#beyond-work .beyond-work__travel-slider.is-travel-runtime .beyond-work__travel-thumb:focus-visible,
+#beyond-work .beyond-work__travel-slider.is-travel-runtime > button:focus-visible,
+#beyond-work .beyond-work__travel-panel:focus-visible { outline: 2px solid #b788ff; outline-offset: 3px; }
+#beyond-work .beyond-work__travel-stage { position: relative; min-height: 390px; }
+#beyond-work .beyond-work__travel-chapter { position: absolute; inset: 0; opacity: 0; pointer-events: none; transition: opacity .24s ease; }
+#beyond-work .beyond-work__travel-chapter.is-current { position: relative; opacity: 1; pointer-events: auto; }
+#beyond-work .beyond-work__travel-panel { appearance: none; flex: 1 1 0; padding: 0; border: 0; border-right: 1px solid rgba(255, 255, 255, .15); color: #fff; cursor: pointer; text-align: left; transition: flex-grow 480ms cubic-bezier(.22, 1, .36, 1); }
+#beyond-work .beyond-work__travel-panel.is-active { flex-grow: 3.25; cursor: default; }
+#beyond-work .beyond-work__travel-ambient { z-index: 0; }
+#beyond-work .beyond-work__travel-image { z-index: 1; }
+#beyond-work .beyond-work__travel-shade { z-index: 2; }
+#beyond-work .beyond-work__travel-collapsed,
+#beyond-work .beyond-work__travel-meta { z-index: 3; }
+#beyond-work .beyond-work__travel-image { object-position: var(--travel-focus, 50% 50%); transition: filter 600ms ease, transform 600ms cubic-bezier(.22, 1, .36, 1), opacity 300ms ease; }
+#beyond-work .beyond-work__travel-collapsed,
+#beyond-work .beyond-work__travel-meta { transition: opacity 240ms ease, transform 280ms cubic-bezier(.22, 1, .36, 1); }
+#beyond-work .beyond-work__travel-meta { display: block; opacity: 0; transform: translateY(8px); }
+#beyond-work .beyond-work__travel-panel.is-active .beyond-work__travel-collapsed { display: block; opacity: 0; transform: translateY(-7px); pointer-events: none; }
+#beyond-work .beyond-work__travel-panel.is-active .beyond-work__travel-meta { opacity: 1; transform: translateY(0); transition-delay: 90ms; }
+#beyond-work .beyond-work__travel-meta small { display: block; margin-top: 9px; color: rgba(248, 245, 255, .85); font-size: 11.5px; font-weight: 500; letter-spacing: .06em; line-height: 1.38; }
+@media (max-width: 720px) {
+  #beyond-work .beyond-work__travel-stage { min-height: 560px; }
+  #beyond-work .beyond-work__travel-accordion { height: 540px; flex-direction: column; border-radius: 18px; }
+  #beyond-work .beyond-work__travel-panel { flex: 0 0 80px; min-height: 72px; border-right: 0; border-bottom: 1px solid rgba(255, 255, 255, .15); transition: flex-basis 480ms cubic-bezier(.22, 1, .36, 1); }
+  #beyond-work .beyond-work__travel-panel:last-child { border-bottom: 0; }
+  #beyond-work .beyond-work__travel-panel.is-active { flex: 1 1 264px; }
+  #beyond-work .beyond-work__travel-slider.is-travel-runtime > button { font-size: 9px; letter-spacing: .09em; }
+}

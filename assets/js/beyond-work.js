@@ -14,6 +14,7 @@
 
   let initialized = false;
   let storiesController = null;
+  let travelController = null;
 
   function currentLanguage() {
     return localStorage.getItem("lang") === "cn" ? "cn" : "en";
@@ -147,6 +148,11 @@
       .then((controller) => { storiesController = controller; })
       .catch((error) => console.warn("Stories D3 runtime unavailable; retaining the static fallback.", error));
     document.addEventListener("app:languagechange", () => storiesController?.setLanguage());
+    import("./beyond-work-travel.js")
+      .then(({ initTravel }) => initTravel())
+      .then((controller) => { travelController = controller; })
+      .catch((error) => console.warn("Travel runtime unavailable; retaining the static fallback.", error));
+    document.addEventListener("app:languagechange", (event) => travelController?.setLanguage(event.detail?.lang));
   }
 
   if (document.readyState === "loading") {
