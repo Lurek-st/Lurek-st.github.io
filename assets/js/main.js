@@ -7,8 +7,8 @@ const navMenu = document.getElementById('nav-menu'),
 /* Validate if constant exists */
 if (navToggle && navMenu) {
   navToggle.addEventListener('click', () => {
-    navMenu.classList.add('show-menu')
-    navToggle.setAttribute('aria-expanded', 'true')
+    const isOpen = navMenu.classList.toggle('show-menu')
+    navToggle.setAttribute('aria-expanded', String(isOpen))
   })
 }
 
@@ -32,6 +32,21 @@ function linkAction() {
   if (navToggle) navToggle.setAttribute('aria-expanded', 'false')
 }
 navLink.forEach(n => n.addEventListener('click', linkAction))
+
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape' && navMenu?.classList.contains('show-menu')) {
+    navMenu.classList.remove('show-menu')
+    navToggle?.setAttribute('aria-expanded', 'false')
+    navToggle?.focus()
+  }
+})
+
+window.addEventListener('resize', () => {
+  if (window.innerWidth >= 768 && navMenu?.classList.contains('show-menu')) {
+    navMenu.classList.remove('show-menu')
+    navToggle?.setAttribute('aria-expanded', 'false')
+  }
+})
 
 /*==================== ACCORDION SKILLS ====================*/
 const skillsContent = document.getElementsByClassName('skills__content'),
@@ -299,6 +314,7 @@ if (themeButton) {
 // Global variables to track animations
 let activeAnimations = []
 let isTypingActive = false
+let typingRunId = 0
 
 // Scroll Animation Observer
 const scrollElements = document.querySelectorAll('.section__title, .section__subtitle, .scroll-animate, .skills__content, .qualification__data, .portfolio__content, .contact__information, .about__img, .about__card')
@@ -359,8 +375,8 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
 const typingTexts = [
   {
     element: document.querySelector('.home__title'),
-    text: 'Hi, I\'m Lurek',
-    textCn: '你好，我是 Lurek',
+    text: 'Hi, I\'m Lurek Lu',
+    textCn: '你好，我是 Lurek Lu',
     delay: 500,
     speed: 80
   },
@@ -373,8 +389,8 @@ const typingTexts = [
   },
   {
     element: document.querySelector('.home__description'),
-    text: 'AI Tools Expert, Web3 Development Digital Nomad, CityU Innovation & Entrepreneurship Leader',
-    textCn: 'AI工具专家，Web3开发数字游民，港城大创新创业者',
+    text: 'Long-term AI Practitioner · Independent Researcher · Entrepreneur',
+    textCn: 'AI 工具长期实践者 · 独立研究者 · 创业者',
     delay: 0,
     speed: 50
   }
@@ -382,7 +398,7 @@ const typingTexts = [
 
 
 
-function typeWriter(element, text, speed = 50) {
+function typeWriter(element, text, speed = 50, runId) {
   return new Promise((resolve, reject) => {
     if (!element) {
       resolve()
@@ -398,7 +414,7 @@ function typeWriter(element, text, speed = 50) {
 
     function type() {
       // Check if animation should be stopped
-      if (!isTypingActive) {
+      if (!isTypingActive || runId !== typingRunId) {
         element.classList.remove('typing-text')
         reject('Animation stopped')
         return
@@ -425,6 +441,8 @@ function getCurrentLanguage() {
 }
 
 function stopAllAnimations() {
+  typingRunId += 1
+
   // Stop typing flag
   isTypingActive = false
 
@@ -447,8 +465,7 @@ function stopAllAnimations() {
 
 // When the user prefers reduced motion, skip the typewriter entirely and
 // directly show the full final text in the current language.
-function displayFullTypingTexts() {
-  const currentLang = getCurrentLanguage()
+function displayFullTypingTexts(currentLang = getCurrentLanguage()) {
   typingTexts.forEach(item => {
     if (!item.element) return
     item.element.style.opacity = '1'
@@ -457,39 +474,41 @@ function displayFullTypingTexts() {
   })
 }
 
-async function startTypingAnimation() {
+async function startTypingAnimation(targetLang = getCurrentLanguage()) {
   // Stop all existing animations first
   stopAllAnimations()
+  const runId = typingRunId
 
   // Reduced motion: show complete text immediately, no typing.
   if (prefersReducedMotion) {
-    displayFullTypingTexts()
+    displayFullTypingTexts(targetLang)
     return
   }
 
   // Enable typing
   isTypingActive = true
 
-  const currentLang = getCurrentLanguage()
-
   // First delay for initial start
   await new Promise(resolve => setTimeout(resolve, 500))
+  if (!isTypingActive || runId !== typingRunId) return
 
   try {
     for (const item of typingTexts) {
-      if (!isTypingActive) break // Check if we should stop
+      if (!isTypingActive || runId !== typingRunId) break // Check if we should stop
 
-      const textToType = currentLang === 'cn' ? item.textCn : item.text
-      await typeWriter(item.element, textToType, item.speed)
+      const textToType = targetLang === 'cn' ? item.textCn : item.text
+      await typeWriter(item.element, textToType, item.speed, runId)
       // Small delay between each text for better visual flow
-      if (isTypingActive) {
+      if (isTypingActive && runId === typingRunId) {
         await new Promise(resolve => setTimeout(resolve, 200))
       }
     }
   } catch (error) {
     // Animation was stopped, this is expected
   } finally {
-    isTypingActive = false
+    if (runId === typingRunId) {
+      isTypingActive = false
+    }
   }
 }
 
@@ -497,9 +516,6 @@ async function startTypingAnimation() {
 
 // Start typing animation when page loads
 window.addEventListener('load', () => {
-  // Ensure clean start
-  stopAllAnimations()
-  setTimeout(startTypingAnimation, 1000)
   // Also check scroll animations on load
   setTimeout(handleScrollAnimation, 100)
   setTimeout(handleScrollAnimation, 500)
@@ -509,7 +525,11 @@ window.addEventListener('load', () => {
 let languageChangeTimeout = null
 
 // Function to handle language change
-function handleLanguageChange() {
+function handleLanguageChange(event) {
+  const targetLang = event && event.detail && event.detail.lang
+    ? event.detail.lang
+    : getCurrentLanguage()
+
   // Clear any existing timeout to prevent multiple rapid calls
   if (languageChangeTimeout) {
     clearTimeout(languageChangeTimeout)
@@ -520,7 +540,7 @@ function handleLanguageChange() {
 
   // Reduced motion: show the target language text immediately, no typing.
   if (prefersReducedMotion) {
-    displayFullTypingTexts()
+    displayFullTypingTexts(targetLang)
     return
   }
 
@@ -541,7 +561,7 @@ function handleLanguageChange() {
     })
 
     // Restart typing animation with increased delay
-    setTimeout(startTypingAnimation, 800)
+    setTimeout(() => startTypingAnimation(targetLang), 800)
 
     // Re-trigger about card animations if section is visible
     setTimeout(() => {
@@ -561,22 +581,7 @@ function handleLanguageChange() {
   }, 150)
 }
 
-// Restart typing animation when language changes (menu translate button)
-const translateBtn = document.getElementById('translate')
-if (translateBtn) {
-  translateBtn.addEventListener('click', handleLanguageChange)
-}
-
-// Add event listener for mobile translate button
-const mobileTranslateBtn = document.getElementById('mobile-translate')
-if (mobileTranslateBtn) {
-  mobileTranslateBtn.addEventListener('click', () => {
-    // Only trigger the menu translate button click
-    // The handleLanguageChange will be called automatically by the translate button's event listener
-    const translateBtn = document.getElementById('translate')
-    if (translateBtn) translateBtn.click()
-  })
-}
+document.addEventListener('app:languagechange', handleLanguageChange)
 
 // Initial scroll animation check
 document.addEventListener('DOMContentLoaded', () => {

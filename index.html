@@ -12,13 +12,14 @@
 
   <!--==================== CSS ====================-->
   <link rel="stylesheet" href="assets/css/styles.css" />
+  <link rel="stylesheet" href="assets/css/beyond-work.css" />
   <!-- iconfont font class 方式引用图标 -->
   <!-- <link
       rel="stylesheet"
       href="https://at.alicdn.com/t/c/font_3900458_82z46p85im.css"
     /> -->
 
-  <title>Lurek Business Card</title>
+  <title>Lurek Lu Business Card</title>
   <script>
     // Progressive enhancement: mark JS as enabled as early as possible so CSS
     // only pre-hides animated elements when JavaScript is available.
@@ -38,7 +39,7 @@
   <!--==================== HEADER ====================-->
   <header class="header scroll-header" id="header">
     <nav class="nav container">
-      <a href="#" class="nav__logo">Lurek</a>
+      <a href="#" class="nav__logo">Lurek Lu</a>
 
       <div class="nav__menu" id="nav-menu">
         <ul class="nav__list grid">
@@ -78,7 +79,7 @@
               <p i18n="contact">联系方式</p>
             </a>
           </li>
-          <li class="nav__item">
+          <li class="nav__item nav__item--translate">
             <button type="button" class="nav__link" id="translate" aria-label="切换中英文" title="切换中英文">
               <svg class="icon nav__icon-svg" aria-hidden="true">
                 <use xlink:href="#icon-fanyi"></use>
@@ -146,13 +147,13 @@
 
           <div class="home__data">
             <h1 class="home__title" i18n="home__title">
-              你好，我是 Lurek
+              你好，我是 Lurek Lu
             </h1>
             <h3 class="home__subtitle" i18n="home__subtitle">
               香港城市大学（东莞）本科生
             </h3>
             <p class="home__description" i18n="home__description">
-              AI工具专家，Web3开发数字游民，港城大创新创业者
+              AI 工具长期实践者 · 独立研究者 · 创业者
             </p>
             <a href="#contact" class="button button-flex">
               <span i18n="home__contact">联系我</span>
@@ -175,7 +176,7 @@
       <h2 class="section__title" i18n="about__title">关于我</h2>
       <span class="section__subtitle" i18n="about__subtitle">我的介绍</span>
       <div class="about__container container grid scroll-animate">
-        <img src="assets/img/about.png" alt="Lurek 的个人形象图" class="about__img" />
+        <img src="assets/img/about.png" alt="Lurek Lu 的个人形象图" class="about__img" />
 
         <div class="about__data">
           <div class="about__cards">
@@ -185,7 +186,7 @@
               </div>
               <div class="about__card-content">
                 <h3 class="about__card-title" i18n="about__card1_title">数字游民</h3>
-                <p class="about__card-description" i18n="about__card1_desc">作为一名数字游民，我专注于使用AI工具为北美B端客户提供各类远程支持。</p>
+                <p class="about__card-description" i18n="about__card1_desc">长期使用 AI Agent 与各类数字工具提升自己的工作效率，同时为不同类型的客户提供远程支持与数字化服务。</p>
               </div>
             </div>
 
@@ -194,18 +195,28 @@
                 <i class="uil uil-brackets-curly"></i>
               </div>
               <div class="about__card-content">
-                <h3 class="about__card-title" i18n="about__card2_title">Web2&3开发者</h3>
-                <p class="about__card-description" i18n="about__card2_desc">同时，我也是一名Web2&3开发者，拥有丰富的网页设计和开发经验。</p>
+                <h3 class="about__card-title" i18n="about__card2_title">工具与应用开发</h3>
+                <p class="about__card-description" i18n="about__card2_desc">围绕实际需求开发插件、Skills、轻量工具与 Web 应用，并持续探索 Web2、Web3 与 AI 辅助开发工作流。</p>
               </div>
             </div>
 
             <div class="about__card about__card-3">
               <div class="about__card-icon">
-                <i class="uil uil-rocket"></i>
+                <i class="uil uil-robot"></i>
               </div>
               <div class="about__card-content">
-                <h3 class="about__card-title" i18n="about__card3_title">创新创业社群领袖</h3>
-                <p class="about__card-description" i18n="about__card3_desc">作为创新创业社群领袖，致力于构建校内创新创业氛围。</p>
+                <h3 class="about__card-title" i18n="about__card3_title">工业机器人与智能制造</h3>
+                <p class="about__card-description" i18n="about__card3_desc">围绕工业机器人标定、运动控制与智能制造场景开展学习和项目实践，重点关注系统精度、稳定性以及真实工程部署。</p>
+              </div>
+            </div>
+
+            <div class="about__card about__card-4">
+              <div class="about__card-icon">
+                <i class="uil uil-file-alt"></i>
+              </div>
+              <div class="about__card-content">
+                <h3 class="about__card-title" i18n="about__card4_title">独立研究与写作</h3>
+                <p class="about__card-description" i18n="about__card4_desc">围绕经济、社会、科技等议题开展独立研究与长期思考，并尝试通过文章、研究报告和论文等形式沉淀观点、证据与结论。</p>
               </div>
             </div>
           </div>
@@ -231,7 +242,7 @@
             <div class="skills__header" role="button" tabindex="0" aria-expanded="true" aria-controls="skills-list-1">
               <i class="uil uil-robot skills__icon"></i>
               <div>
-                <h1 class="skills__title" i18n="skills__title2">AI工具专家</h1>
+                <h1 class="skills__title" i18n="skills__title2">AI 工具与 Agent</h1>
                 <span class="skills__subtitle" i18n="skills__years2">超过3年</span>
               </div>
               <i class="uil uil-angle-down skills__arrow"></i>
@@ -239,112 +250,145 @@
             <div class="skills__list grid" id="skills-list-1">
               <div class="skills__data">
                 <div class="skills__titles">
-                  <h3 class="skills__name" i18n="skills__genai">生成式AI</h3>
-                  <span class="skills__number">95%</span>
+                  <h3 class="skills__name" i18n="skills__genai">生成式 AI 工具</h3>
+                  <span class="skills__number">100%</span>
                 </div>
                 <div class="skills__bar">
                   <div class="skills__percentage skills__genai"></div>
                 </div>
-                <div class="skills__tools" i18n="skills__genai_tools">ChatGPT, Gemini, Deepseek</div>
+                <div class="skills__tools" i18n="skills__genai_tools">ChatGPT, Claude, DeepSeek</div>
               </div>
 
               <div class="skills__data">
                 <div class="skills__titles">
-                  <h3 class="skills__name" i18n="skills__aiimg">AI图像/视频</h3>
+                  <h3 class="skills__name" i18n="skills__agent">AI Agent</h3>
+                  <span class="skills__number">95%</span>
+                </div>
+                <div class="skills__bar">
+                  <div class="skills__percentage skills__agent"></div>
+                </div>
+                <div class="skills__tools" i18n="skills__agent_tools">Codex</div>
+              </div>
+
+              <div class="skills__data">
+                <div class="skills__titles">
+                  <h3 class="skills__name" i18n="skills__aiimg">AI 图像 / 视频</h3>
                   <span class="skills__number">80%</span>
                 </div>
                 <div class="skills__bar">
                   <div class="skills__percentage skills__aiimg"></div>
                 </div>
-                <div class="skills__tools" i18n="skills__aiimg_tools">Stable Diffusion, GPT4o</div>
-              </div>
-
-              <div class="skills__data">
-                <div class="skills__titles">
-                  <h3 class="skills__name" i18n="skills__aiwork">AI工作流</h3>
-                  <span class="skills__number">70%</span>
-                </div>
-                <div class="skills__bar">
-                  <div class="skills__percentage skills__aiwork"></div>
-                </div>
-                <div class="skills__tools" i18n="skills__aiwork_tools">Coze</div>
-              </div>
-
-              <div class="skills__data">
-                <div class="skills__titles">
-                  <h3 class="skills__name" i18n="skills__aipro">AI编程</h3>
-                  <span class="skills__number">95%</span>
-                </div>
-                <div class="skills__bar">
-                  <div class="skills__percentage skills__aipro"></div>
-                </div>
-                <div class="skills__tools" i18n="skills__aipro_tools">Cursor</div>
+                <div class="skills__tools" i18n="skills__aiimg_tools">Stable Diffusion, GPT-4o, Seedance 2.5 Pro</div>
               </div>
             </div>
           </div>
-          <!--==================== SKILLS 1 ====================-->
+          <!--==================== SKILLS RESEARCH ====================-->
           <div class="skills__content skills__close">
-            <div class="skills__header" role="button" tabindex="0" aria-expanded="false" aria-controls="skills-list-2">
-              <i class="uil uil-brackets-curly skills__icon"></i>
+            <div class="skills__header" role="button" tabindex="0" aria-expanded="false" aria-controls="skills-list-research">
+              <i class="uil uil-flask skills__icon"></i>
               <div>
-                <h1 class="skills__title" i18n="skills__title1">前端开发</h1>
-                <span class="skills__subtitle" i18n="skills__years">超过1年</span>
+                <h1 class="skills__title" i18n="skills__title_research">科研与实验能力</h1>
+                <span class="skills__subtitle" i18n="skills__subtitle_research">持续实践中</span>
               </div>
               <i class="uil uil-angle-down skills__arrow"></i>
             </div>
-            <div class="skills__list grid" id="skills-list-2">
+            <div class="skills__list grid" id="skills-list-research">
               <div class="skills__data">
                 <div class="skills__titles">
-                  <h3 class="skills__name">HTML-CSS-JS</h3>
-                  <span class="skills__number">90%</span>
-                </div>
-                <div class="skills__bar">
-                  <div class="skills__percentage skills__html"></div>
-                </div>
-              </div>
-
-              <div class="skills__data">
-                <div class="skills__titles">
-                  <h3 class="skills__name">React</h3>
-                  <span class="skills__number">90%</span>
-                </div>
-                <div class="skills__bar">
-                  <div class="skills__percentage skills__css"></div>
-                </div>
-              </div>
-
-              <div class="skills__data">
-                <div class="skills__titles">
-                  <h3 class="skills__name">TypeScript</h3>
+                  <h3 class="skills__name" i18n="skills__research_question">研究问题定义与文献综述</h3>
                   <span class="skills__number">80%</span>
                 </div>
-                <div class="skills__bar">
-                  <div class="skills__percentage skills__js"></div>
-                </div>
+                <div class="skills__bar"><div class="skills__percentage skills__research_question"></div></div>
+                <div class="skills__tools" i18n="skills__research_question_tools">问题定义、文献检索、研究缺口识别</div>
               </div>
-
               <div class="skills__data">
                 <div class="skills__titles">
-                  <h3 class="skills__name">VUE</h3>
-                  <span class="skills__number">80%</span>
+                  <h3 class="skills__name" i18n="skills__research_experiment">实验设计与验证</h3>
+                  <span class="skills__number">75%</span>
                 </div>
-                <div class="skills__bar">
-                  <div class="skills__percentage skills__vue"></div>
-                </div>
+                <div class="skills__bar"><div class="skills__percentage skills__research_experiment"></div></div>
+                <div class="skills__tools" i18n="skills__research_experiment_tools">假设设计、变量控制、对照实验、误差分析</div>
               </div>
-
               <div class="skills__data">
                 <div class="skills__titles">
-                  <h3 class="skills__name" i18n="skills__ui">UI设计</h3>
+                  <h3 class="skills__name" i18n="skills__research_robotics">机器人系统实现与调试</h3>
+                  <span class="skills__number">70%</span>
+                </div>
+                <div class="skills__bar"><div class="skills__percentage skills__research_robotics"></div></div>
+                <div class="skills__tools" i18n="skills__research_robotics_tools">Python、C++、ROS2、硬件实验与系统调试</div>
+              </div>
+              <div class="skills__data">
+                <div class="skills__titles">
+                  <h3 class="skills__name" i18n="skills__research_data">数据分析与可复现研究</h3>
+                  <span class="skills__number">70%</span>
+                </div>
+                <div class="skills__bar"><div class="skills__percentage skills__research_data"></div></div>
+                <div class="skills__tools" i18n="skills__research_data_tools">数据处理、统计分析、Git、实验记录</div>
+              </div>
+              <div class="skills__data">
+                <div class="skills__titles">
+                  <h3 class="skills__name" i18n="skills__research_writing">科研写作与学术表达</h3>
                   <span class="skills__number">80%</span>
                 </div>
-                <div class="skills__bar">
-                  <div class="skills__percentage skills__ui"></div>
-                </div>
+                <div class="skills__bar"><div class="skills__percentage skills__research_writing"></div></div>
+                <div class="skills__tools" i18n="skills__research_writing_tools">研究报告、论文写作、技术汇报、结果呈现</div>
               </div>
             </div>
           </div>
 
+          <!--==================== SKILLS 5 ====================-->
+          <div class="skills__content skills__close">
+            <div class="skills__header" role="button" tabindex="0" aria-expanded="false" aria-controls="skills-list-5">
+              <i class="uil uil-wrench skills__icon"></i>
+              <div>
+                <h1 class="skills__title" i18n="skills__title5">插件、Skill 与自动化开发</h1>
+                <span class="skills__subtitle" i18n="skills__years5">超过2年</span>
+              </div>
+              <i class="uil uil-angle-down skills__arrow"></i>
+            </div>
+            <div class="skills__list grid" id="skills-list-5">
+              <div class="skills__data">
+                <div class="skills__titles">
+                  <h3 class="skills__name" i18n="skills__skill_development">Skill 开发</h3>
+                  <span class="skills__number">85%</span>
+                </div>
+                <div class="skills__bar">
+                  <div class="skills__percentage skills__skill_development"></div>
+                </div>
+                <div class="skills__tools" i18n="skills__skill_development_tools">Skill 设计、封装与复用</div>
+              </div>
+              <div class="skills__data">
+                <div class="skills__titles">
+                  <h3 class="skills__name" i18n="skills__agent_automation">Agent 自动化工作流开发</h3>
+                  <span class="skills__number">85%</span>
+                </div>
+                <div class="skills__bar">
+                  <div class="skills__percentage skills__agent_automation"></div>
+                </div>
+                <div class="skills__tools" i18n="skills__agent_automation_tools">Agent 编排、任务自动化</div>
+              </div>
+              <div class="skills__data">
+                <div class="skills__titles">
+                  <h3 class="skills__name" i18n="skills__vscode">VS Code 插件开发</h3>
+                  <span class="skills__number">80%</span>
+                </div>
+                <div class="skills__bar">
+                  <div class="skills__percentage skills__vscode"></div>
+                </div>
+                <div class="skills__tools" i18n="skills__vscode_tools">TypeScript, VS Code Extension API, Node.js</div>
+              </div>
+              <div class="skills__data">
+                <div class="skills__titles">
+                  <h3 class="skills__name" i18n="skills__web3bot">Web3 Telegram Bot 开发</h3>
+                  <span class="skills__number">75%</span>
+                </div>
+                <div class="skills__bar">
+                  <div class="skills__percentage skills__web3bot"></div>
+                </div>
+                <div class="skills__tools" i18n="skills__web3bot_tools">Telegram Bot API, Web3.js, Solidity</div>
+              </div>
+            </div>
+          </div>
           <!--==================== SKILLS 3 ====================-->
           <div class="skills__content skills__close">
             <div class="skills__header" role="button" tabindex="0" aria-expanded="false" aria-controls="skills-list-3">
@@ -406,7 +450,7 @@
             <div class="skills__header" role="button" tabindex="0" aria-expanded="false" aria-controls="skills-list-4">
               <i class="uil uil-chart skills__icon"></i>
               <div>
-                <h1 class="skills__title" i18n="skills__title4">商业素养</h1>
+                <h1 class="skills__title" i18n="skills__title4">销售素养</h1>
                 <span class="skills__subtitle" i18n="skills__years4">超过1年</span>
               </div>
               <i class="uil uil-angle-down skills__arrow"></i>
@@ -414,81 +458,109 @@
             <div class="skills__list grid" id="skills-list-4">
               <div class="skills__data">
                 <div class="skills__titles">
-                  <h3 class="skills__name" i18n="skills__finance">财务数据敏感度</h3>
+                  <h3 class="skills__name" i18n="skills__customer_communication">客户沟通与需求挖掘</h3>
                   <span class="skills__number">85%</span>
                 </div>
                 <div class="skills__bar">
-                  <div class="skills__percentage skills__finance"></div>
+                  <div class="skills__percentage skills__customer_communication"></div>
                 </div>
-                <div class="skills__tools" i18n="skills__finance_tools">财务分析、预算管理</div>
+                <div class="skills__tools" i18n="skills__customer_communication_tools">需求识别、痛点梳理</div>
               </div>
 
               <div class="skills__data">
                 <div class="skills__titles">
-                  <h3 class="skills__name" i18n="skills__market">市场及客户洞察</h3>
+                  <h3 class="skills__name" i18n="skills__solution_presentation">方案表达与价值沟通</h3>
                   <span class="skills__number">80%</span>
                 </div>
                 <div class="skills__bar">
-                  <div class="skills__percentage skills__market"></div>
+                  <div class="skills__percentage skills__solution_presentation"></div>
                 </div>
-                <div class="skills__tools" i18n="skills__market_tools">市场调研、客户分析</div>
+                <div class="skills__tools" i18n="skills__solution_presentation_tools">方案呈现、价值表达</div>
               </div>
 
               <div class="skills__data">
                 <div class="skills__titles">
-                  <h3 class="skills__name" i18n="skills__strategy">战略思维与基业长青视角</h3>
+                  <h3 class="skills__name" i18n="skills__objection_negotiation">异议处理与商务谈判</h3>
                   <span class="skills__number">75%</span>
                 </div>
                 <div class="skills__bar">
-                  <div class="skills__percentage skills__strategy"></div>
+                  <div class="skills__percentage skills__objection_negotiation"></div>
                 </div>
-                <div class="skills__tools" i18n="skills__strategy_tools">战略规划、长远愿景</div>
+                <div class="skills__tools" i18n="skills__objection_negotiation_tools">异议回应、条件协商</div>
               </div>
 
               <div class="skills__data">
                 <div class="skills__titles">
-                  <h3 class="skills__name" i18n="skills__decision">决策及优先级执行力</h3>
-                  <span class="skills__number">80%</span>
+                  <h3 class="skills__name" i18n="skills__customer_followup">客户跟进与关系维护</h3>
+                  <span class="skills__number">70%</span>
                 </div>
                 <div class="skills__bar">
-                  <div class="skills__percentage skills__decision"></div>
+                  <div class="skills__percentage skills__customer_followup"></div>
                 </div>
-                <div class="skills__tools" i18n="skills__decision_tools">决策制定、优先级管理</div>
+                <div class="skills__tools" i18n="skills__customer_followup_tools">跟进节奏、关系维护</div>
               </div>
             </div>
           </div>
 
-          <!--==================== SKILLS 5 ====================-->
+          <!--==================== SKILLS 1 ====================-->
           <div class="skills__content skills__close">
-            <div class="skills__header" role="button" tabindex="0" aria-expanded="false" aria-controls="skills-list-5">
-              <i class="uil uil-wrench skills__icon"></i>
+            <div class="skills__header" role="button" tabindex="0" aria-expanded="false" aria-controls="skills-list-2">
+              <i class="uil uil-brackets-curly skills__icon"></i>
               <div>
-                <h1 class="skills__title" i18n="skills__title5">工具开发</h1>
-                <span class="skills__subtitle" i18n="skills__years5">超过1年</span>
+                <h1 class="skills__title" i18n="skills__title1">前端开发</h1>
+                <span class="skills__subtitle" i18n="skills__years">超过2年</span>
               </div>
               <i class="uil uil-angle-down skills__arrow"></i>
             </div>
-            <div class="skills__list grid" id="skills-list-5">
+            <div class="skills__list grid" id="skills-list-2">
               <div class="skills__data">
                 <div class="skills__titles">
-                  <h3 class="skills__name" i18n="skills__web3bot">Web3 Telegram Bot开发</h3>
-                  <span class="skills__number">75%</span>
+                  <h3 class="skills__name">HTML-CSS-JS</h3>
+                  <span class="skills__number">90%</span>
                 </div>
                 <div class="skills__bar">
-                  <div class="skills__percentage skills__web3bot"></div>
+                  <div class="skills__percentage skills__html"></div>
                 </div>
-                <div class="skills__tools" i18n="skills__web3bot_tools">Telegram Bot API, Web3.js, Solidity</div>
               </div>
 
               <div class="skills__data">
                 <div class="skills__titles">
-                  <h3 class="skills__name" i18n="skills__vscode">VSCode插件开发</h3>
+                  <h3 class="skills__name">React</h3>
+                  <span class="skills__number">90%</span>
+                </div>
+                <div class="skills__bar">
+                  <div class="skills__percentage skills__css"></div>
+                </div>
+              </div>
+
+              <div class="skills__data">
+                <div class="skills__titles">
+                  <h3 class="skills__name">TypeScript</h3>
                   <span class="skills__number">80%</span>
                 </div>
                 <div class="skills__bar">
-                  <div class="skills__percentage skills__vscode"></div>
+                  <div class="skills__percentage skills__js"></div>
                 </div>
-                <div class="skills__tools" i18n="skills__vscode_tools">TypeScript, VS Code Extension API, Node.js</div>
+              </div>
+
+              <div class="skills__data">
+                <div class="skills__titles">
+                  <h3 class="skills__name">VUE</h3>
+                  <span class="skills__number">80%</span>
+                </div>
+                <div class="skills__bar">
+                  <div class="skills__percentage skills__vue"></div>
+                </div>
+              </div>
+
+              <div class="skills__data">
+                <div class="skills__titles">
+                  <h3 class="skills__name" i18n="skills__ui">UI设计</h3>
+                  <span class="skills__number">80%</span>
+                </div>
+                <div class="skills__bar">
+                  <div class="skills__percentage skills__ui"></div>
+                </div>
               </div>
             </div>
           </div>
@@ -558,22 +630,22 @@
       <h2 class="section__title" i18n="qualification__title">
         资历
       </h2>
-      <span class="section__subtitle" i18n="qualification__subtitle">我的个人旅程</span>
+      <span class="section__subtitle" i18n="qualification__subtitle">学习、实践与成长</span>
       <div class="qualification__container container scroll-animate">
         <div class="qualification__tabs" role="tablist" aria-label="资格标签">
           <button type="button" class="qualification__button button--flex qualification__active" data-target="#education" role="tab" aria-selected="true" aria-controls="education" id="qualification-tab-education">
             <i class="uil uil-graduation-cap qualification__icon"></i>
-            <span i18n="education">教育经历</span>
+            <span i18n="education">教育与训练</span>
           </button>
 
           <button type="button" class="qualification__button button--flex" data-target="#work" role="tab" aria-selected="false" aria-controls="work" id="qualification-tab-work">
             <i class="uil uil-briefcase-alt qualification__icon"></i>
-            <span i18n="work">工作经历</span>
+            <span i18n="work">工作与实践</span>
           </button>
 
           <button type="button" class="qualification__button button--flex" data-target="#certifications" role="tab" aria-selected="false" aria-controls="certifications" id="qualification-tab-certifications">
             <i class="uil uil-award qualification__icon"></i>
-            <span i18n="certifications">证书认证</span>
+            <span i18n="certifications">荣誉与认证</span>
           </button>
         </div>
         <div class="qualification__sections">
@@ -582,11 +654,11 @@
             <!--==================== QUALIFICATION 1 ====================-->
             <div class="qualification__data">
               <div>
-                <h3 class="qualification__title" i18n="qualification1__title">AI工具运用技术</h3>
-                <span class="qualification__subtitle" i18n="qualification1__subtitle">自学</span>
+                <h3 class="qualification__title" i18n="qualification2__title">工业机器人与运动控制实训</h3>
+                <span class="qualification__subtitle" i18n="qualification2__subtitle">固高科技 · 机器人标定、运动控制、坐标系与工程调试</span>
                 <div class="qualification__calendar">
                   <i class="uil uil-calendar-alt"></i>
-                  <span i18n="qualification1__date">2023 - 至今</span>
+                  <span i18n="qualification2__date">2026.07</span>
                 </div>
               </div>
               <div>
@@ -603,19 +675,19 @@
                 <span class="qualification__line"></span>
               </div>
               <div>
-                <h3 class="qualification__title" i18n="qualification2__title">智能制造工程</h3>
-                <span class="qualification__subtitle" i18n="qualification2__subtitle">香港城市大学（东莞）- 本科</span>
+                <h3 class="qualification__title" i18n="qualification9__title">沃顿商学院远程 MBA 课程</h3>
+                <span class="qualification__subtitle" i18n="qualification9__subtitle">沃顿商学院 · 远程课程</span>
                 <div class="qualification__calendar">
                   <i class="uil uil-calendar-alt"></i>
-                  <span i18n="qualification2__date">2024 - 至今</span>
+                  <span i18n="qualification9__date">2025.05</span>
                 </div>
               </div>
             </div>
             <!--==================== QUALIFICATION 3 ====================-->
             <div class="qualification__data">
               <div>
-                <h3 class="qualification__title" i18n="qualification3__title">Web3设计与开发</h3>
-                <span class="qualification__subtitle" i18n="qualification3__subtitle">自学</span>
+                <h3 class="qualification__title" i18n="qualification3__title">Web3 设计与开发</h3>
+                <span class="qualification__subtitle" i18n="qualification3__subtitle">自主学习</span>
                 <div class="qualification__calendar">
                   <i class="uil uil-calendar-alt"></i>
                   <span i18n="qualification3__date">2025.03</span>
@@ -632,14 +704,13 @@
               <div></div>
               <div>
                 <span class="qualification__rounder"></span>
-                <!-- <span class="qualification__line"></span> -->
               </div>
               <div>
-                <h3 class="qualification__title" i18n="qualification9__title">MBA</h3>
-                <span class="qualification__subtitle" i18n="qualification9__subtitle">沃顿商学院远程课程</span>
+                <h3 class="qualification__title" i18n="qualification1__title">智能制造工程</h3>
+                <span class="qualification__subtitle" i18n="qualification1__subtitle">香港城市大学（东莞） · 工学学士</span>
                 <div class="qualification__calendar">
                   <i class="uil uil-calendar-alt"></i>
-                  <span i18n="qualification9__date">2025.05</span>
+                  <span i18n="qualification1__date">2024.09 – 2028.06（预计）</span>
                 </div>
               </div>
             </div>
@@ -649,83 +720,83 @@
             <!-- 1. Digital Nomad -->
             <div class="qualification__data">
               <div>
+                <h3 class="qualification__title" i18n="qualification5__title">香港城市大学（东莞）创新创业实习</h3>
+                <span class="qualification__subtitle" i18n="qualification5__subtitle">创新创业活动、项目支持及 Tech300 相关工作</span>
+                <div class="qualification__calendar">
+                  <i class="uil uil-calendar-alt"></i>
+                  <span i18n="qualification5__date">2025.05 – 2025.12</span>
+                </div>
+              </div>
+              <div>
+                <span class="qualification__rounder"></span>
+                <span class="qualification__line"></span>
+              </div>
+              <div></div>
+            </div>
+
+            <!-- 2. Innovation & Entrepreneurship Internship -->
+            <div class="qualification__data">
+              <div></div>
+              <div>
+                <span class="qualification__rounder"></span>
+                <span class="qualification__line"></span>
+              </div>
+              <div>
+                <h3 class="qualification__title" i18n="qualification6__title">XbotPark CRM 实习生 / 校园大使</h3>
+                <span class="qualification__subtitle"
+                  i18n="qualification6__subtitle">创业者招募、CRM 调研及项目运营支持</span>
+                <div class="qualification__calendar">
+                  <i class="uil uil-calendar-alt"></i>
+                  <span i18n="qualification6__date">2025.03 – 2025.06</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- 3. XbotPark CRM Internship / Campus Ambassador -->
+            <div class="qualification__data">
+              <div>
+                <h3 class="qualification__title" i18n="qualification8__title">企业校园大使</h3>
+                <span class="qualification__subtitle"
+                  i18n="qualification8__subtitle">腾讯、安克、小米、拓竹、宝洁等 · 校园传播、招募与活动支持</span>
+                <div class="qualification__calendar">
+                  <i class="uil uil-calendar-alt"></i>
+                  <span i18n="qualification8__date">2025.02 – 至今</span>
+                </div>
+              </div>
+              <div>
+                <span class="qualification__rounder"></span>
+                <span class="qualification__line"></span>
+              </div>
+              <div></div>
+            </div>
+
+            <!-- 4. Student Affairs Internship -->
+            <div class="qualification__data">
+              <div></div>
+              <div>
+                <span class="qualification__rounder"></span>
+                <span class="qualification__line"></span>
+              </div>
+              <div>
+                <h3 class="qualification__title" i18n="qualification7__title">香港城市大学（东莞）学生事务相关实习</h3>
+                <span class="qualification__subtitle"
+                  i18n="qualification7__subtitle">招聘活动、内容制作及校园项目支持</span>
+                <div class="qualification__calendar">
+                  <i class="uil uil-calendar-alt"></i>
+                  <span i18n="qualification7__date">2025.02 – 2025.04</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- 5. Corporate Campus Ambassador -->
+            <div class="qualification__data">
+              <div>
                 <h3 class="qualification__title" i18n="qualification4__title">数字游民</h3>
-                <span class="qualification__subtitle" i18n="qualification4__subtitle">使用AI技术为北美B端客户提供远程支持，如制作商业PPT、Reddit图文等</span>
-                <div class="qualification__calendar">
-                  <i class="uil uil-calendar-alt"></i>
-                  <span i18n="qualification4__date">2024 - 至今</span>
-                </div>
-              </div>
-              <div>
-                <span class="qualification__rounder"></span>
-                <span class="qualification__line"></span>
-              </div>
-              <div></div>
-            </div>
-
-            <!-- 2. SDO Student Assistant -->
-            <div class="qualification__data">
-              <div></div>
-              <div>
-                <span class="qualification__rounder"></span>
-                <span class="qualification__line"></span>
-              </div>
-              <div>
-                <h3 class="qualification__title" i18n="qualification5__title">港城大东莞学生处学助</h3>
                 <span class="qualification__subtitle"
-                  i18n="qualification5__subtitle">协助校方组织招聘会、推文、海报等</span>
+                  i18n="qualification4__subtitle">使用 AI Agent 与数字工具为客户提供远程支持及数字化服务</span>
                 <div class="qualification__calendar">
                   <i class="uil uil-calendar-alt"></i>
-                  <span i18n="qualification5__date">2025.02 - 2025.05</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- 3. Corporate Campus Ambassador -->
-            <div class="qualification__data">
-              <div>
-                <h3 class="qualification__title" i18n="qualification6__title">企业校园大使</h3>
-                <span class="qualification__subtitle"
-                  i18n="qualification6__subtitle">美的、宝洁、中兴、蓝思科技等企业校园大使，协助招聘及竞赛宣传</span>
-                <div class="qualification__calendar">
-                  <i class="uil uil-calendar-alt"></i>
-                  <span i18n="qualification6__date">2025.02 - 至今</span>
-                </div>
-              </div>
-              <div>
-                <span class="qualification__rounder"></span>
-                <span class="qualification__line"></span>
-              </div>
-              <div></div>
-            </div>
-
-            <!-- 4. Xbotpark Internship -->
-            <div class="qualification__data">
-              <div></div>
-              <div>
-                <span class="qualification__rounder"></span>
-                <span class="qualification__line"></span>
-              </div>
-              <div>
-                <h3 class="qualification__title" i18n="qualification7__title">Xbotpark CRM实习&校园大使</h3>
-                <span class="qualification__subtitle"
-                  i18n="qualification7__subtitle">负责创业者招募、CRM调研，组织minicamp、工作坊、夏令营等</span>
-                <div class="qualification__calendar">
-                  <i class="uil uil-calendar-alt"></i>
-                  <span i18n="qualification7__date">2025.03 - 至今</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- 5. CityU Innovation Internship -->
-            <div class="qualification__data">
-              <div>
-                <h3 class="qualification__title" i18n="qualification8__title">城大创新创业实习</h3>
-                <span class="qualification__subtitle"
-                  i18n="qualification8__subtitle">营造创新创业氛围，组织活动，协助Tech300大赛</span>
-                <div class="qualification__calendar">
-                  <i class="uil uil-calendar-alt"></i>
-                  <span i18n="qualification8__date">2025.05 - 2025.12</span>
+                  <span i18n="qualification4__date">2024.10 – 至今</span>
                 </div>
               </div>
               <div>
@@ -737,14 +808,14 @@
 
           <!--==================== QUALIFICATION CONTENT 3 ====================-->
           <div class="qualification__content" data-content id="certifications" role="tabpanel" aria-labelledby="qualification-tab-certifications">
-            <!-- 1. Tencent Product Manager Certificate -->
+            <!-- 1. Mathematical Contest in Modeling -->
             <div class="qualification__data">
               <div>
-                <h3 class="qualification__title" i18n="cert1__title">腾讯产品经理高级证书</h3>
-                <span class="qualification__subtitle" i18n="cert1__subtitle">腾讯学院 - 产品管理专业认证，掌握从0到1的产品设计思维与用户体验优化方法</span>
+                <h3 class="qualification__title" i18n="cert1__title">数学建模竞赛</h3>
+                <span class="qualification__subtitle" i18n="cert1__subtitle">COMAP Mathematical Contest in Modeling · Honorable Mention</span>
                 <div class="qualification__calendar">
                   <i class="uil uil-calendar-alt"></i>
-                  <span i18n="cert1__date">2024</span>
+                  <span i18n="cert1__date">2026.02</span>
                 </div>
               </div>
               <div>
@@ -754,7 +825,7 @@
               <div></div>
             </div>
 
-            <!-- 2. UN ESG Certificate -->
+            <!-- 2. Sui Hackathon -->
             <div class="qualification__data">
               <div></div>
               <div>
@@ -762,23 +833,23 @@
                 <span class="qualification__line"></span>
               </div>
               <div>
-                <h3 class="qualification__title" i18n="cert2__title">联合国ESG注册证明</h3>
-                <span class="qualification__subtitle" i18n="cert2__subtitle">联合国全球契约组织 - 环境、社会及治理可持续发展认证，深度理解ESG框架与实践</span>
+                <h3 class="qualification__title" i18n="cert2__title">Sui Hackathon</h3>
+                <span class="qualification__subtitle" i18n="cert2__subtitle">Entertainment & Culture Track · 第二名</span>
                 <div class="qualification__calendar">
                   <i class="uil uil-calendar-alt"></i>
-                  <span i18n="cert2__date">2025</span>
+                  <span i18n="cert2__date">2025.04</span>
                 </div>
               </div>
             </div>
 
-            <!-- 3. CityU Summer Program Certificate -->
+            <!-- 3. Tencent Product Manager Certificate -->
             <div class="qualification__data">
               <div>
-                <h3 class="qualification__title" i18n="cert3__title">香港城市大学暑期项目高级证书</h3>
-                <span class="qualification__subtitle" i18n="cert3__subtitle">香港城市大学 - 创新科技与商业应用暑期项目，专注前沿技术商业化转换</span>
+                <h3 class="qualification__title" i18n="cert3__title">腾讯产品经理高级证书</h3>
+                <span class="qualification__subtitle" i18n="cert3__subtitle">腾讯学院 · 产品管理相关认证</span>
                 <div class="qualification__calendar">
                   <i class="uil uil-calendar-alt"></i>
-                  <span i18n="cert3__date">2025夏季</span>
+                  <span i18n="cert3__date">2024</span>
                 </div>
               </div>
               <div>
@@ -793,26 +864,26 @@
 
     <!--==================== PORTFOLIO ====================-->
     <section class="portfolio section scroll-animate" id="portfolio">
-      <h2 class="section__title" i18n="portfolio__title">作品集</h2>
-      <span class="section__subtitle" i18n="portfolio__subtitle">最近的作品</span>
+      <h2 class="section__title" i18n="portfolio__title">项目与研究</h2>
+      <span class="section__subtitle" i18n="portfolio__subtitle">工程、研究与个人创作</span>
 
       <div class="portfolio__container container swiper-container scroll-animate">
         <div class="swiper-wrapper">
           <!--==================== PORTFOLIO 1 ====================-->
 
           <div class="portfolio__content grid swiper-slide">
-            <img src="assets/img/portfolio1.jpg" alt="Web3 网页设计项目截图" class="portfolio__img" />
+            <img src="assets/img/portfolio-robot-calibration.jpg" alt="工业机器人与离线运动学参数标定结果界面 / Industrial robot and offline kinematic calibration results interface" class="portfolio__img" />
 
             <div class="portfolio_">
               <h3 class="portfolio__title" i18n="portfolio1__title">
-                Web3网页设计
+                六轴工业机器人离线运动学参数标定
               </h3>
               <p class="portfolio__description" i18n="portfolio1__description">
-                适配所有设备的显示，现代风格的Web UI设计
+                面向六轴工业机器人的离线运动学参数标定项目，结合标准 DH、Kabsch/SVD 与最小二乘验证参数可辨识性与稳定性。
               </p>
-              <a href="https://github.com/Lurek-st?tab=repositories" target="_blank" rel="noopener noreferrer"
+              <a href="https://github.com/Lurek-st/six-axis-robot-calibration-report" target="_blank" rel="noopener noreferrer"
                 class="button button--flex button--small portfolio__button">
-                Demo
+                <span i18n="portfolio1__cta">查看项目</span>
                 <i class="uil uil-arrow-right button__icon"></i>
               </a>
             </div>
@@ -821,18 +892,18 @@
           <!--==================== PORTFOLIO 2 ====================-->
 
           <div class="portfolio__content grid swiper-slide">
-            <img src="assets/img/portfolio2.jpg" alt="哲学思考博客项目截图" class="portfolio__img" />
+            <img src="assets/img/portfolio-weather-stock-study.png" alt="天气与股票市场关系研究项目封面 / Weather-stock market relationship study project cover" class="portfolio__img" />
 
             <div class="portfolio_">
               <h3 class="portfolio__title" i18n="portfolio2__title">
-                哲学思考博客
+                天气与股票市场关系研究
               </h3>
               <p class="portfolio__description" i18n="portfolio2__description">
-                以马克思主义为指导的Lurek个人哲学论文及随笔
+                围绕天气与市场表现的关系构建长期数据记录、研究协议与可复现分析流程，持续检验两者是否存在稳定的统计关联。
               </p>
-              <a href="https://github.com/Lurek-st?tab=repositories" target="_blank" rel="noopener noreferrer"
+              <a href="https://github.com/Lurek-st/weather-stock-china-study" target="_blank" rel="noopener noreferrer"
                 class="button button--flex button--small portfolio__button">
-                See
+                <span i18n="portfolio2__cta">查看研究</span>
                 <i class="uil uil-arrow-right button__icon"></i>
               </a>
             </div>
@@ -841,42 +912,61 @@
           <!--==================== PORTFOLIO 3 ====================-->
 
           <div class="portfolio__content grid swiper-slide">
-            <img src="assets/img/portfolio3.jpg" alt="诗作项目截图" class="portfolio__img" />
+            <img src="assets/img/portfolio-astock-name-semantics.png" alt="A 股公司名称语义与市场注意力研究项目封面 / A-share company-name semantics and market-attention research project cover" class="portfolio__img" />
 
             <div class="portfolio_">
               <h3 class="portfolio__title" i18n="portfolio3__title">
-                诗作
+                A 股公司名称语义与市场注意力研究
               </h3>
               <p class="portfolio__description" i18n="portfolio3__description">
-                一些小市民伤感的中文诗词作品
+                研究上市公司名称中的语义关联是否会影响投资者注意力、交易行为与价格表现，并构建可验证、可复现的实证研究框架。
               </p>
-              <a href="https://github.com/Lurek-st?tab=repositories" target="_blank" rel="noopener noreferrer"
-                class="button button--flex button--small portfolio__button">
-                See
-                <i class="uil uil-arrow-right button__icon"></i>
-              </a>
+              <span class="portfolio__status" i18n="portfolio3__status">
+                研究进行中
+              </span>
             </div>
           </div>
 
           <!--==================== PORTFOLIO 4 ====================-->
 
           <div class="portfolio__content grid swiper-slide">
-            <img src="assets/img/portfolio4.jpg" alt="VSCode 插件项目截图" class="portfolio__img" />
+            <img src="assets/img/portfolio2.jpg" alt="马克思主义与社会思考文章项目封面 / Marxism and social thought writing project cover" class="portfolio__img" />
 
             <div class="portfolio_">
               <h3 class="portfolio__title" i18n="portfolio4__title">
-                VSCode插件
+                马克思主义与社会思考
               </h3>
               <p class="portfolio__description" i18n="portfolio4__description">
-                专业的docx editor插件，提供高效的文档编辑功能和用户体验。
+                围绕马克思主义、技术、社会与人工智能等议题整理长期思考、评论与随笔。
               </p>
-              <a href="https://github.com/Lurek-st/DOCX_AotoPKUNZIP_AutoSave_Plugin" target="_blank" rel="noopener noreferrer"
+              <a href="https://github.com/Lurek-st/Marxism-Blog" target="_blank" rel="noopener noreferrer"
                 class="button button--flex button--small portfolio__button">
-                Demo
+                <span i18n="portfolio4__cta">查看文章</span>
                 <i class="uil uil-arrow-right button__icon"></i>
               </a>
             </div>
           </div>
+
+          <!--==================== PORTFOLIO 5 ====================-->
+
+          <div class="portfolio__content grid swiper-slide">
+            <img src="assets/img/portfolio-codex-naiwa.jpg" alt="Codex 奶蛙桌宠增强版项目封面 / Enhanced Codex Naiwa Desktop Pet project cover" class="portfolio__img" />
+
+            <div class="portfolio_">
+              <h3 class="portfolio__title" i18n="portfolio5__title">
+                Codex 奶蛙桌宠增强版
+              </h3>
+              <p class="portfolio__description" i18n="portfolio5__description">
+                做了一个会打字、会大笑、拖着走还会放屁的 Codex 奶蛙 🐸⌨️💨
+              </p>
+              <a href="https://github.com/Lurek-st/codex-pet-naiwa-enhanced" target="_blank" rel="noopener noreferrer"
+                class="button button--flex button--small portfolio__button">
+                <span i18n="portfolio5__cta">查看项目</span>
+                <i class="uil uil-arrow-right button__icon"></i>
+              </a>
+            </div>
+          </div>
+
         </div>
         <!-- add arrows-->
         <div class="swiper-button-next">
@@ -889,6 +979,113 @@
 
         <!-- Add Pagination -->
         <div class="swiper-pagination"></div>
+      </div>
+    </section>
+
+    <!--==================== BEYOND WORK ====================-->
+    <section class="beyond-work section" id="beyond-work">
+      <div class="beyond-work__canvas">
+        <header class="beyond-work__header scroll-animate">
+          <h2 class="beyond-work__title" i18n="beyond_work_title" i18n-only="html">工作之外</h2>
+          <p class="beyond-work__subtitle" i18n="beyond_work_subtitle" i18n-only="html">运动、游戏、音乐、阅读、影视作品、旅行，以及一些持续很久的好奇心。</p>
+        </header>
+        <div class="beyond-work__opening">
+        <article class="beyond-work__module beyond-work__module--think" aria-labelledby="beyond-work-think-label">
+          <span class="beyond-work__folio beyond-work__folio--with-rule scroll-animate" aria-hidden="true"><span>01</span><span class="beyond-work__folio-rule"></span></span>
+          <p class="beyond-work__module-label" id="beyond-work-think-label">THINK &amp; EXPLORE</p>
+          <p class="beyond-work__lead" i18n="beyond_work_01_headline">一个问题，通常会带来更多问题。</p>
+          <p class="beyond-work__think-echo" i18n="beyond_work_01_echo">Questions tend to lead to more questions.</p>
+          <div class="beyond-work__copy">
+            <p i18n="beyond_work_01_note_one">我经常把 AI 当作一种思考媒介，从技术与研究，到社会现象，再到那些一时没有答案的奇怪问题。</p>
+            <p i18n="beyond_work_01_note_two">一次交流很少真正结束一个问题，更多时候，它只是把问题拆开，再引向几个新的方向。</p>
+          </div>
+        </article>
+
+        <article class="beyond-work__module beyond-work__module--companions" aria-labelledby="beyond-work-companions-label">
+          <span class="beyond-work__folio scroll-animate" aria-hidden="true">02</span>
+          <p class="beyond-work__module-label" id="beyond-work-companions-label">COMPANIONS</p>
+          <p class="beyond-work__lead" i18n="beyond_work_02_copy">从一只陪伴我很久的大金毛，到现在家里的一窝孟加拉豹猫。</p>
+          <div class="beyond-work__companions-media">
+            <figure><img src="assets/img/beyond-work/companions/companions-golden-retriever-2x3.jpg" alt="Golden retriever portrait" loading="lazy" /></figure>
+            <figure><img src="assets/img/beyond-work/companions/companions-bengal-litter-3x4.jpg" alt="Bengal cat with litter" loading="lazy" /></figure>
+            <figure><img src="assets/img/beyond-work/companions/companions-bengal-lego-3x4.jpg" alt="Bengal cat beside LEGO bricks" loading="lazy" /></figure>
+          </div>
+        </article>
+        </div>
+
+        <article class="beyond-work__module beyond-work__module--moving" aria-labelledby="beyond-work-moving-label">
+          <span class="beyond-work__folio beyond-work__folio--with-rule scroll-animate" aria-hidden="true"><span>03</span><span class="beyond-work__folio-rule"></span></span>
+          <p class="beyond-work__module-label" id="beyond-work-moving-label">STAY MOVING / SPORTS I LOVE</p>
+          <div class="beyond-work__ribbon" aria-label="Sports I love">
+            <ul class="beyond-work__ribbon-items">
+              <li i18n="beyond_work_03_sport_01">羽毛球</li><li i18n="beyond_work_03_sport_02">游泳</li><li i18n="beyond_work_03_sport_03">匹克球</li><li i18n="beyond_work_03_sport_04">网球</li><li i18n="beyond_work_03_sport_05">跑步</li><li i18n="beyond_work_03_sport_06">冲浪</li><li i18n="beyond_work_03_sport_07">Wargame</li>
+            </ul>
+          </div>
+        </article>
+
+        <div class="beyond-work__play-brick">
+        <article class="beyond-work__module beyond-work__module--play" aria-labelledby="beyond-work-play-label">
+          <span class="beyond-work__folio beyond-work__folio--with-rule scroll-animate" aria-hidden="true"><span>04</span><span class="beyond-work__folio-rule"></span></span>
+          <p class="beyond-work__module-label" id="beyond-work-play-label">PLAY / GAMES I LOVE</p>
+          <ol class="beyond-work__game-list">
+            <li i18n="beyond_work_04_game_01">三角洲行动</li><li i18n="beyond_work_04_game_02">王者荣耀</li><li i18n="beyond_work_04_game_03">和平精英</li><li i18n="beyond_work_04_game_04">金铲铲之战</li><li i18n="beyond_work_04_game_05">文明 VI</li><li i18n="beyond_work_04_game_06">模拟人生</li><li i18n="beyond_work_04_game_07">部落冲突</li><li i18n="beyond_work_04_game_08">皇室战争</li><li i18n="beyond_work_04_game_09">海岛奇兵</li>
+          </ol>
+        </article>
+
+        <article class="beyond-work__module beyond-work__module--brick" aria-labelledby="beyond-work-brick-label">
+          <span class="beyond-work__folio scroll-animate" aria-hidden="true">05</span>
+          <p class="beyond-work__module-label" id="beyond-work-brick-label" i18n="beyond_work_05_label">BRICK BY BRICK / 从小玩到大的兴趣</p>
+          <figure class="beyond-work__brick-media"><img src="assets/img/beyond-work/brick/brick-by-brick-lego-montage-1672x941.jpg" alt="LEGO build montage" loading="lazy" /></figure>
+        </article>
+        </div>
+
+        <article class="beyond-work__module beyond-work__module--stories" aria-labelledby="beyond-work-stories-label">
+          <span class="beyond-work__folio beyond-work__folio--with-rule scroll-animate" aria-hidden="true"><span>06</span><span class="beyond-work__folio-rule"></span></span>
+          <p class="beyond-work__module-label" id="beyond-work-stories-label">STORIES I LIKE</p>
+          <p class="beyond-work__lead" i18n="beyond_work_06_intro">科幻、荒诞喜剧、社会讽刺，以及一些风格鲜明的动作作品；但最打动我的，往往还是其中的理想主义。</p>
+          <div class="beyond-work__stories-layout">
+            <div class="beyond-work__stories-cluster" role="listbox" aria-label="Story selection" data-beyond-work-stories-cluster>
+              <button type="button" role="option" aria-selected="true" disabled data-story="star-trek" data-tier="core"><span class="beyond-work__story-label" i18n="beyond_work_06_story_01">星际迷航</span></button><button type="button" role="option" disabled data-story="rick" data-tier="core"><span class="beyond-work__story-label" i18n="beyond_work_06_story_02">瑞克和莫蒂</span></button><button type="button" role="option" disabled data-story="orville" data-tier="secondary"><span class="beyond-work__story-label" i18n="beyond_work_06_story_03">奥维尔号</span></button><button type="button" role="option" disabled data-story="futurama" data-tier="secondary"><span class="beyond-work__story-label" i18n="beyond_work_06_story_04">飞出个未来</span></button><button type="button" role="option" disabled data-story="family" data-tier="satellite"><span class="beyond-work__story-label" i18n="beyond_work_06_story_05">恶搞之家</span></button><button type="button" role="option" disabled data-story="dad" data-tier="satellite"><span class="beyond-work__story-label" i18n="beyond_work_06_story_06">美国老爹！</span></button><button type="button" role="option" disabled data-story="bad-guys" data-tier="satellite"><span class="beyond-work__story-label" i18n="beyond_work_06_story_07">坏蛋联盟</span></button><button type="button" role="option" disabled data-story="kingsman" data-tier="satellite"><span class="beyond-work__story-label" i18n="beyond_work_06_story_08">王牌特工</span></button><button type="button" role="option" disabled data-story="pokemon" data-tier="secondary"><span class="beyond-work__story-label" i18n="beyond_work_06_story_09">精灵宝可梦</span></button><button type="button" role="option" disabled data-story="star-vs" data-tier="long"><span class="beyond-work__story-label" i18n="beyond_work_06_story_10">星蝶公主</span></button><button type="button" role="option" disabled data-story="star-wars" data-tier="secondary"><span class="beyond-work__story-label" i18n="beyond_work_06_story_11">星球大战</span></button>
+            </div>
+            <figure class="beyond-work__stories-preview" data-beyond-work-stories-preview aria-label="Selected story preview">
+              <img class="beyond-work__stories-preview-ambient" src="assets/img/beyond-work/stories/star-trek.jpg" alt="" aria-hidden="true" loading="lazy" />
+              <img class="beyond-work__stories-preview-image" src="assets/img/beyond-work/stories/star-trek.jpg" alt="Star Trek preview image" loading="lazy" />
+              <figcaption i18n="beyond_work_06_story_01">星际迷航</figcaption>
+            </figure>
+          </div>
+        </article>
+
+        <article class="beyond-work__module beyond-work__module--music" aria-labelledby="beyond-work-music-folio">
+          <div class="beyond-work__music-folio scroll-animate" id="beyond-work-music-folio" aria-label="07"><span aria-hidden="true"></span><span>07</span><span aria-hidden="true"></span></div>
+          <p class="beyond-work__lead" i18n="beyond_work_07_primary">音乐一直在生活的背景里。</p>
+          <p class="beyond-work__copy" i18n="beyond_work_07_secondary">我的音乐库里，也已经慢慢攒下了 1900 多首歌。</p>
+          <div class="beyond-work__soundtrack" data-beyond-work-soundtrack>
+            <div class="beyond-work__soundtrack-frame">
+              <div class="beyond-work__soundtrack-info"><span>I Don't Know You</span><small>Noni</small></div>
+              <button type="button" disabled aria-label="Play I Don't Know You" data-beyond-work-soundtrack-toggle><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M8 5.5 18 12 8 18.5Z"></path><path class="beyond-work__soundtrack-pause" d="M7.5 5.5h3.5v13H7.5zm5.5 0h3.5v13H13z"></path></svg></button>
+            </div>
+          </div>
+        </article>
+
+        <article class="beyond-work__module beyond-work__module--road" aria-labelledby="beyond-work-road-title">
+          <span class="beyond-work__folio beyond-work__folio--with-rule scroll-animate" aria-hidden="true"><span>08</span><span class="beyond-work__folio-rule"></span></span>
+          <header class="beyond-work__road-header">
+            <p class="beyond-work__road-kicker" i18n="beyond_work_08_kicker">在路上</p>
+            <h2 id="beyond-work-road-title">On the Road</h2>
+          </header>
+          <div class="beyond-work__travel-slider" data-beyond-work-travel-slider aria-label="Travel chapter selector">
+            <span data-chapter-target="far" i18n="beyond_work_08_far">远方</span><span class="beyond-work__travel-rail" aria-hidden="true"><span class="beyond-work__travel-thumb"></span></span><span data-chapter-target="near" i18n="beyond_work_08_near">近乡</span>
+          </div>
+          <div class="beyond-work__travel-stage" data-beyond-work-travel-mount aria-label="Travel destinations">
+            <div class="beyond-work__travel-accordion" data-chapter="far">
+              <article class="beyond-work__travel-panel is-active" data-panel="japan" data-fit="contain"><img class="beyond-work__travel-ambient" src="assets/img/beyond-work/travel/far-japan.jpg" alt="" aria-hidden="true" loading="lazy" /><img class="beyond-work__travel-image" src="assets/img/beyond-work/travel/far-japan.jpg" alt="Travel photograph from Japan" loading="lazy" /><span class="beyond-work__travel-shade"></span><span class="beyond-work__travel-collapsed"><span lang="zh-CN">日本</span><span lang="en">JAPAN</span></span><span class="beyond-work__travel-meta"><time>2016.02</time><strong><span lang="zh-CN">日本</span><span lang="en">JAPAN</span></strong></span></article>
+              <article class="beyond-work__travel-panel" data-panel="germany-austria"><img class="beyond-work__travel-ambient" src="assets/img/beyond-work/travel/far-germany-austria.png" alt="" aria-hidden="true" loading="lazy" /><img class="beyond-work__travel-image" src="assets/img/beyond-work/travel/far-germany-austria.png" alt="Travel photograph from Germany and Austria" loading="lazy" /><span class="beyond-work__travel-shade"></span><span class="beyond-work__travel-collapsed"><span lang="zh-CN">德国 / 奥地利</span><span lang="en">GERMANY / AUSTRIA</span></span></article>
+              <article class="beyond-work__travel-panel" data-panel="malaysia-indonesia"><img class="beyond-work__travel-ambient" src="assets/img/beyond-work/travel/far-malaysia-indonesia.jpg" alt="" aria-hidden="true" loading="lazy" /><img class="beyond-work__travel-image" src="assets/img/beyond-work/travel/far-malaysia-indonesia.jpg" alt="Travel photograph from Malaysia and Indonesia" loading="lazy" /><span class="beyond-work__travel-shade"></span><span class="beyond-work__travel-collapsed"><span lang="zh-CN">马来西亚 / 印度尼西亚</span><span lang="en">MALAYSIA / INDONESIA</span></span></article>
+              <article class="beyond-work__travel-panel" data-panel="uae" data-fit="contain"><img class="beyond-work__travel-ambient" src="assets/img/beyond-work/travel/far-uae.jpg" alt="" aria-hidden="true" loading="lazy" /><img class="beyond-work__travel-image" src="assets/img/beyond-work/travel/far-uae.jpg" alt="Travel photograph from the UAE" loading="lazy" /><span class="beyond-work__travel-shade"></span><span class="beyond-work__travel-collapsed">UAE</span></article>
+            </div>
+          </div>
+          <p class="beyond-work__travel-note" i18n="beyond_work_08_note">下一次出发也已经在筹备中——西亚、申根区，还有北美。。。</p>
+        </article>
       </div>
     </section>
 
@@ -926,8 +1123,8 @@
     <div class="footer__bg">
       <div class="footer__container container grid">
         <div>
-          <h1 class="footer__title">Lurek</h1>
-          <span class="footer__subtitle" i18n="home__subtitle">香港城市大学（东莞）本科生</span>
+          <h1 class="footer__title">Lurek Lu</h1>
+          <span class="footer__subtitle" i18n="footer__subtitle">AI 工作流实践者 · 独立研究者 · 创业者</span>
         </div>
 
         <ul class="footer__links">
@@ -957,7 +1154,7 @@
       </div>
 
       <p class="footer__copy">
-        &#169; Lurek.All rights reserved.
+        &#169; Lurek Lu. All rights reserved.
       </p>
     </div>
   </footer>
@@ -979,6 +1176,7 @@
 
   <!-- translate JS -->
   <script src="assets/js/cn-en-translate.js"></script>
+  <script src="assets/js/beyond-work.js"></script>
 </body>
 
 </html>
