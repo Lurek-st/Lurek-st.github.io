@@ -108,7 +108,7 @@ async function createTravelController() {
     slider.querySelectorAll("[data-chapter-target]").forEach((button) => { button.textContent = LABELS[button.dataset.chapterTarget][state.language]; });
     note.textContent = state.language === "cn" ? "\u4e0b\u4e00\u6b21\u51fa\u53d1\u4e5f\u5df2\u7ecf\u5728\u7b79\u5907\u4e2d\u2014\u2014\u897f\u4e9a\u3001\u7533\u6839\u533a\uff0c\u8fd8\u6709\u5317\u7f8e\u3002\u3002\u3002" : "The next journey is already taking shape\u2014West Asia, the Schengen area, and perhaps North America.";
     stage.querySelectorAll(".beyond-work__travel-panel").forEach((panel) => {
-      const item = story(panel.dataset.chapter, panel.dataset.panel); const title = item[state.language];
+      const item = story(panel.dataset.chapter, panel.dataset.panel); const title = item[state.language === "cn" ? "zh" : "en"];
       panel.querySelector(".beyond-work__travel-collapsed").textContent = title;
       panel.querySelector("time").textContent = displayDate(item); panel.querySelector("strong").textContent = title;
       panel.querySelector("small").textContent = state.language === "cn" ? item.secondaryZh || "" : item.secondaryEn || "";
