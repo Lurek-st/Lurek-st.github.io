@@ -24,3 +24,38 @@
   width: min(968px, calc(100% - 48px));
   margin-inline: auto;
 }
+
+/* Stage 3 safety only: component visual treatment arrives in Stage 4. */
+#beyond-work .beyond-work__module + .beyond-work__module {
+  margin-top: 2rem;
+}
+
+#beyond-work img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+#beyond-work p,
+#beyond-work h2,
+#beyond-work li,
+#beyond-work button,
+#beyond-work small,
+#beyond-work span,
+#beyond-work strong {
+  color: var(--bw-text);
+}
+
+#beyond-work button:disabled {
+  opacity: 1;
+}
+
+#beyond-work .beyond-work__road-kicker:empty,
+#beyond-work .beyond-work__think-echo:empty {
+  display: none;
+}
+
+#beyond-work [data-beyond-work-stories-preview],
+#beyond-work [data-beyond-work-travel-mount] {
+  min-width: 0;
+}
