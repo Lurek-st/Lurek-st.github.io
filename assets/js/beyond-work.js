@@ -1,7 +1,7 @@
 /* Beyond Work runtime coordinator. Stage 5 currently enhances Stay Moving only. */
 (() => {
   const SPORT_COPY = {
-    cn: ["羽毛球", "游泳", "匹克球", "网球", "跑步", "冲浪", "Wargame"],
+    cn: ["\u7fbd\u6bdb\u7403", "\u6e38\u6cf3", "\u5339\u514b\u7403", "\u7f51\u7403", "\u8dd1\u6b65", "\u51b2\u6d6a", "Wargame"],
     en: ["Badminton", "Swimming", "Pickleball", "Tennis", "Running", "Surfing", "Wargame"]
   };
 
@@ -13,6 +13,7 @@
   };
 
   let initialized = false;
+  let storiesController = null;
 
   function currentLanguage() {
     return localStorage.getItem("lang") === "cn" ? "cn" : "en";
@@ -141,6 +142,11 @@
     if (initialized) return;
     initialized = true;
     initStayMoving();
+    import("./beyond-work-stories.js")
+      .then(({ initStories }) => initStories())
+      .then((controller) => { storiesController = controller; })
+      .catch((error) => console.warn("Stories D3 runtime unavailable; retaining the static fallback.", error));
+    document.addEventListener("app:languagechange", () => storiesController?.setLanguage());
   }
 
   if (document.readyState === "loading") {
