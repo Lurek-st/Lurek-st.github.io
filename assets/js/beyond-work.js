@@ -15,6 +15,7 @@
   let initialized = false;
   let storiesController = null;
   let travelController = null;
+  let soundtrackController = null;
 
   function currentLanguage() {
     return localStorage.getItem("lang") === "cn" ? "cn" : "en";
@@ -153,6 +154,10 @@
       .then((controller) => { travelController = controller; })
       .catch((error) => console.warn("Travel runtime unavailable; retaining the static fallback.", error));
     document.addEventListener("app:languagechange", (event) => travelController?.setLanguage(event.detail?.lang));
+    import("./beyond-work-soundtrack.js")
+      .then(({ initSoundtrack }) => initSoundtrack())
+      .then((controller) => { soundtrackController = controller; })
+      .catch((error) => console.warn("Soundtrack runtime unavailable; retaining the static soundtrack identity.", error));
   }
 
   if (document.readyState === "loading") {

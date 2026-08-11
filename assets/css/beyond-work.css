@@ -294,6 +294,12 @@ html[lang="zh-CN"] #beyond-work [lang="en"] { display: none; }
 #beyond-work .beyond-work__travel-panel.is-active .beyond-work__travel-collapsed { display: block; opacity: 0; transform: translateY(-7px); pointer-events: none; }
 #beyond-work .beyond-work__travel-panel.is-active .beyond-work__travel-meta { opacity: 1; transform: translateY(0); transition-delay: 90ms; }
 #beyond-work .beyond-work__travel-meta small { display: block; margin-top: 9px; color: rgba(248, 245, 255, .85); font-size: 11.5px; font-weight: 500; letter-spacing: .06em; line-height: 1.38; }
+
+/* 07 runtime enhancement: the existing minimalist control drives one global soundtrack. */
+#beyond-work [data-beyond-work-soundtrack-toggle]:not(:disabled) { cursor: pointer; }
+#beyond-work [data-beyond-work-soundtrack-toggle].is-playing svg > path:first-child { display: none; }
+#beyond-work [data-beyond-work-soundtrack-toggle].is-playing .beyond-work__soundtrack-pause { display: block; }
+#beyond-work [data-beyond-work-soundtrack-toggle]:focus-visible { outline: 2px solid var(--bw-accent); outline-offset: 3px; }
 @media (max-width: 720px) {
   #beyond-work .beyond-work__travel-stage { min-height: 560px; }
   #beyond-work .beyond-work__travel-accordion { height: 540px; flex-direction: column; border-radius: 18px; }
