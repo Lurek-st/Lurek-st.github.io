@@ -1,0 +1,26 @@
+/* Beyond Work foundation — editorial, quiet dark chapter, purple anchor. */
+#beyond-work {
+  --bw-bg: #171522;
+  --bw-text: #f5f4fa;
+  --bw-muted: #9b97ad;
+  --bw-accent: #7353e8;
+  --bw-rule: rgba(235, 230, 255, 0.14);
+
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0;
+  padding-block: clamp(1.5rem, 4vw, 2rem);
+  background: var(--bw-bg);
+  color: var(--bw-text);
+}
+
+#beyond-work *,
+#beyond-work *::before,
+#beyond-work *::after {
+  box-sizing: border-box;
+}
+
+#beyond-work .beyond-work__canvas {
+  width: min(968px, calc(100% - 48px));
+  margin-inline: auto;
+}
