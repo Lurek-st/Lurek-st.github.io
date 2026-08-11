@@ -25,11 +25,13 @@
 
 #beyond-work .beyond-work__canvas { width: min(968px, calc(100% - 48px)); margin-inline: auto; }
 #beyond-work .beyond-work__header { padding-bottom: 4.875rem; text-align: center; }
-#beyond-work .beyond-work__title { margin: 0 0 .625rem; color: var(--bw-text); font: 600 42px/1.1 var(--bw-serif); letter-spacing: .02em; }
+#beyond-work .beyond-work__title { margin: 0 0 28px; color: var(--bw-text); font: 600 42px/1.1 var(--bw-serif); letter-spacing: .02em; }
 #beyond-work .beyond-work__subtitle { max-width: 620px; margin: 0 auto; color: #777389; font: 400 14px/1.65 var(--bw-serif); }
 #beyond-work .beyond-work__module { position: relative; min-width: 0; }
 #beyond-work .beyond-work__module + .beyond-work__module { margin-top: 6.375rem; }
 #beyond-work .beyond-work__folio { position: absolute; top: -3px; left: 0; color: var(--bw-dim); font-size: 10px; font-weight: 500; letter-spacing: .15em; }
+#beyond-work .beyond-work__folio--with-rule { display: flex; width: 100%; align-items: center; gap: 12px; white-space: nowrap; }
+#beyond-work .beyond-work__folio-rule { display: block; height: 1px; flex: 1 1 auto; background: var(--bw-rule); opacity: .72; }
 #beyond-work .beyond-work__module-label { margin: 0 0 1.25rem; color: #c9c4dc; font-size: 11px; font-weight: 600; letter-spacing: .16em; }
 #beyond-work .beyond-work__lead { max-width: 790px; margin: 0; color: var(--bw-text); font: 600 23px/1.55 var(--bw-serif); letter-spacing: 0; }
 #beyond-work .beyond-work__copy { margin: 0; color: var(--bw-muted); font: 400 13px/1.75 var(--bw-serif); }
@@ -62,14 +64,11 @@ html[lang="zh-CN"] #beyond-work [lang="en"] { display: none; }
 
 /* 03 */
 #beyond-work .beyond-work__module--moving { padding: 1.7rem 0 1.4rem; overflow: hidden; }
-#beyond-work .beyond-work__module--moving::before,
-#beyond-work .beyond-work__module--moving::after { position: absolute; right: 0; left: 0; height: 1px; content: ""; background: var(--bw-rule); }
-#beyond-work .beyond-work__module--moving::before { top: 0; }
-#beyond-work .beyond-work__module--moving::after { bottom: 0; }
+#beyond-work .beyond-work__module--moving::after { position: absolute; right: 0; bottom: 0; left: 0; height: 1px; content: ""; background: var(--bw-rule); }
 #beyond-work .beyond-work__module--moving .beyond-work__module-label { margin: 0 0 1.25rem 31px; }
 #beyond-work .beyond-work__ribbon { height: 102px; overflow: hidden; mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent); }
 #beyond-work .beyond-work__ribbon-track { display: flex; width: max-content; height: 100%; will-change: transform; }
-#beyond-work .beyond-work__ribbon-items { display: flex; align-items: center; gap: 58px; width: max-content; height: 102px; margin: 0; padding: 0; list-style: none; white-space: nowrap; }
+#beyond-work .beyond-work__ribbon-items { display: flex; align-items: center; gap: 48px; width: max-content; height: 102px; margin: 0; padding: 0 48px 0 0; list-style: none; white-space: nowrap; }
 #beyond-work .beyond-work__ribbon-items { flex: 0 0 auto; }
 #beyond-work .beyond-work__ribbon-items li { color: #b5afc5; font: 500 22px/1 var(--bw-serif); transition: color 160ms ease, transform 160ms ease; }
 #beyond-work .beyond-work__ribbon-items li:nth-child(1) { transform: translateY(-24px); }
@@ -84,7 +83,6 @@ html[lang="zh-CN"] #beyond-work [lang="en"] { display: none; }
 #beyond-work .beyond-work__play-brick { display: grid; grid-template-columns: 2fr 4fr; gap: 36px; margin: 6.75rem 0; }
 #beyond-work .beyond-work__play-brick .beyond-work__module + .beyond-work__module { margin-top: 0; }
 #beyond-work .beyond-work__module--play { padding-top: 1rem; }
-#beyond-work .beyond-work__module--play::before { position: absolute; top: 0; right: 0; left: 0; height: 1px; content: ""; background: var(--bw-rule); }
 #beyond-work .beyond-work__module--play .beyond-work__module-label { margin: 1.1rem 0 2.25rem; }
 #beyond-work .beyond-work__game-list { margin: 0; padding: 0; list-style: none; counter-reset: game; }
 #beyond-work .beyond-work__game-list li { color: #c8c3d4; counter-increment: game; font: 500 16px/2.15 var(--bw-serif); }
@@ -98,7 +96,6 @@ html[lang="zh-CN"] #beyond-work [lang="en"] { display: none; }
 
 /* 06 */
 #beyond-work .beyond-work__module--stories { margin-bottom: 7.875rem; padding-top: 2rem; }
-#beyond-work .beyond-work__module--stories::before { position: absolute; top: 0; right: 0; left: 0; height: 1px; content: ""; background: var(--bw-rule); }
 #beyond-work .beyond-work__module--stories .beyond-work__module-label { margin-left: 31px; }
 #beyond-work .beyond-work__module--stories .beyond-work__lead { margin-left: 31px; margin-bottom: 2.375rem; }
 #beyond-work .beyond-work__stories-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(300px, 320px); gap: 28px; align-items: center; }
@@ -144,7 +141,6 @@ html[lang="zh-CN"] #beyond-work [lang="en"] { display: none; }
 
 /* 08 */
 #beyond-work .beyond-work__module--road { padding-top: 1.95rem; }
-#beyond-work .beyond-work__module--road::before { position: absolute; top: 0; right: 0; left: 0; height: 1px; content: ""; background: var(--bw-rule); }
 #beyond-work .beyond-work__road-header { margin: 0 0 2.125rem 31px; }
 #beyond-work .beyond-work__road-kicker { margin: 0 0 .65rem; color: #c9c4dc; font-size: 11px; font-weight: 600; letter-spacing: .16em; }
 #beyond-work .beyond-work__road-header h2 { margin: 0; color: var(--bw-text); font: 600 31px/1.1 var(--bw-sans); letter-spacing: -.04em; }
@@ -181,7 +177,7 @@ html[lang="zh-CN"] #beyond-work [lang="en"] { display: none; }
 @media (max-width: 899px) {
   #beyond-work { padding-block: 5.125rem 4.75rem; }
   #beyond-work .beyond-work__header { padding-bottom: 3.4375rem; }
-  #beyond-work .beyond-work__title { font-size: 34px; }
+  #beyond-work .beyond-work__title { margin-bottom: 20px; font-size: 34px; }
   #beyond-work .beyond-work__opening,
   #beyond-work .beyond-work__play-brick,
   #beyond-work .beyond-work__stories-layout { grid-template-columns: 1fr; gap: 35px; }
@@ -200,7 +196,7 @@ html[lang="zh-CN"] #beyond-work [lang="en"] { display: none; }
   #beyond-work .beyond-work__road-header { margin-left: 0; }
   #beyond-work .beyond-work__ribbon,
   #beyond-work .beyond-work__ribbon-items { height: 90px; }
-  #beyond-work .beyond-work__ribbon-items { gap: 34px; }
+  #beyond-work .beyond-work__ribbon-items { gap: 34px; padding-right: 34px; }
   #beyond-work .beyond-work__ribbon-items li { font-size: 19px; }
   #beyond-work .beyond-work__play-brick { margin-bottom: 4.875rem; }
   #beyond-work .beyond-work__stories-layout { gap: 25px; }
@@ -300,6 +296,89 @@ html[lang="zh-CN"] #beyond-work [lang="en"] { display: none; }
 #beyond-work [data-beyond-work-soundtrack-toggle].is-playing svg > path:first-child { display: none; }
 #beyond-work [data-beyond-work-soundtrack-toggle].is-playing .beyond-work__soundtrack-pause { display: block; }
 #beyond-work [data-beyond-work-soundtrack-toggle]:focus-visible { outline: 2px solid var(--bw-accent); outline-offset: 3px; }
+
+/* Beyond Work adopts the formal one-time scroll reveal without touching runtime-owned transforms. */
+:root.js-enabled #beyond-work .beyond-work__header.scroll-animate .beyond-work__title,
+:root.js-enabled #beyond-work .beyond-work__header.scroll-animate .beyond-work__subtitle,
+:root.js-enabled #beyond-work .beyond-work__folio.scroll-animate ~ .beyond-work__module-label,
+:root.js-enabled #beyond-work .beyond-work__folio.scroll-animate ~ .beyond-work__lead,
+:root.js-enabled #beyond-work .beyond-work__folio.scroll-animate ~ .beyond-work__think-echo,
+:root.js-enabled #beyond-work .beyond-work__folio.scroll-animate ~ .beyond-work__copy,
+:root.js-enabled #beyond-work .beyond-work__folio.scroll-animate ~ .beyond-work__companions-media,
+:root.js-enabled #beyond-work .beyond-work__folio.scroll-animate ~ .beyond-work__ribbon,
+:root.js-enabled #beyond-work .beyond-work__folio.scroll-animate ~ .beyond-work__game-list,
+:root.js-enabled #beyond-work .beyond-work__folio.scroll-animate ~ .beyond-work__brick-media,
+:root.js-enabled #beyond-work .beyond-work__folio.scroll-animate ~ .beyond-work__stories-layout .beyond-work__stories-cluster,
+:root.js-enabled #beyond-work .beyond-work__folio.scroll-animate ~ .beyond-work__stories-layout .beyond-work__stories-preview,
+:root.js-enabled #beyond-work .beyond-work__music-folio.scroll-animate ~ .beyond-work__lead,
+:root.js-enabled #beyond-work .beyond-work__music-folio.scroll-animate ~ .beyond-work__copy,
+:root.js-enabled #beyond-work .beyond-work__music-folio.scroll-animate ~ .beyond-work__soundtrack,
+:root.js-enabled #beyond-work .beyond-work__folio.scroll-animate ~ .beyond-work__road-header,
+:root.js-enabled #beyond-work .beyond-work__folio.scroll-animate ~ .beyond-work__travel-slider,
+:root.js-enabled #beyond-work .beyond-work__folio.scroll-animate ~ .beyond-work__travel-stage,
+:root.js-enabled #beyond-work .beyond-work__folio.scroll-animate ~ .beyond-work__travel-note {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 1s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+:root.js-enabled #beyond-work .beyond-work__header.scroll-animate.active .beyond-work__title,
+:root.js-enabled #beyond-work .beyond-work__header.scroll-animate.active .beyond-work__subtitle,
+:root.js-enabled #beyond-work .beyond-work__folio.scroll-animate.active ~ .beyond-work__module-label,
+:root.js-enabled #beyond-work .beyond-work__folio.scroll-animate.active ~ .beyond-work__lead,
+:root.js-enabled #beyond-work .beyond-work__folio.scroll-animate.active ~ .beyond-work__think-echo,
+:root.js-enabled #beyond-work .beyond-work__folio.scroll-animate.active ~ .beyond-work__copy,
+:root.js-enabled #beyond-work .beyond-work__folio.scroll-animate.active ~ .beyond-work__companions-media,
+:root.js-enabled #beyond-work .beyond-work__folio.scroll-animate.active ~ .beyond-work__ribbon,
+:root.js-enabled #beyond-work .beyond-work__folio.scroll-animate.active ~ .beyond-work__game-list,
+:root.js-enabled #beyond-work .beyond-work__folio.scroll-animate.active ~ .beyond-work__brick-media,
+:root.js-enabled #beyond-work .beyond-work__folio.scroll-animate.active ~ .beyond-work__stories-layout .beyond-work__stories-cluster,
+:root.js-enabled #beyond-work .beyond-work__folio.scroll-animate.active ~ .beyond-work__stories-layout .beyond-work__stories-preview,
+:root.js-enabled #beyond-work .beyond-work__music-folio.scroll-animate.active ~ .beyond-work__lead,
+:root.js-enabled #beyond-work .beyond-work__music-folio.scroll-animate.active ~ .beyond-work__copy,
+:root.js-enabled #beyond-work .beyond-work__music-folio.scroll-animate.active ~ .beyond-work__soundtrack,
+:root.js-enabled #beyond-work .beyond-work__folio.scroll-animate.active ~ .beyond-work__road-header,
+:root.js-enabled #beyond-work .beyond-work__folio.scroll-animate.active ~ .beyond-work__travel-slider,
+:root.js-enabled #beyond-work .beyond-work__folio.scroll-animate.active ~ .beyond-work__travel-stage,
+:root.js-enabled #beyond-work .beyond-work__folio.scroll-animate.active ~ .beyond-work__travel-note { opacity: 1; transform: translateY(0); }
+:root.js-enabled #beyond-work .beyond-work__header.scroll-animate .beyond-work__subtitle,
+:root.js-enabled #beyond-work .beyond-work__folio.scroll-animate ~ .beyond-work__lead,
+:root.js-enabled #beyond-work .beyond-work__music-folio.scroll-animate ~ .beyond-work__copy,
+:root.js-enabled #beyond-work .beyond-work__folio.scroll-animate ~ .beyond-work__ribbon,
+:root.js-enabled #beyond-work .beyond-work__folio.scroll-animate ~ .beyond-work__game-list,
+:root.js-enabled #beyond-work .beyond-work__folio.scroll-animate ~ .beyond-work__brick-media,
+:root.js-enabled #beyond-work .beyond-work__folio.scroll-animate ~ .beyond-work__stories-layout .beyond-work__stories-cluster,
+:root.js-enabled #beyond-work .beyond-work__folio.scroll-animate ~ .beyond-work__travel-slider { transition-delay: 120ms; }
+:root.js-enabled #beyond-work .beyond-work__folio.scroll-animate ~ .beyond-work__think-echo,
+:root.js-enabled #beyond-work .beyond-work__folio.scroll-animate ~ .beyond-work__copy,
+:root.js-enabled #beyond-work .beyond-work__folio.scroll-animate ~ .beyond-work__companions-media,
+:root.js-enabled #beyond-work .beyond-work__folio.scroll-animate ~ .beyond-work__stories-layout .beyond-work__stories-preview,
+:root.js-enabled #beyond-work .beyond-work__music-folio.scroll-animate ~ .beyond-work__soundtrack,
+:root.js-enabled #beyond-work .beyond-work__folio.scroll-animate ~ .beyond-work__travel-stage { transition-delay: 220ms; }
+:root.js-enabled #beyond-work .beyond-work__folio.scroll-animate ~ .beyond-work__travel-note { transition-delay: 240ms; }
+:root.js-enabled #beyond-work .beyond-work__module--think:has(> .beyond-work__folio.scroll-animate)::after { opacity: 0; transition: opacity 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) 220ms; }
+:root.js-enabled #beyond-work .beyond-work__module--think:has(> .beyond-work__folio.scroll-animate.active)::after { opacity: 1; }
+@media (prefers-reduced-motion: reduce) {
+  :root.js-enabled #beyond-work .beyond-work__header.scroll-animate .beyond-work__title,
+  :root.js-enabled #beyond-work .beyond-work__header.scroll-animate .beyond-work__subtitle,
+  :root.js-enabled #beyond-work .beyond-work__folio.scroll-animate ~ .beyond-work__module-label,
+  :root.js-enabled #beyond-work .beyond-work__folio.scroll-animate ~ .beyond-work__lead,
+  :root.js-enabled #beyond-work .beyond-work__folio.scroll-animate ~ .beyond-work__think-echo,
+  :root.js-enabled #beyond-work .beyond-work__folio.scroll-animate ~ .beyond-work__copy,
+  :root.js-enabled #beyond-work .beyond-work__folio.scroll-animate ~ .beyond-work__companions-media,
+  :root.js-enabled #beyond-work .beyond-work__folio.scroll-animate ~ .beyond-work__ribbon,
+  :root.js-enabled #beyond-work .beyond-work__folio.scroll-animate ~ .beyond-work__game-list,
+  :root.js-enabled #beyond-work .beyond-work__folio.scroll-animate ~ .beyond-work__brick-media,
+  :root.js-enabled #beyond-work .beyond-work__folio.scroll-animate ~ .beyond-work__stories-layout .beyond-work__stories-cluster,
+  :root.js-enabled #beyond-work .beyond-work__folio.scroll-animate ~ .beyond-work__stories-layout .beyond-work__stories-preview,
+  :root.js-enabled #beyond-work .beyond-work__music-folio.scroll-animate ~ .beyond-work__lead,
+  :root.js-enabled #beyond-work .beyond-work__music-folio.scroll-animate ~ .beyond-work__copy,
+  :root.js-enabled #beyond-work .beyond-work__music-folio.scroll-animate ~ .beyond-work__soundtrack,
+  :root.js-enabled #beyond-work .beyond-work__folio.scroll-animate ~ .beyond-work__road-header,
+  :root.js-enabled #beyond-work .beyond-work__folio.scroll-animate ~ .beyond-work__travel-slider,
+  :root.js-enabled #beyond-work .beyond-work__folio.scroll-animate ~ .beyond-work__travel-stage,
+  :root.js-enabled #beyond-work .beyond-work__folio.scroll-animate ~ .beyond-work__travel-note { opacity: 1; transform: none; transition: none; }
+  :root.js-enabled #beyond-work .beyond-work__module--think:has(> .beyond-work__folio.scroll-animate)::after { opacity: 1; transition: none; }
+}
 @media (max-width: 720px) {
   #beyond-work .beyond-work__travel-stage { min-height: 560px; }
   #beyond-work .beyond-work__travel-accordion { height: 540px; flex-direction: column; border-radius: 18px; }
