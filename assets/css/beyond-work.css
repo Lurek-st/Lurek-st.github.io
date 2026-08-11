@@ -68,7 +68,9 @@ html[lang="zh-CN"] #beyond-work [lang="en"] { display: none; }
 #beyond-work .beyond-work__module--moving::after { bottom: 0; }
 #beyond-work .beyond-work__module--moving .beyond-work__module-label { margin: 0 0 1.25rem 31px; }
 #beyond-work .beyond-work__ribbon { height: 102px; overflow: hidden; mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent); }
+#beyond-work .beyond-work__ribbon-track { display: flex; width: max-content; height: 100%; will-change: transform; }
 #beyond-work .beyond-work__ribbon-items { display: flex; align-items: center; gap: 58px; width: max-content; height: 102px; margin: 0; padding: 0; list-style: none; white-space: nowrap; }
+#beyond-work .beyond-work__ribbon-items { flex: 0 0 auto; }
 #beyond-work .beyond-work__ribbon-items li { color: #b5afc5; font: 500 22px/1 var(--bw-serif); transition: color 160ms ease, transform 160ms ease; }
 #beyond-work .beyond-work__ribbon-items li:nth-child(1) { transform: translateY(-24px); }
 #beyond-work .beyond-work__ribbon-items li:nth-child(2) { transform: translateY(-16px); }
