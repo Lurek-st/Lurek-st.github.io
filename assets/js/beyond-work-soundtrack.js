@@ -3,7 +3,7 @@ const SOUNDTRACK = Object.freeze({
   title: "I Don't Know You",
   artist: "Noni",
   src: "assets/audio/noni-i-dont-know-you.mp3",
-  targetVolume: 0.24,
+  targetVolume: 0.18,
   initialFade: 1500,
   resumeFade: 400,
   pauseFade: 200

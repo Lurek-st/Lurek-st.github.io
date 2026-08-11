@@ -220,7 +220,8 @@ img {
 .header {
   width: 100%;
   position: fixed;
-  bottom: 0;
+  top: 0;
+  bottom: initial;
   left: 0;
   z-index: var(--z-fixed);
   background-color: var(--body-color);
@@ -276,18 +277,75 @@ img {
   color: var(--first-color);
 }
 
-/*mobile devices*/
+/* Mobile navigation: retain the existing menu markup, but expose it as a
+   compact header dropdown rather than an off-screen bottom sheet. */
 @media screen and (max-width:767px) {
+  body {
+    padding-top: var(--header-height);
+    padding-bottom: 0;
+  }
+
+  .nav__btns {
+    gap: .125rem;
+  }
+
+  .nav__toggle,
+  .mobile-translate,
+  .change-theme {
+    width: 2.5rem;
+    height: 2.5rem;
+    margin-right: 0;
+    display: inline-grid;
+    place-items: center;
+  }
+
   .nav__menu {
     position: fixed;
-    bottom: -100%;
-    left: 0;
-    width: 100%;
-    background-color: var(--body-color);
-    padding: 2rem 1.5rem 4rem;
-    box-shadow: 0 -1px 4px rgba(0, 0, 0, .15);
-    border-radius: 1.5rem 1.5rem 0 0;
-    transition: .3s;
+    top: calc(var(--header-height) + .5rem);
+    right: 1rem;
+    left: auto;
+    width: min(20rem, calc(100% - 2rem));
+    padding: .75rem;
+    background-color: var(--container-color);
+    border: 1px solid color-mix(in srgb, var(--text-color) 18%, transparent);
+    border-radius: .75rem;
+    box-shadow: none;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-.5rem);
+    transition: opacity .18s ease, transform .18s ease;
+  }
+
+  .nav__menu.show-menu {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+
+  .nav__menu .nav__list {
+    grid-template-columns: 1fr;
+    gap: .125rem;
+  }
+
+  .nav__menu .nav__link {
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: .625rem;
+    min-height: 2.5rem;
+    padding: .5rem .625rem;
+    text-align: left;
+  }
+
+  .nav__menu .nav__link::before {
+    display: none;
+  }
+
+  .nav__menu .nav__item--translate {
+    display: none;
+  }
+
+  .nav__menu .nav__close {
+    display: none;
   }
 }
 
@@ -361,11 +419,6 @@ img {
 
 .nav__close:hover {
   color: var(--first-color-alt);
-}
-
-/* show menu */
-.show-menu {
-  bottom: 0;
 }
 
 /* Active link */
@@ -2070,11 +2123,9 @@ button.qualification__button {
   appearance: none;
 }
 
-/* NOTE: no display rule is set for nav__toggle / nav__close / mobile-translate
-   here on purpose. Their visibility is controlled exclusively by the media
-   queries (mobile: visible, >=768px: display:none) and the pre-existing
-   .mobile-translate / .nav__btns rules, so the desktop media query keeps
-   hiding the mobile controls. */
+/* NOTE: no base display rule is set for nav__toggle / nav__close /
+   mobile-translate. Their mobile sizing and their desktop visibility are
+   controlled by the corresponding media queries. */
 
 /*==================== FOCUS VISIBLE ====================*/
 /* Keyboard-only focus styles that don't show on mouse click */

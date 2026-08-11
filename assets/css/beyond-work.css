@@ -186,12 +186,11 @@ html[lang="zh-CN"] #beyond-work [lang="en"] { display: none; }
 #beyond-work .beyond-work__music-folio > span:not(:nth-child(2)) { height: 1px; flex: 1 1 auto; background: var(--bw-rule); }
 #beyond-work .beyond-work__module--music .beyond-work__lead { max-width: 620px; color: var(--bw-music-lead); font: 500 clamp(22px, 3.2vw, 35px)/1.25 var(--bw-sans); letter-spacing: -.03em; }
 #beyond-work .beyond-work__module--music > .beyond-work__copy { max-width: 520px; margin-top: 18px; font-size: 13px; line-height: 1.7; }
-#beyond-work .beyond-work__soundtrack { display: flex; width: min(100%, 540px); margin-top: 32px; align-items: center; justify-content: space-between; gap: 20px; text-align: left; }
-#beyond-work .beyond-work__soundtrack > div { min-width: 0; }
-#beyond-work .beyond-work__soundtrack span,
-#beyond-work .beyond-work__soundtrack small { display: block; }
+#beyond-work .beyond-work__soundtrack { width: min(100%, 540px); margin-top: 32px; text-align: left; }
+#beyond-work .beyond-work__soundtrack-frame { display: flex; min-width: 0; padding-block: 12px; align-items: center; justify-content: space-between; gap: 20px; border-block: 1px solid var(--bw-rule); }
+#beyond-work .beyond-work__soundtrack-info { display: flex; min-width: 0; align-items: baseline; gap: 10px; }
 #beyond-work .beyond-work__soundtrack span { overflow: hidden; color: var(--bw-text); font: 600 16px/1.3 var(--bw-sans); letter-spacing: .01em; text-overflow: ellipsis; white-space: nowrap; }
-#beyond-work .beyond-work__soundtrack small { margin-top: 3px; color: var(--bw-muted); font: 400 13px/1.4 var(--bw-sans); }
+#beyond-work .beyond-work__soundtrack small { color: var(--bw-muted); font: 400 13px/1.4 var(--bw-sans); white-space: nowrap; }
 #beyond-work [data-beyond-work-soundtrack-toggle] { display: grid; width: 40px; height: 40px; padding: 0; flex: 0 0 auto; place-items: center; border: 0; background: transparent; color: var(--bw-control); }
 #beyond-work [data-beyond-work-soundtrack-toggle]:disabled { opacity: .35; }
 #beyond-work [data-beyond-work-soundtrack-toggle] svg { width: 18px; height: 18px; fill: currentColor; }

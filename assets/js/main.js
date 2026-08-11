@@ -7,8 +7,8 @@ const navMenu = document.getElementById('nav-menu'),
 /* Validate if constant exists */
 if (navToggle && navMenu) {
   navToggle.addEventListener('click', () => {
-    navMenu.classList.add('show-menu')
-    navToggle.setAttribute('aria-expanded', 'true')
+    const isOpen = navMenu.classList.toggle('show-menu')
+    navToggle.setAttribute('aria-expanded', String(isOpen))
   })
 }
 
@@ -32,6 +32,21 @@ function linkAction() {
   if (navToggle) navToggle.setAttribute('aria-expanded', 'false')
 }
 navLink.forEach(n => n.addEventListener('click', linkAction))
+
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape' && navMenu?.classList.contains('show-menu')) {
+    navMenu.classList.remove('show-menu')
+    navToggle?.setAttribute('aria-expanded', 'false')
+    navToggle?.focus()
+  }
+})
+
+window.addEventListener('resize', () => {
+  if (window.innerWidth >= 768 && navMenu?.classList.contains('show-menu')) {
+    navMenu.classList.remove('show-menu')
+    navToggle?.setAttribute('aria-expanded', 'false')
+  }
+})
 
 /*==================== ACCORDION SKILLS ====================*/
 const skillsContent = document.getElementsByClassName('skills__content'),

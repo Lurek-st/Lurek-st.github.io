@@ -79,7 +79,7 @@
               <p i18n="contact">联系方式</p>
             </a>
           </li>
-          <li class="nav__item">
+          <li class="nav__item nav__item--translate">
             <button type="button" class="nav__link" id="translate" aria-label="切换中英文" title="切换中英文">
               <svg class="icon nav__icon-svg" aria-hidden="true">
                 <use xlink:href="#icon-fanyi"></use>
@@ -1060,8 +1060,10 @@
           <p class="beyond-work__lead" i18n="beyond_work_07_primary">音乐一直在生活的背景里。</p>
           <p class="beyond-work__copy" i18n="beyond_work_07_secondary">我的音乐库里，也已经慢慢攒下了 1900 多首歌。</p>
           <div class="beyond-work__soundtrack" data-beyond-work-soundtrack>
-            <div><span>I Don't Know You</span><small>Noni</small></div>
-            <button type="button" disabled aria-label="Play I Don't Know You" data-beyond-work-soundtrack-toggle><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M8 5.5 18 12 8 18.5Z"></path><path class="beyond-work__soundtrack-pause" d="M7.5 5.5h3.5v13H7.5zm5.5 0h3.5v13H13z"></path></svg></button>
+            <div class="beyond-work__soundtrack-frame">
+              <div class="beyond-work__soundtrack-info"><span>I Don't Know You</span><small>Noni</small></div>
+              <button type="button" disabled aria-label="Play I Don't Know You" data-beyond-work-soundtrack-toggle><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M8 5.5 18 12 8 18.5Z"></path><path class="beyond-work__soundtrack-pause" d="M7.5 5.5h3.5v13H7.5zm5.5 0h3.5v13H13z"></path></svg></button>
+            </div>
           </div>
         </article>
 
