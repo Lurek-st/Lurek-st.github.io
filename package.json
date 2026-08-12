@@ -1,0 +1,14 @@
+{
+  "name": "lurek-personal-website",
+  "private": true,
+  "scripts": {
+    "test:browser": "node tests/browser/site-regression.mjs",
+    "test:browser:update": "node tests/browser/site-regression.mjs --update-snapshots"
+  },
+  "devDependencies": {
+    "pixelmatch": "7.2.0",
+    "playwright": "1.62.0",
+    "pngjs": "7.0.0"
+  }
+}
+

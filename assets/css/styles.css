@@ -1443,8 +1443,12 @@ img {
 }
 
 /* Typing Effect */
-.typing-text {
-  border-right: 2px solid var(--first-color);
+.typing-text__caret {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  background-color: var(--first-color);
+  vertical-align: text-bottom;
   animation: blink 1s infinite;
 }
 
@@ -1452,12 +1456,12 @@ img {
 
   0%,
   50% {
-    border-color: var(--first-color);
+    opacity: 1;
   }
 
   51%,
   100% {
-    border-color: transparent;
+    opacity: 0;
   }
 }
 
@@ -2257,8 +2261,8 @@ button:focus-visible,
     animation: none !important;
   }
 
-  .typing-text {
+  .typing-text__caret {
+    display: none !important;
     animation: none !important;
-    border-right: none !important;
   }
 }

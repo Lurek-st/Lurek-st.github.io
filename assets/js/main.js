@@ -406,7 +406,13 @@ function typeWriter(element, text, speed = 50, runId) {
     }
 
     element.style.opacity = '1'
-    element.innerHTML = ''
+    const typedText = document.createElement('span')
+    typedText.className = 'typing-text__content'
+    const caret = document.createElement('span')
+    caret.className = 'typing-text__caret'
+    caret.setAttribute('aria-hidden', 'true')
+
+    element.replaceChildren(typedText, caret)
     element.classList.add('typing-text')
 
     let i = 0
@@ -415,18 +421,20 @@ function typeWriter(element, text, speed = 50, runId) {
     function type() {
       // Check if animation should be stopped
       if (!isTypingActive || runId !== typingRunId) {
+        caret.remove()
         element.classList.remove('typing-text')
         reject('Animation stopped')
         return
       }
 
       if (i < text.length) {
-        element.innerHTML += text.charAt(i)
+        typedText.textContent += text.charAt(i)
         i++
         animationId = setTimeout(type, speed)
         // Track this animation
         activeAnimations.push(animationId)
       } else {
+        caret.remove()
         element.classList.remove('typing-text')
         resolve()
       }
@@ -453,6 +461,9 @@ function stopAllAnimations() {
   // Remove typing classes from all elements and reset their state
   document.querySelectorAll('.typing-text').forEach(el => {
     el.classList.remove('typing-text')
+  })
+  document.querySelectorAll('.typing-text__caret').forEach(caret => {
+    caret.remove()
   })
 
   // Also reset typing texts elements specifically
