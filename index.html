@@ -176,7 +176,7 @@
       <h2 class="section__title" i18n="about__title">关于我</h2>
       <span class="section__subtitle" i18n="about__subtitle">我的介绍</span>
       <div class="about__container container grid scroll-animate">
-        <img src="assets/img/about.png" alt="Lurek Lu 的个人形象图" class="about__img" />
+        <img data-lazy-src="assets/img/about.png" alt="Lurek Lu 的个人形象图" class="about__img" width="1016" height="1791" loading="lazy" decoding="async" />
 
         <div class="about__data">
           <div class="about__cards">
@@ -242,7 +242,7 @@
             <div class="skills__header" role="button" tabindex="0" aria-expanded="true" aria-controls="skills-list-1">
               <i class="uil uil-robot skills__icon"></i>
               <div>
-                <h1 class="skills__title" i18n="skills__title2">AI 工具与 Agent</h1>
+                <h3 class="skills__title" i18n="skills__title2">AI 工具与 Agent</h3>
                 <span class="skills__subtitle" i18n="skills__years2">超过3年</span>
               </div>
               <i class="uil uil-angle-down skills__arrow"></i>
@@ -287,7 +287,7 @@
             <div class="skills__header" role="button" tabindex="0" aria-expanded="false" aria-controls="skills-list-research">
               <i class="uil uil-flask skills__icon"></i>
               <div>
-                <h1 class="skills__title" i18n="skills__title_research">科研与实验能力</h1>
+                <h3 class="skills__title" i18n="skills__title_research">科研与实验能力</h3>
                 <span class="skills__subtitle" i18n="skills__subtitle_research">持续实践中</span>
               </div>
               <i class="uil uil-angle-down skills__arrow"></i>
@@ -341,7 +341,7 @@
             <div class="skills__header" role="button" tabindex="0" aria-expanded="false" aria-controls="skills-list-5">
               <i class="uil uil-wrench skills__icon"></i>
               <div>
-                <h1 class="skills__title" i18n="skills__title5">插件、Skill 与自动化开发</h1>
+                <h3 class="skills__title" i18n="skills__title5">插件、Skill 与自动化开发</h3>
                 <span class="skills__subtitle" i18n="skills__years5">超过2年</span>
               </div>
               <i class="uil uil-angle-down skills__arrow"></i>
@@ -394,7 +394,7 @@
             <div class="skills__header" role="button" tabindex="0" aria-expanded="false" aria-controls="skills-list-3">
               <i class="uil uil-file-alt skills__icon"></i>
               <div>
-                <h1 class="skills__title" i18n="skills__title3">办公技能</h1>
+                <h3 class="skills__title" i18n="skills__title3">办公技能</h3>
                 <span class="skills__subtitle" i18n="skills__years3">超过3年</span>
               </div>
               <i class="uil uil-angle-down skills__arrow"></i>
@@ -450,7 +450,7 @@
             <div class="skills__header" role="button" tabindex="0" aria-expanded="false" aria-controls="skills-list-4">
               <i class="uil uil-chart skills__icon"></i>
               <div>
-                <h1 class="skills__title" i18n="skills__title4">销售素养</h1>
+                <h3 class="skills__title" i18n="skills__title4">销售素养</h3>
                 <span class="skills__subtitle" i18n="skills__years4">超过1年</span>
               </div>
               <i class="uil uil-angle-down skills__arrow"></i>
@@ -507,7 +507,7 @@
             <div class="skills__header" role="button" tabindex="0" aria-expanded="false" aria-controls="skills-list-2">
               <i class="uil uil-brackets-curly skills__icon"></i>
               <div>
-                <h1 class="skills__title" i18n="skills__title1">前端开发</h1>
+                <h3 class="skills__title" i18n="skills__title1">前端开发</h3>
                 <span class="skills__subtitle" i18n="skills__years">超过2年</span>
               </div>
               <i class="uil uil-angle-down skills__arrow"></i>
@@ -570,7 +570,7 @@
             <div class="skills__header" role="button" tabindex="0" aria-expanded="false" aria-controls="skills-list-6">
               <i class="uil uil-globe skills__icon"></i>
               <div>
-                <h1 class="skills__title" i18n="skills__title6">语言能力</h1>
+                <h3 class="skills__title" i18n="skills__title6">语言能力</h3>
                 <span class="skills__subtitle" i18n="skills__years6">多语种交流</span>
               </div>
               <i class="uil uil-angle-down skills__arrow"></i>
@@ -633,17 +633,17 @@
       <span class="section__subtitle" i18n="qualification__subtitle">学习、实践与成长</span>
       <div class="qualification__container container scroll-animate">
         <div class="qualification__tabs" role="tablist" aria-label="资格标签">
-          <button type="button" class="qualification__button button--flex qualification__active" data-target="#education" role="tab" aria-selected="true" aria-controls="education" id="qualification-tab-education">
+          <button type="button" class="qualification__button button--flex qualification__active" data-target="#education" role="tab" aria-selected="true" aria-controls="education" id="qualification-tab-education" tabindex="0">
             <i class="uil uil-graduation-cap qualification__icon"></i>
             <span i18n="education">教育与训练</span>
           </button>
 
-          <button type="button" class="qualification__button button--flex" data-target="#work" role="tab" aria-selected="false" aria-controls="work" id="qualification-tab-work">
+          <button type="button" class="qualification__button button--flex" data-target="#work" role="tab" aria-selected="false" aria-controls="work" id="qualification-tab-work" tabindex="-1">
             <i class="uil uil-briefcase-alt qualification__icon"></i>
             <span i18n="work">工作与实践</span>
           </button>
 
-          <button type="button" class="qualification__button button--flex" data-target="#certifications" role="tab" aria-selected="false" aria-controls="certifications" id="qualification-tab-certifications">
+          <button type="button" class="qualification__button button--flex" data-target="#certifications" role="tab" aria-selected="false" aria-controls="certifications" id="qualification-tab-certifications" tabindex="-1">
             <i class="uil uil-award qualification__icon"></i>
             <span i18n="certifications">荣誉与认证</span>
           </button>
@@ -872,7 +872,7 @@
           <!--==================== PORTFOLIO 1 ====================-->
 
           <div class="portfolio__content grid swiper-slide">
-            <img src="assets/img/portfolio-robot-calibration.jpg" alt="工业机器人与离线运动学参数标定结果界面 / Industrial robot and offline kinematic calibration results interface" class="portfolio__img" />
+            <img data-lazy-src="assets/img/portfolio-robot-calibration.jpg" alt="工业机器人与离线运动学参数标定结果界面 / Industrial robot and offline kinematic calibration results interface" class="portfolio__img" width="1672" height="941" loading="lazy" decoding="async" />
 
             <div class="portfolio_">
               <h3 class="portfolio__title" i18n="portfolio1__title">
@@ -892,7 +892,7 @@
           <!--==================== PORTFOLIO 2 ====================-->
 
           <div class="portfolio__content grid swiper-slide">
-            <img src="assets/img/portfolio-weather-stock-study.png" alt="天气与股票市场关系研究项目封面 / Weather-stock market relationship study project cover" class="portfolio__img" />
+            <img data-lazy-src="assets/img/portfolio-weather-stock-study.png" alt="天气与股票市场关系研究项目封面 / Weather-stock market relationship study project cover" class="portfolio__img" width="1183" height="657" loading="lazy" decoding="async" />
 
             <div class="portfolio_">
               <h3 class="portfolio__title" i18n="portfolio2__title">
@@ -912,7 +912,7 @@
           <!--==================== PORTFOLIO 3 ====================-->
 
           <div class="portfolio__content grid swiper-slide">
-            <img src="assets/img/portfolio-astock-name-semantics.png" alt="A 股公司名称语义与市场注意力研究项目封面 / A-share company-name semantics and market-attention research project cover" class="portfolio__img" />
+            <img data-lazy-src="assets/img/portfolio-astock-name-semantics.png" alt="A 股公司名称语义与市场注意力研究项目封面 / A-share company-name semantics and market-attention research project cover" class="portfolio__img" width="977" height="541" loading="lazy" decoding="async" />
 
             <div class="portfolio_">
               <h3 class="portfolio__title" i18n="portfolio3__title">
@@ -930,7 +930,7 @@
           <!--==================== PORTFOLIO 4 ====================-->
 
           <div class="portfolio__content grid swiper-slide">
-            <img src="assets/img/portfolio2.jpg" alt="马克思主义与社会思考文章项目封面 / Marxism and social thought writing project cover" class="portfolio__img" />
+            <img data-lazy-src="assets/img/portfolio2.jpg" alt="马克思主义与社会思考文章项目封面 / Marxism and social thought writing project cover" class="portfolio__img" width="1284" height="872" loading="lazy" decoding="async" />
 
             <div class="portfolio_">
               <h3 class="portfolio__title" i18n="portfolio4__title">
@@ -950,7 +950,7 @@
           <!--==================== PORTFOLIO 5 ====================-->
 
           <div class="portfolio__content grid swiper-slide">
-            <img src="assets/img/portfolio-codex-naiwa.jpg" alt="Codex 奶蛙桌宠增强版项目封面 / Enhanced Codex Naiwa Desktop Pet project cover" class="portfolio__img" />
+            <img data-lazy-src="assets/img/portfolio-codex-naiwa.jpg" alt="Codex 奶蛙桌宠增强版项目封面 / Enhanced Codex Naiwa Desktop Pet project cover" class="portfolio__img" width="1290" height="872" loading="lazy" decoding="async" />
 
             <div class="portfolio_">
               <h3 class="portfolio__title" i18n="portfolio5__title">
@@ -1123,7 +1123,7 @@
     <div class="footer__bg">
       <div class="footer__container container grid">
         <div>
-          <h1 class="footer__title">Lurek Lu</h1>
+          <p class="footer__title">Lurek Lu</p>
           <span class="footer__subtitle" i18n="footer__subtitle">AI 工作流实践者 · 独立研究者 · 创业者</span>
         </div>
 
@@ -1160,7 +1160,7 @@
   </footer>
 
   <!--==================== SCROLL TOP ====================-->
-  <a href="#" class="scrollup" id="scroll-up">
+  <a href="#" class="scrollup" id="scroll-up" aria-label="返回顶部" title="返回顶部">
     <i class="uil uil-arrow-up scrollup__icon"></i>
   </a>
   <!--==================== SWIPER JS ====================-->

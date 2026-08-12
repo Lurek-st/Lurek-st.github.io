@@ -94,7 +94,7 @@ async function createTravelController() {
     state.chapter = next;
     stage.querySelectorAll(".beyond-work__travel-chapter").forEach((chapter) => {
       const active = chapter.dataset.chapter === next;
-      chapter.classList.toggle("is-current", active); chapter.setAttribute("aria-hidden", String(!active));
+      chapter.classList.toggle("is-current", active); chapter.setAttribute("aria-hidden", String(!active)); chapter.inert = !active;
     });
     setThumb(next === "near" ? maxX() : 0, animate); syncSlider(next === "near" ? 1 : 0);
   }
@@ -147,6 +147,7 @@ async function createTravelController() {
     if (chapter) setChapter(chapter);
   });
   bindPanels(); updateLanguage(state.language);
+  stage.querySelectorAll(".beyond-work__travel-chapter").forEach((chapter) => { chapter.inert = chapter.dataset.chapter !== state.chapter; });
 
   draggable = Draggable.create(thumb, {
     type: "x", bounds: { minX: 0, maxX: maxX() }, inertia: false,

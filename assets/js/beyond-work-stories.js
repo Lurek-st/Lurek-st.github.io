@@ -175,10 +175,9 @@ async function createStoriesController() {
   }
   function select(id) {
     if (!nodeById.has(id)) return; selectedId = id;
-    buttons.forEach((button) => { const selected = button.dataset.story === id; button.setAttribute("aria-selected", String(selected)); button.classList.toggle("is-selected", selected); });
+    buttons.forEach((button) => { const selected = button.dataset.story === id; button.setAttribute("aria-selected", String(selected)); button.classList.toggle("is-selected", selected); button.tabIndex = selected ? 0 : -1; });
     const nextRequest = ++requestId; preload(id).then((src) => { if (nextRequest === requestId && selectedId === id) renderPreview(id, src); }).catch((error) => console.warn(error.message));
   }
-  function schedulePreload() { const run = () => Object.keys(STORY_ASSETS).forEach((id) => preload(id).catch(() => {})); if ("requestIdleCallback" in window) window.requestIdleCallback(run, { timeout: 1200 }); else setTimeout(run, 400); }
   function refreshLayout() { cancelAnimationFrame(resizeFrame); resizeFrame = requestAnimationFrame(() => start(true)); }
 
   ensurePreviewMarkup();
@@ -192,8 +191,18 @@ async function createStoriesController() {
     button.addEventListener("pointerleave", () => { if (interaction === "hover" && hovered === node) { release(hovered); hovered = null; } });
     button.addEventListener("focus", () => select(node.id));
     button.addEventListener("click", () => { select(node.id); if (interaction === "tap") activate(node, "tap"); });
+    button.addEventListener("keydown", (event) => {
+      const current = buttons.indexOf(button);
+      let next = current;
+      if (["ArrowRight", "ArrowDown"].includes(event.key)) next = (current + 1) % buttons.length;
+      else if (["ArrowLeft", "ArrowUp"].includes(event.key)) next = (current - 1 + buttons.length) % buttons.length;
+      else if (event.key === "Home") next = 0;
+      else if (event.key === "End") next = buttons.length - 1;
+      else return;
+      event.preventDefault(); select(buttons[next].dataset.story); buttons[next].focus();
+    });
   });
   new ResizeObserver(refreshLayout).observe(cluster); window.addEventListener("resize", refreshLayout); motionMedia.addEventListener("change", refreshLayout); finePointerMedia.addEventListener("change", refreshLayout);
-  start(false); select(selectedId); schedulePreload();
+  start(false); select(selectedId);
   return { setLanguage() { updatePreviewLanguage(); if (motionMedia.matches) settle(180); else reheat(.12); }, getState() { return { nodeCount: nodes.length, selectedId, activePreviewId, previewCount: Object.keys(STORY_ASSETS).length, width, height, layout, simulation: 1 }; } };
 }

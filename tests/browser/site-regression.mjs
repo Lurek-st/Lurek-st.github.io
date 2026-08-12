@@ -247,6 +247,164 @@ async function runDeterministicVisualRegression(browser, url) {
   return { snapshotPath: path.relative(repositoryRoot, snapshotPath), diagnostics };
 }
 
+async function runProductionMatrix(browser, url) {
+  const viewports = [
+    { width: 390, height: 844 },
+    { width: 430, height: 932 },
+    { width: 768, height: 1024 },
+    { width: 1024, height: 768 },
+    { width: 1280, height: 800 },
+    { width: 1440, height: 900 },
+    { width: 1920, height: 1080 },
+  ];
+  const results = [];
+
+  for (const viewport of viewports) {
+    const context = await browser.newContext({ viewport, reducedMotion: 'reduce', colorScheme: 'dark' });
+    await primeEnglishDarkMode(context);
+    const page = await context.newPage();
+    const diagnostics = collectPageDiagnostics(page);
+    const badResponses = [];
+    page.on('response', response => {
+      if (response.status() >= 400) badResponses.push({ url: response.url(), status: response.status() });
+    });
+
+    await page.goto(url, { waitUntil: 'load' });
+    await page.evaluate(() => document.fonts.ready);
+    assert(await page.locator('html').getAttribute('lang') === 'en', `${viewport.width}px: initial language is not English.`);
+
+    const structure = await page.evaluate(() => {
+      const ids = Array.from(document.querySelectorAll('[id]')).map(element => element.id);
+      const visible = element => {
+        const style = getComputedStyle(element);
+        const rect = element.getBoundingClientRect();
+        return style.display !== 'none' && style.visibility !== 'hidden' && rect.width > 0 && rect.height > 0;
+      };
+      const unnamed = Array.from(document.querySelectorAll('a, button, input, select, textarea, [role="button"], [tabindex]'))
+        .filter(visible)
+        .filter(element => !(element.getAttribute('aria-label') || element.getAttribute('title') || element.textContent || '').trim())
+        .map(element => `${element.tagName.toLowerCase()}#${element.id}`);
+      return {
+        overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+        duplicateIds: [...new Set(ids.filter((id, index) => ids.indexOf(id) !== index))],
+        missingAlt: document.querySelectorAll('img:not([alt])').length,
+        unnamed,
+        h1Count: document.querySelectorAll('h1').length,
+        brokenLoadedImages: Array.from(document.images)
+          .filter(image => image.getAttribute('src') && image.complete && image.naturalWidth === 0)
+          .map(image => image.getAttribute('src')),
+      };
+    });
+    assert(structure.overflow === 0, `${viewport.width}px: document has ${structure.overflow}px horizontal overflow.`);
+    assert(structure.duplicateIds.length === 0, `${viewport.width}px: duplicate IDs: ${structure.duplicateIds.join(', ')}`);
+    assert(structure.missingAlt === 0, `${viewport.width}px: images without alt text were found.`);
+    assert(structure.unnamed.length === 0, `${viewport.width}px: unnamed controls: ${structure.unnamed.join(', ')}`);
+    assert(structure.h1Count === 1, `${viewport.width}px: expected exactly one H1, found ${structure.h1Count}.`);
+    assert(structure.brokenLoadedImages.length === 0, `${viewport.width}px: broken loaded images: ${structure.brokenLoadedImages.join(', ')}`);
+
+    if (viewport.width < 768) {
+      const menu = page.locator('#nav-menu');
+      const toggle = page.locator('#nav-toggle');
+      assert(await menu.getAttribute('inert') !== null, `${viewport.width}px: closed mobile menu is not inert.`);
+      await toggle.click();
+      assert(await toggle.getAttribute('aria-expanded') === 'true', `${viewport.width}px: mobile menu did not expand.`);
+      assert(await page.evaluate(() => document.activeElement === document.querySelector('#nav-menu .nav__link')), `${viewport.width}px: menu focus did not move to the first link.`);
+      await page.keyboard.press('Escape');
+      assert(await toggle.getAttribute('aria-expanded') === 'false', `${viewport.width}px: Escape did not close the menu.`);
+      assert(await toggle.evaluate(element => document.activeElement === element), `${viewport.width}px: Escape did not restore toggle focus.`);
+    }
+
+    const languageButton = page.locator(viewport.width < 768 ? '#mobile-translate' : '#translate');
+    await languageButton.click();
+    await page.waitForFunction(() => document.documentElement.lang === 'zh-CN');
+    assert((await page.locator('.home__title').textContent()) === '你好，我是 Lurek Lu', `${viewport.width}px: Chinese title did not render.`);
+
+    if (viewport.width === 768) {
+      await page.locator('#beyond-work .beyond-work__module--road').scrollIntoViewIfNeeded();
+      await page.waitForSelector('.beyond-work__travel-slider.is-travel-runtime', { timeout: 15000 });
+      const travelState = await page.evaluate(() => ({
+        inactiveInert: Array.from(document.querySelectorAll('.beyond-work__travel-chapter:not(.is-current)')).every(chapter => chapter.inert),
+        flexDirection: getComputedStyle(document.querySelector('.beyond-work__travel-chapter.is-current .beyond-work__travel-accordion')).flexDirection,
+      }));
+      assert(travelState.inactiveInert, '768px: inactive travel chapter is keyboard-focusable.');
+      assert(travelState.flexDirection === 'column', `768px: travel accordion direction is ${travelState.flexDirection}.`);
+    }
+
+    assert(diagnostics.consoleErrors.length === 0, `${viewport.width}px console errors: ${diagnostics.consoleErrors.join(' | ')}`);
+    assert(diagnostics.pageErrors.length === 0, `${viewport.width}px page errors: ${diagnostics.pageErrors.join(' | ')}`);
+    assert(diagnostics.requestFailures.length === 0, `${viewport.width}px request failures: ${JSON.stringify(diagnostics.requestFailures)}`);
+    assert(badResponses.length === 0, `${viewport.width}px HTTP errors: ${JSON.stringify(badResponses)}`);
+    results.push({ viewport, structure, diagnostics, badResponses });
+    await context.close();
+  }
+  return results;
+}
+
+async function runCriticalInteractions(browser, url) {
+  const context = await browser.newContext({
+    viewport: { width: 1440, height: 900 },
+    reducedMotion: 'reduce',
+    colorScheme: 'dark',
+  });
+  await primeEnglishDarkMode(context);
+  const page = await context.newPage();
+  const diagnostics = collectPageDiagnostics(page);
+  const audioResponses = [];
+  page.on('response', response => {
+    if (new URL(response.url()).pathname.endsWith('.mp3')) audioResponses.push({ url: response.url(), status: response.status() });
+  });
+
+  await page.goto(url, { waitUntil: 'load' });
+  await page.evaluate(() => document.fonts.ready);
+  assert((await page.locator('img[data-lazy-src]').count()) >= 6, 'Deferred images loaded before becoming visible.');
+  assert(audioResponses.length === 0, 'Soundtrack loaded without a user gesture.');
+
+  const selectedTab = page.locator('.qualification__button[aria-selected="true"]');
+  assert(await selectedTab.getAttribute('tabindex') === '0', 'Selected qualification tab is not in the tab order.');
+  assert(await page.locator('.qualification__button[tabindex="-1"]').count() === 2, 'Inactive qualification tabs are in the tab order.');
+  await selectedTab.focus();
+  await page.keyboard.press('ArrowRight');
+  assert(await page.locator('#qualification-tab-work').getAttribute('aria-selected') === 'true', 'Qualification ArrowRight navigation failed.');
+  assert(await page.locator('#qualification-tab-work').getAttribute('tabindex') === '0', 'Qualification roving tabindex did not advance.');
+
+  const aboutImage = page.locator('.about__img');
+  await aboutImage.scrollIntoViewIfNeeded();
+  await page.waitForFunction(() => document.querySelector('.about__img')?.naturalWidth > 0);
+  assert(await aboutImage.getAttribute('src') === 'assets/img/about.png', 'About image did not load on visibility.');
+
+  await page.locator('#portfolio').scrollIntoViewIfNeeded();
+  await page.waitForFunction(() => Array.from(document.querySelectorAll('#portfolio img')).some(image => image.naturalWidth > 0));
+
+  await page.locator('#beyond-work .beyond-work__module--stories').scrollIntoViewIfNeeded();
+  await page.waitForSelector('.beyond-work__stories-cluster.is-stories-runtime', { timeout: 15000 });
+  const storyOptions = page.locator('.beyond-work__stories-cluster [role="option"]');
+  assert(await storyOptions.count() === 11, 'Story selector option count changed.');
+  assert(await page.locator('.beyond-work__stories-cluster [role="option"][tabindex="0"]').count() === 1, 'Story selector must expose one roving tab stop.');
+  const storyBefore = await page.locator('.beyond-work__stories-cluster [aria-selected="true"]').getAttribute('data-story');
+  await page.locator('.beyond-work__stories-cluster [aria-selected="true"]').focus();
+  await page.keyboard.press('ArrowRight');
+  const storyAfter = await page.locator('.beyond-work__stories-cluster [aria-selected="true"]').getAttribute('data-story');
+  assert(storyAfter && storyAfter !== storyBefore, 'Story ArrowRight navigation failed.');
+
+  const soundtrack = page.locator('[data-beyond-work-soundtrack-toggle]');
+  await soundtrack.scrollIntoViewIfNeeded();
+  await soundtrack.waitFor({ state: 'visible' });
+  await page.waitForFunction(() => !document.querySelector('[data-beyond-work-soundtrack-toggle]')?.disabled, null, { timeout: 15000 });
+  await soundtrack.click();
+  await page.waitForFunction(() => document.querySelector('[data-beyond-work-soundtrack-toggle]')?.getAttribute('aria-pressed') === 'true', null, { timeout: 15000 });
+  assert(audioResponses.length === 1 && audioResponses[0].status === 200, `First soundtrack click produced ${JSON.stringify(audioResponses)}.`);
+  await soundtrack.click();
+  await page.waitForFunction(() => document.querySelector('[data-beyond-work-soundtrack-toggle]')?.getAttribute('aria-pressed') === 'false');
+  assert(audioResponses.length === 1, 'Pausing the soundtrack triggered another audio request.');
+
+  assert(diagnostics.consoleErrors.length === 0, `Critical interactions console errors: ${diagnostics.consoleErrors.join(' | ')}`);
+  assert(diagnostics.consoleWarnings.length === 0, `Critical interactions console warnings: ${diagnostics.consoleWarnings.join(' | ')}`);
+  assert(diagnostics.pageErrors.length === 0, `Critical interactions page errors: ${diagnostics.pageErrors.join(' | ')}`);
+  assert(diagnostics.requestFailures.length === 0, `Critical interactions request failures: ${JSON.stringify(diagnostics.requestFailures)}`);
+  await context.close();
+  return { audioResponses, diagnostics };
+}
+
 const server = createStaticServer();
 let browser;
 const result = { status: 'FAIL' };
@@ -258,6 +416,8 @@ try {
   result.url = url;
   result.typewriter = await runTypewriterInteraction(browser, url);
   result.visual = await runDeterministicVisualRegression(browser, url);
+  result.productionMatrix = await runProductionMatrix(browser, url);
+  result.criticalInteractions = await runCriticalInteractions(browser, url);
   result.status = 'PASS';
 } catch (error) {
   result.error = error instanceof Error ? error.stack : String(error);

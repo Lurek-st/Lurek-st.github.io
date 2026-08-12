@@ -67,6 +67,7 @@ async function createSoundtrack() {
     clearPause();
     const transition = ++transitionId;
     pendingStart = { transition, kind, fadeDuration };
+    if (howl.state() === "unloaded") { setState("loading"); howl.load(); }
     setVolume(0);
     const id = typeof soundId === "number" ? howl.play(soundId) : howl.play();
     if (typeof id === "number") soundId = id;
@@ -129,13 +130,13 @@ async function createSoundtrack() {
       navigator.mediaSession.setActionHandler("pause", pauseFromUser);
     }
     howl = new window.Howl({
-      src: [SOUNDTRACK.src], loop: true, volume: 0, preload: true,
-      onload: () => { setState("paused"); start("initial", SOUNDTRACK.initialFade); },
+      src: [SOUNDTRACK.src], loop: true, volume: 0, preload: false,
       onloaderror: (_id, error) => { console.warn("Soundtrack audio unavailable.", error); setState("error"); },
       onplay: onPlay,
       onplayerror: () => { if (!isPlaying() && !userPaused) setState("autoplay-blocked"); },
       onunlock: () => { if (state === "autoplay-blocked" && !userPaused) start("fallback", SOUNDTRACK.initialFade); }
     });
+    setState("paused");
   } catch (error) {
     console.warn("Soundtrack runtime unavailable; retaining the static soundtrack identity.", error);
     setState("error");
