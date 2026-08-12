@@ -3,12 +3,63 @@ const navMenu = document.getElementById('nav-menu'),
   navToggle = document.getElementById('nav-toggle'),
   navClose = document.getElementById('nav-close');
 
+const accessibleLabels = {
+  cn: {
+    closeMenu: '\u5173\u95ed\u83dc\u5355',
+    openMenu: '\u6253\u5f00\u83dc\u5355',
+    scrollTop: '\u8fd4\u56de\u9876\u90e8',
+    switchLanguage: '\u5207\u6362\u5230\u82f1\u6587',
+    toggleTheme: '\u5207\u6362\u6df1\u8272/\u6d45\u8272\u4e3b\u9898'
+  },
+  en: {
+    closeMenu: 'Close menu',
+    openMenu: 'Open menu',
+    scrollTop: 'Back to top',
+    switchLanguage: 'Switch to Chinese',
+    toggleTheme: 'Toggle dark/light theme'
+  }
+}
+
+function getInterfaceLanguage() {
+  return localStorage.getItem('lang') === 'cn' ? 'cn' : 'en'
+}
+
+function updateAccessibleLabels(lang = getInterfaceLanguage()) {
+  const labels = accessibleLabels[lang === 'cn' ? 'cn' : 'en']
+  const expanded = navToggle?.getAttribute('aria-expanded') === 'true'
+  const toggleLabel = expanded ? labels.closeMenu : labels.openMenu
+  navToggle?.setAttribute('aria-label', toggleLabel)
+  navToggle?.setAttribute('title', toggleLabel)
+  navClose?.setAttribute('aria-label', labels.closeMenu)
+  navClose?.setAttribute('title', labels.closeMenu)
+  document.querySelectorAll('#translate, #mobile-translate').forEach(button => {
+    button.setAttribute('aria-label', labels.switchLanguage)
+    button.setAttribute('title', labels.switchLanguage)
+  })
+  const themeButton = document.getElementById('theme-button')
+  themeButton?.setAttribute('aria-label', labels.toggleTheme)
+  themeButton?.setAttribute('title', labels.toggleTheme)
+  const scrollTop = document.getElementById('scroll-up')
+  scrollTop?.setAttribute('aria-label', labels.scrollTop)
+  scrollTop?.setAttribute('title', labels.scrollTop)
+}
+
+function setMobileMenuState(open, { moveFocus = false } = {}) {
+  if (!navMenu) return
+  const isMobile = window.innerWidth < 768
+  const expanded = isMobile && open
+  navMenu.classList.toggle('show-menu', expanded)
+  navMenu.inert = isMobile && !expanded
+  navToggle?.setAttribute('aria-expanded', String(expanded))
+  updateAccessibleLabels()
+  if (expanded && moveFocus) navMenu.querySelector('.nav__link')?.focus()
+}
+
 /*===== MENU SHOW =====*/
 /* Validate if constant exists */
 if (navToggle && navMenu) {
   navToggle.addEventListener('click', () => {
-    const isOpen = navMenu.classList.toggle('show-menu')
-    navToggle.setAttribute('aria-expanded', String(isOpen))
+    setMobileMenuState(!navMenu.classList.contains('show-menu'), { moveFocus: true })
   })
 }
 
@@ -16,8 +67,8 @@ if (navToggle && navMenu) {
 /* Validate if constant exists */
 if (navClose && navMenu) {
   navClose.addEventListener('click', () => {
-    navMenu.classList.remove('show-menu')
-    if (navToggle) navToggle.setAttribute('aria-expanded', 'false')
+    setMobileMenuState(false)
+    navToggle?.focus()
   })
 }
 
@@ -28,25 +79,23 @@ function linkAction() {
   const navMenu = document.getElementById('nav-menu')
   if (!navMenu) return
   // 点击每个菜单链接后收起菜单栏
-  navMenu.classList.remove('show-menu')
-  if (navToggle) navToggle.setAttribute('aria-expanded', 'false')
+  setMobileMenuState(false)
 }
 navLink.forEach(n => n.addEventListener('click', linkAction))
 
 document.addEventListener('keydown', (event) => {
   if (event.key === 'Escape' && navMenu?.classList.contains('show-menu')) {
-    navMenu.classList.remove('show-menu')
-    navToggle?.setAttribute('aria-expanded', 'false')
+    setMobileMenuState(false)
     navToggle?.focus()
   }
 })
 
 window.addEventListener('resize', () => {
-  if (window.innerWidth >= 768 && navMenu?.classList.contains('show-menu')) {
-    navMenu.classList.remove('show-menu')
-    navToggle?.setAttribute('aria-expanded', 'false')
-  }
+  setMobileMenuState(window.innerWidth < 768 && navMenu?.classList.contains('show-menu'))
 })
+
+setMobileMenuState(false)
+document.addEventListener('app:languagechange', event => updateAccessibleLabels(event.detail?.lang))
 
 /*==================== ACCORDION SKILLS ====================*/
 const skillsContent = document.getElementsByClassName('skills__content'),
@@ -170,9 +219,11 @@ function activateQualificationTab(tab) {
   tabs.forEach(t => {
     t.classList.remove('qualification__active')
     t.setAttribute('aria-selected', 'false')
+    t.tabIndex = -1
   })
   tab.classList.add('qualification__active')
   tab.setAttribute('aria-selected', 'true')
+  tab.tabIndex = 0
 }
 
 tabs.forEach(tab => {
@@ -231,6 +282,31 @@ if (typeof Swiper !== 'undefined' && swiperContainer) {
     },
   });
 }
+
+function initDeferredImages() {
+  const images = document.querySelectorAll('img[data-lazy-src]')
+  const load = image => {
+    if (!image.dataset.lazySrc) return
+    image.src = image.dataset.lazySrc
+    delete image.dataset.lazySrc
+  }
+
+  if (!('IntersectionObserver' in window)) {
+    images.forEach(load)
+    return
+  }
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return
+      load(entry.target)
+      observer.unobserve(entry.target)
+    })
+  })
+  images.forEach(image => observer.observe(image))
+}
+
+initDeferredImages()
 
 
 /*==================== SCROLL SECTIONS ACTIVE LINK ====================*/
@@ -406,7 +482,25 @@ function typeWriter(element, text, speed = 50, runId) {
     }
 
     element.style.opacity = '1'
-    element.innerHTML = ''
+    let typedText = element.querySelector('.typing-text__content')
+    let rendered = element.querySelector('.typing-text__rendered')
+    if (!typedText || !rendered) {
+      const reserve = document.createElement('span')
+      reserve.className = 'typing-text__reserve'
+      reserve.textContent = text
+      rendered = document.createElement('span')
+      rendered.className = 'typing-text__rendered'
+      typedText = document.createElement('span')
+      typedText.className = 'typing-text__content'
+      rendered.append(typedText)
+      element.replaceChildren(reserve, rendered)
+    }
+    const caret = document.createElement('span')
+    caret.className = 'typing-text__caret'
+    caret.setAttribute('aria-hidden', 'true')
+
+    typedText.textContent = ''
+    rendered.append(caret)
     element.classList.add('typing-text')
 
     let i = 0
@@ -415,18 +509,20 @@ function typeWriter(element, text, speed = 50, runId) {
     function type() {
       // Check if animation should be stopped
       if (!isTypingActive || runId !== typingRunId) {
+        element.replaceChildren(document.createTextNode(typedText.textContent))
         element.classList.remove('typing-text')
         reject('Animation stopped')
         return
       }
 
       if (i < text.length) {
-        element.innerHTML += text.charAt(i)
+        typedText.textContent += text.charAt(i)
         i++
         animationId = setTimeout(type, speed)
         // Track this animation
         activeAnimations.push(animationId)
       } else {
+        element.replaceChildren(document.createTextNode(text))
         element.classList.remove('typing-text')
         resolve()
       }
@@ -450,8 +546,10 @@ function stopAllAnimations() {
   activeAnimations.forEach(id => clearTimeout(id))
   activeAnimations = []
 
-  // Remove typing classes from all elements and reset their state
+  // Normalize reserved/animated markup back to its currently visible text.
   document.querySelectorAll('.typing-text').forEach(el => {
+    const visibleText = el.querySelector('.typing-text__content')?.textContent || ''
+    el.replaceChildren(document.createTextNode(visibleText))
     el.classList.remove('typing-text')
   })
 
@@ -474,6 +572,24 @@ function displayFullTypingTexts(currentLang = getCurrentLanguage()) {
   })
 }
 
+function reserveTypingLayout(targetLang) {
+  typingTexts.forEach(item => {
+    if (!item.element) return
+    const text = targetLang === 'cn' ? item.textCn : item.text
+    const reserve = document.createElement('span')
+    reserve.className = 'typing-text__reserve'
+    reserve.textContent = text
+    const rendered = document.createElement('span')
+    rendered.className = 'typing-text__rendered'
+    const typedText = document.createElement('span')
+    typedText.className = 'typing-text__content'
+    rendered.append(typedText)
+    item.element.replaceChildren(reserve, rendered)
+    item.element.classList.add('typing-text')
+    item.element.style.opacity = '0'
+  })
+}
+
 async function startTypingAnimation(targetLang = getCurrentLanguage()) {
   // Stop all existing animations first
   stopAllAnimations()
@@ -487,6 +603,7 @@ async function startTypingAnimation(targetLang = getCurrentLanguage()) {
 
   // Enable typing
   isTypingActive = true
+  reserveTypingLayout(targetLang)
 
   // First delay for initial start
   await new Promise(resolve => setTimeout(resolve, 500))
@@ -545,23 +662,16 @@ function handleLanguageChange(event) {
   }
 
   languageChangeTimeout = setTimeout(() => {
-    // Reset all text elements
-    typingTexts.forEach(item => {
-      if (item.element) {
-        item.element.style.opacity = '0'
-        item.element.innerHTML = ''
-        item.element.classList.remove('typing-text')
-      }
-    })
-
     // Reset about cards
     const aboutCards = document.querySelectorAll('.about__card')
     aboutCards.forEach(card => {
       card.classList.remove('active')
     })
 
-    // Restart typing animation with increased delay
-    setTimeout(() => startTypingAnimation(targetLang), 800)
+    // Keep the translated text in flow until the web fonts are stable, then
+    // reserve the final layout synchronously before restarting the animation.
+    const fontsReady = document.fonts?.ready || Promise.resolve()
+    fontsReady.then(() => startTypingAnimation(targetLang))
 
     // Re-trigger about card animations if section is visible
     setTimeout(() => {

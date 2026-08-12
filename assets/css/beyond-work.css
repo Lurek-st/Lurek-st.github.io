@@ -335,6 +335,12 @@ html[lang="zh-CN"] #beyond-work [lang="en"] { display: none; }
 #beyond-work .beyond-work__travel-chapter.is-current { position: relative; opacity: 1; pointer-events: auto; }
 #beyond-work .beyond-work__travel-panel { appearance: none; flex: 1 1 0; padding: 0; border: 0; border-right: 1px solid rgba(255, 255, 255, .15); color: var(--bw-media-overlay-text); cursor: pointer; text-align: left; transition: flex-grow 480ms cubic-bezier(.22, 1, .36, 1); }
 #beyond-work .beyond-work__travel-panel.is-active { flex-grow: 3.25; cursor: default; }
+
+@media (min-width: 721px) and (max-width: 899px) {
+  #beyond-work .beyond-work__travel-panel { flex: 0 0 80px; min-height: 72px; border-right: 0; border-bottom: 1px solid rgba(255, 255, 255, .15); transition: flex-basis 480ms cubic-bezier(.22, 1, .36, 1); }
+  #beyond-work .beyond-work__travel-panel:last-child { border-bottom: 0; }
+  #beyond-work .beyond-work__travel-panel.is-active { flex: 1 1 264px; }
+}
 #beyond-work .beyond-work__travel-ambient { z-index: 0; }
 #beyond-work .beyond-work__travel-image { z-index: 1; }
 #beyond-work .beyond-work__travel-shade { z-index: 2; }
