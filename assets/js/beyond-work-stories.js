@@ -9,7 +9,7 @@ const STORY_ASSETS = {
   dad: "assets/img/beyond-work/stories/american-dad.jpg",
   "bad-guys": "assets/img/beyond-work/stories/the-bad-guys.jpg",
   pokemon: "assets/img/beyond-work/stories/pokemon.jpg",
-  "star-wars": "assets/img/beyond-work/stories/star-wars.jpg",
+  "star-wars": "assets/img/beyond-work/stories/marvel.jpg",
   kingsman: "assets/img/beyond-work/stories/kingsman.jpg",
   futurama: "assets/img/beyond-work/stories/futurama.jpg"
 };
