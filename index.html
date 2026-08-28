@@ -176,48 +176,66 @@
       <h2 class="section__title" i18n="about__title">关于我</h2>
       <span class="section__subtitle" i18n="about__subtitle">我的介绍</span>
       <div class="about__container container grid scroll-animate">
-        <img data-lazy-src="assets/img/about.png" alt="Lurek Lu 的个人形象图" class="about__img" width="1016" height="1791" loading="lazy" decoding="async" />
+        <figure class="about__portrait">
+          <img data-lazy-src="assets/img/about-portrait.jpg" alt="Lurek Lu 的个人形象图" class="about__img" width="2160" height="3840" loading="lazy" decoding="async" />
+        </figure>
 
         <div class="about__data">
-          <div class="about__cards">
-            <div class="about__card about__card-1">
-              <div class="about__card-icon">
-                <i class="uil uil-globe"></i>
+          <div class="about__reel" data-about-reel>
+            <div class="about__cards" data-about-reel-viewport>
+              <div class="about__cards-track" data-about-reel-track>
+              <div class="about__card about__card-1" data-about-reel-card data-reel-index="0" tabindex="0">
+                <div class="about__card-icon">
+                  <i class="uil uil-globe"></i>
+                </div>
+                <div class="about__card-content">
+                  <h3 class="about__card-title" i18n="about__card1_title">数字游民</h3>
+                  <p class="about__card-description" i18n="about__card1_desc">长期使用 AI Agent 与各类数字工具提升自己的工作效率，同时为不同类型的客户提供远程支持与数字化服务。</p>
+                </div>
               </div>
-              <div class="about__card-content">
-                <h3 class="about__card-title" i18n="about__card1_title">数字游民</h3>
-                <p class="about__card-description" i18n="about__card1_desc">长期使用 AI Agent 与各类数字工具提升自己的工作效率，同时为不同类型的客户提供远程支持与数字化服务。</p>
+
+              <div class="about__card about__card-2" data-about-reel-card data-reel-index="1" tabindex="0">
+                <div class="about__card-icon">
+                  <i class="uil uil-brackets-curly"></i>
+                </div>
+                <div class="about__card-content">
+                  <h3 class="about__card-title" i18n="about__card2_title">工具与应用开发</h3>
+                  <p class="about__card-description" i18n="about__card2_desc">围绕实际需求开发插件、Skills、轻量工具与 Web 应用，并持续探索 Web2、Web3 与 AI 辅助开发工作流。</p>
+                </div>
+              </div>
+
+              <div class="about__card about__card-3" data-about-reel-card data-reel-index="2" tabindex="0">
+                <div class="about__card-icon">
+                  <i class="uil uil-robot"></i>
+                </div>
+                <div class="about__card-content">
+                  <h3 class="about__card-title" i18n="about__card3_title">工业机器人与智能制造</h3>
+                  <p class="about__card-description" i18n="about__card3_desc">围绕工业机器人标定、运动控制与智能制造场景开展学习和项目实践，重点关注系统精度、稳定性以及真实工程部署。</p>
+                </div>
+              </div>
+
+              <div class="about__card about__card-4" data-about-reel-card data-reel-index="3" tabindex="0">
+                <div class="about__card-icon">
+                  <i class="uil uil-file-alt"></i>
+                </div>
+                <div class="about__card-content">
+                  <h3 class="about__card-title" i18n="about__card4_title">独立研究与写作</h3>
+                  <p class="about__card-description" i18n="about__card4_desc">围绕经济、社会、科技等议题开展独立研究与长期思考，并尝试通过文章、研究报告和论文等形式沉淀观点、证据与结论。</p>
+                </div>
+              </div>
               </div>
             </div>
 
-            <div class="about__card about__card-2">
-              <div class="about__card-icon">
-                <i class="uil uil-brackets-curly"></i>
+            <div class="about__reel-controls" data-about-reel-controls role="group" aria-label="关于卡片控制">
+              <div class="about__indicators" data-about-reel-indicators>
+                <button type="button" class="about__indicator is-active" data-about-reel-indicator data-reel-target="0" aria-label="显示第 1 张关于卡片" aria-current="true"></button>
+                <button type="button" class="about__indicator" data-about-reel-indicator data-reel-target="1" aria-label="显示第 2 张关于卡片" aria-current="false"></button>
+                <button type="button" class="about__indicator" data-about-reel-indicator data-reel-target="2" aria-label="显示第 3 张关于卡片" aria-current="false"></button>
+                <button type="button" class="about__indicator" data-about-reel-indicator data-reel-target="3" aria-label="显示第 4 张关于卡片" aria-current="false"></button>
               </div>
-              <div class="about__card-content">
-                <h3 class="about__card-title" i18n="about__card2_title">工具与应用开发</h3>
-                <p class="about__card-description" i18n="about__card2_desc">围绕实际需求开发插件、Skills、轻量工具与 Web 应用，并持续探索 Web2、Web3 与 AI 辅助开发工作流。</p>
-              </div>
-            </div>
-
-            <div class="about__card about__card-3">
-              <div class="about__card-icon">
-                <i class="uil uil-robot"></i>
-              </div>
-              <div class="about__card-content">
-                <h3 class="about__card-title" i18n="about__card3_title">工业机器人与智能制造</h3>
-                <p class="about__card-description" i18n="about__card3_desc">围绕工业机器人标定、运动控制与智能制造场景开展学习和项目实践，重点关注系统精度、稳定性以及真实工程部署。</p>
-              </div>
-            </div>
-
-            <div class="about__card about__card-4">
-              <div class="about__card-icon">
-                <i class="uil uil-file-alt"></i>
-              </div>
-              <div class="about__card-content">
-                <h3 class="about__card-title" i18n="about__card4_title">独立研究与写作</h3>
-                <p class="about__card-description" i18n="about__card4_desc">围绕经济、社会、科技等议题开展独立研究与长期思考，并尝试通过文章、研究报告和论文等形式沉淀观点、证据与结论。</p>
-              </div>
+              <button type="button" class="about__reel-toggle" data-about-reel-toggle data-paused="false" aria-label="暂停关于卡片自动播放" title="暂停关于卡片自动播放" aria-pressed="false">
+                <i class="uil uil-pause" aria-hidden="true"></i>
+              </button>
             </div>
           </div>
 
