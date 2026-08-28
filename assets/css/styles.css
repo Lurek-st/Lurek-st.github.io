@@ -59,6 +59,7 @@
 
   --wolf-bg: #b79cdf;
   --wolf-img-brightness: 0.95;
+  --about-portrait-brightness: 0.96;
 }
 
 /* Font size for large devices */
@@ -90,6 +91,7 @@ body.dark-theme {
 
   --wolf-bg: #8a6cae;
   --wolf-img-brightness: 0.7;
+  --about-portrait-brightness: 0.88;
 }
 
 body {
@@ -568,106 +570,106 @@ img {
 }
 
 /*==================== ABOUT ====================*/
-.about__img {
-  width: 200px;
-  border-radius: .5rem;
+.about__container {
+  width: calc(100% - 3rem);
+  max-width: 968px;
+  margin-left: auto;
+  margin-right: auto;
+  grid-template-columns: 1fr;
+  row-gap: 2.5rem;
+}
+
+.about__portrait {
+  width: min(76vw, 320px);
+  max-width: 100%;
+  margin: 0 auto;
   justify-self: center;
   align-self: center;
-  transition: filter 0.3s ease;
-  filter: brightness(var(--wolf-img-brightness));
+  overflow: hidden;
+  border-radius: .75rem;
+  background-color: transparent;
+  box-shadow: none;
+}
+
+.about__img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: inherit;
+  filter: brightness(var(--about-portrait-brightness));
+  transition: transform .45s cubic-bezier(.22, .61, .36, 1), filter .45s ease;
+  will-change: transform;
+}
+
+.about__portrait:hover .about__img,
+.about__portrait:focus-within .about__img {
+  transform: scale(1.012);
+  filter: brightness(1);
+}
+
+.about__data {
+  min-width: 0;
+  width: 100%;
+}
+
+.about__reel {
+  --about-reel-safe-left: 1rem;
+  --about-reel-safe-right: 2.5rem;
+  min-width: 0;
+  width: 100%;
+  overflow: visible;
 }
 
 .about__cards {
   display: grid;
   gap: 1.5rem;
   margin-bottom: var(--mb-2-5);
+  min-width: 0;
 }
 
 .about__card {
   background-color: var(--container-color);
+  border: 1px solid rgba(var(--first-color-rgb), .1);
   border-radius: 1rem;
   padding: 1.5rem;
-  box-shadow: 0 4px 25px rgba(14, 36, 49, 0.15);
-  transition: opacity 1.0s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-    transform 1.0s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  opacity: 0;
-  transform: translateY(50px);
+  box-shadow: 0 12px 30px rgba(14, 36, 49, .12);
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 1rem;
   position: relative;
   overflow: hidden;
+  min-height: 12.5rem;
   cursor: pointer;
 }
 
-.about__card.active {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.about__card-1.active {
-  transition-delay: 0.1s;
-}
-
-.about__card-2.active {
-  transition-delay: 0.3s;
-}
-
-.about__card-3.active {
-  transition-delay: 0.5s;
-}
-
-.about__card-4.active {
-  transition-delay: 0.7s;
-}
-
-.about__card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(var(--first-color-rgb), 0.1), transparent);
-  transition: left 0.6s ease;
-  z-index: 1;
-}
-
-.about__card:hover::before {
-  left: 100%;
-}
-
 .about__card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-  transition: transform 0.1s ease, box-shadow 0.1s ease !important;
+  box-shadow: 0 16px 34px rgba(14, 36, 49, .18);
+}
+
+.about__card:focus-visible {
+  outline: 2px solid var(--first-color);
+  outline-offset: 3px;
 }
 
 .about__card-icon {
+  flex: 0 0 3.75rem;
   font-size: 2rem;
   color: var(--first-color);
-  min-width: 60px;
-  height: 60px;
+  width: 3.75rem;
+  height: 3.75rem;
   background: rgba(var(--first-color-rgb), 0.1);
   border-radius: 0.75rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.2s ease;
+  transition: background-color .25s ease, color .25s ease, transform .25s ease;
   position: relative;
-  z-index: 2;
-}
-
-.about__card:hover .about__card-icon {
-  background: var(--first-color);
-  color: white;
-  transform: scale(1.1);
 }
 
 .about__card-content {
   flex: 1;
+  min-width: 0;
   position: relative;
-  z-index: 2;
 }
 
 .about__card-title {
@@ -681,6 +683,263 @@ img {
   font-size: var(--normal-font-size);
   color: var(--text-color);
   line-height: 1.6;
+  overflow-wrap: break-word;
+}
+
+/* Kinetic reel: static flow is the safe baseline; the controller opts into
+   absolute positioning only after measuring the real card geometry. */
+.about__cards.is-ready {
+  display: block;
+  position: relative;
+  height: clamp(28rem, 42vw, 36rem);
+  overflow: visible;
+  gap: 0;
+  clip-path: inset(0 -2.5rem);
+  -webkit-clip-path: inset(0 -2.5rem);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 12%, #000 88%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0, #000 12%, #000 88%, transparent 100%);
+}
+
+.about__cards-track {
+  display: contents;
+}
+
+.about__cards.is-ready .about__cards-track {
+  display: block;
+  position: relative;
+  width: calc(100% - var(--about-reel-safe-left) - var(--about-reel-safe-right));
+  height: 100%;
+  margin-inline-start: var(--about-reel-safe-left);
+}
+
+.about__cards.is-ready::before,
+.about__cards.is-ready::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  left: 0;
+  height: 4.5rem;
+  z-index: 40;
+  pointer-events: none;
+}
+
+.about__cards.is-ready::before {
+  top: 0;
+  background: linear-gradient(to bottom, var(--body-color) 0%, transparent 100%);
+  background: linear-gradient(to bottom, var(--body-color) 0%, color-mix(in srgb, var(--body-color) 82%, transparent) 48%, transparent 100%);
+}
+
+.about__cards.is-ready::after {
+  bottom: 0;
+  background: linear-gradient(to top, var(--body-color) 0%, transparent 100%);
+  background: linear-gradient(to top, var(--body-color) 0%, color-mix(in srgb, var(--body-color) 82%, transparent) 48%, transparent 100%);
+}
+
+.about__cards.is-ready .about__card {
+  position: absolute;
+  top: 0;
+  left: var(--reel-offset);
+  width: var(--reel-width);
+  margin: 0;
+  will-change: transform, opacity;
+}
+
+.about__card-1 {
+  --reel-width: 92%;
+  --reel-offset: 0%;
+}
+
+.about__card-2 {
+  --reel-width: 100%;
+  --reel-offset: 5%;
+}
+
+.about__card-3 {
+  --reel-width: 94%;
+  --reel-offset: -2%;
+}
+
+.about__card-4 {
+  --reel-width: 97%;
+  --reel-offset: 3%;
+}
+
+/* If the enhancement cannot initialize, keep the cards in a readable flow
+   and remove controls that have no behavior without JavaScript. */
+:root:not(.js-enabled) .about__cards.is-ready {
+  display: grid;
+  height: auto;
+  overflow: visible;
+  -webkit-clip-path: none;
+  clip-path: none;
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+
+:root:not(.js-enabled) .about__cards.is-ready .about__cards-track {
+  display: contents;
+}
+
+:root:not(.js-enabled) .about__cards.is-ready::before,
+:root:not(.js-enabled) .about__cards.is-ready::after,
+:root:not(.js-enabled) .about__reel-controls {
+  display: none;
+}
+
+:root:not(.js-enabled) .about__cards.is-ready .about__card {
+  position: relative;
+  top: auto !important;
+  left: auto;
+  width: 100%;
+  transform: none !important;
+  opacity: 1 !important;
+}
+
+.about__reel-controls {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: .7rem;
+  min-height: 1.75rem;
+  margin-top: .25rem;
+}
+
+.about__indicators {
+  display: flex;
+  align-items: center;
+  gap: .15rem;
+}
+
+.about__indicator,
+.about__reel-toggle {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: var(--text-color-light);
+  cursor: pointer;
+  font: inherit;
+}
+
+.about__indicator {
+  display: grid;
+  width: 1.2rem;
+  height: 1.5rem;
+  padding: .25rem .1rem;
+  place-items: center;
+}
+
+.about__indicator::before {
+  content: '';
+  display: block;
+  width: .34rem;
+  height: .34rem;
+  border-radius: 999px;
+  background-color: currentColor;
+  opacity: .48;
+  transition: width .25s ease, background-color .25s ease, opacity .25s ease;
+}
+
+.about__indicator.is-active {
+  color: var(--first-color);
+}
+
+.about__indicator.is-active::before {
+  width: .9rem;
+  height: .18rem;
+  border-radius: 999px;
+  opacity: 1;
+}
+
+.about__reel-toggle {
+  display: grid;
+  width: 1.65rem;
+  height: 1.65rem;
+  padding: 0;
+  place-items: center;
+  border-radius: 999px;
+  font-size: .88rem;
+  transition: color .25s ease, background-color .25s ease;
+}
+
+.about__indicator:hover,
+.about__reel-toggle:hover {
+  color: var(--first-color);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about__cards.is-ready {
+    display: grid;
+    height: auto;
+    overflow: visible;
+    -webkit-clip-path: none;
+    clip-path: none;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+
+  .about__cards.is-ready::before,
+  .about__cards.is-ready::after,
+  .about__reel-controls {
+    display: none;
+  }
+
+  .about__cards.is-ready .about__cards-track {
+    display: contents;
+  }
+
+  .about__cards.is-ready .about__card {
+    position: relative;
+    top: auto !important;
+    left: auto;
+    width: 100%;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+
+  .about__portrait:hover .about__img,
+  .about__portrait:focus-within .about__img {
+    transform: none;
+    filter: brightness(var(--about-portrait-brightness));
+  }
+}
+
+@media screen and (max-width: 567px) {
+  #about {
+    scroll-margin-top: calc(var(--header-height) + .5rem);
+    overflow-x: clip;
+  }
+
+  .about__cards.is-ready {
+    height: clamp(22rem, 97vw, 25rem);
+  }
+
+  .about__reel {
+    --about-reel-safe-left: .5rem;
+    --about-reel-safe-right: .75rem;
+  }
+
+  .about__cards.is-ready {
+    clip-path: inset(0 -1.5rem);
+    -webkit-clip-path: inset(0 -1.5rem);
+  }
+
+  .about__cards.is-ready::before,
+  .about__cards.is-ready::after {
+    height: 3rem;
+  }
+
+  .about__card {
+    min-height: 12rem;
+    padding: 1.25rem;
+    gap: 1rem;
+  }
+
+  .about__card-icon {
+    flex-basis: 3rem;
+    width: 3rem;
+    height: 3rem;
+    font-size: 1.75rem;
+  }
 }
 
 .about__info {
@@ -1626,16 +1885,6 @@ body:not(.dark-theme) .contact__subtitle {
   box-shadow: 0 10px 25px rgba(var(--first-color-rgb), 0.3);
 }
 
-/* About Image Hover */
-.about__img {
-  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-
-.about__img:hover {
-  transform: scale(1.05) rotate(2deg);
-  filter: brightness(1.1);
-}
-
 /* Social Icons Hover */
 .home__social-icon,
 .footer__social {
@@ -1736,6 +1985,10 @@ body:not(.dark-theme) .contact__subtitle {
     margin-right: var(--mb-1);
   }
 
+  .about__container {
+    width: calc(100% - 2rem);
+  }
+
   .nav__menu {
     padding: 2rem .25rem 4rem;
   }
@@ -1815,6 +2068,16 @@ body:not(.dark-theme) .contact__subtitle {
   .contact__container,
   .footer__container {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .about__container {
+    grid-template-columns: minmax(0, .42fr) minmax(0, .58fr);
+    column-gap: 2rem;
+  }
+
+  .about__portrait {
+    width: 100%;
+    max-width: 340px;
   }
 
   .skills__container {
@@ -1914,27 +2177,13 @@ body:not(.dark-theme) .contact__subtitle {
     }
 
     .about__container {
-      column-gap: 5rem;
+      grid-template-columns: minmax(0, .4fr) minmax(0, .6fr);
+      column-gap: 3.25rem;
     }
 
-    .about__img {
-      width: 350px;
-    }
-
-    .about__cards {
-      gap: 2rem;
-      grid-template-columns: minmax(0, 1fr);
-    }
-
-    .about__card {
-      padding: 2rem;
-      gap: 1.5rem;
-    }
-
-    .about__card-icon {
-      min-width: 70px;
-      height: 70px;
-      font-size: 2.5rem;
+    .about__portrait {
+      width: 100%;
+      max-width: 380px;
     }
 
     .about__info {

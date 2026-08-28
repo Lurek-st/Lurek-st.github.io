@@ -9,14 +9,22 @@ const accessibleLabels = {
     openMenu: '\u6253\u5f00\u83dc\u5355',
     scrollTop: '\u8fd4\u56de\u9876\u90e8',
     switchLanguage: '\u5207\u6362\u5230\u82f1\u6587',
-    toggleTheme: '\u5207\u6362\u6df1\u8272/\u6d45\u8272\u4e3b\u9898'
+    toggleTheme: '\u5207\u6362\u6df1\u8272/\u6d45\u8272\u4e3b\u9898',
+    reelControls: '\u5173\u4e8e\u5361\u7247\u63a7\u5236',
+    reelPause: '\u6682\u505c\u5173\u4e8e\u5361\u7247\u81ea\u52a8\u64ad\u653e',
+    reelPlay: '\u64ad\u653e\u5173\u4e8e\u5361\u7247\u81ea\u52a8\u64ad\u653e',
+    reelCard: index => `\u663e\u793a\u7b2c ${index} \u5f20\u5173\u4e8e\u5361\u7247`
   },
   en: {
     closeMenu: 'Close menu',
     openMenu: 'Open menu',
     scrollTop: 'Back to top',
     switchLanguage: 'Switch to Chinese',
-    toggleTheme: 'Toggle dark/light theme'
+    toggleTheme: 'Toggle dark/light theme',
+    reelControls: 'About card controls',
+    reelPause: 'Pause About card autoplay',
+    reelPlay: 'Play About card autoplay',
+    reelCard: index => `Show About card ${index}`
   }
 }
 
@@ -42,6 +50,18 @@ function updateAccessibleLabels(lang = getInterfaceLanguage()) {
   const scrollTop = document.getElementById('scroll-up')
   scrollTop?.setAttribute('aria-label', labels.scrollTop)
   scrollTop?.setAttribute('title', labels.scrollTop)
+  const reelControls = document.querySelector('[data-about-reel-controls]')
+  reelControls?.setAttribute('aria-label', labels.reelControls)
+  const reelToggle = document.querySelector('[data-about-reel-toggle]')
+  const reelPaused = reelToggle?.dataset.paused === 'true'
+  const reelToggleLabel = reelPaused ? labels.reelPlay : labels.reelPause
+  reelToggle?.setAttribute('aria-label', reelToggleLabel)
+  reelToggle?.setAttribute('title', reelToggleLabel)
+  reelToggle?.setAttribute('aria-pressed', String(reelPaused))
+  document.querySelectorAll('[data-about-reel-indicator]').forEach((button, index) => {
+    button.setAttribute('aria-label', labels.reelCard(index + 1))
+    button.setAttribute('aria-current', button.classList.contains('is-active') ? 'true' : 'false')
+  })
 }
 
 function setMobileMenuState(open, { moveFocus = false } = {}) {
@@ -393,7 +413,7 @@ let isTypingActive = false
 let typingRunId = 0
 
 // Scroll Animation Observer
-const scrollElements = document.querySelectorAll('.section__title, .section__subtitle, .scroll-animate, .skills__content, .qualification__data, .portfolio__content, .contact__information, .about__img, .about__card')
+const scrollElements = document.querySelectorAll('.section__title, .section__subtitle, .scroll-animate, .skills__content, .qualification__data, .portfolio__content, .contact__information')
 
 const elementInView = (el, dividend = 1) => {
   const elementTop = el.getBoundingClientRect().top
@@ -412,18 +432,6 @@ const handleScrollAnimation = () => {
     }
   })
 
-  // Check if about section is in view and trigger card animations
-  const aboutSection = document.querySelector('.about.section')
-  if (aboutSection && elementInView(aboutSection, 1.2)) {
-    const aboutCards = document.querySelectorAll('.about__card')
-    aboutCards.forEach((card, index) => {
-      if (!card.classList.contains('active')) {
-        setTimeout(() => {
-          card.classList.add('active')
-        }, index * 200) // 依次显示，每张卡片间隔200ms
-      }
-    })
-  }
 }
 
 // Debug function to manually show elements (remove after testing)
@@ -447,6 +455,465 @@ window.addEventListener('scroll', () => {
 
 // Typing Effect
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+/*==================== ABOUT CARD REEL ====================*/
+// One local controller owns the continuous progress. Ambient flow, focus
+// navigation, indicators, and the play/pause control all operate on it.
+const ABOUT_REEL_CONFIG = Object.freeze({
+  ambientSpeed: 1 / 6300,
+  ambientDirection: -1,
+  focusDuration: 540,
+  resumeDuration: 420,
+  focusHoldDuration: 5000,
+  cardGap: 18,
+  frameCapMs: 64,
+  viewportActivationThreshold: 0.12
+})
+
+const clamp = (value, minimum, maximum) => Math.min(Math.max(value, minimum), maximum)
+const easeOutCubic = progress => 1 - Math.pow(1 - progress, 3)
+const modulo = (value, divisor) => ((value % divisor) + divisor) % divisor
+
+function initAboutReel() {
+  const reel = document.querySelector('[data-about-reel]')
+  const viewport = reel?.querySelector('[data-about-reel-viewport]')
+  const track = reel?.querySelector('[data-about-reel-track]')
+  const cards = Array.from(track?.querySelectorAll('[data-about-reel-card]') || [])
+  const indicators = Array.from(reel?.querySelectorAll('[data-about-reel-indicator]') || [])
+  const toggle = reel?.querySelector('[data-about-reel-toggle]')
+
+  if (!reel || !viewport || !track || cards.length !== 4 || indicators.length !== cards.length || !toggle) {
+    return { onLanguageChange: () => {} }
+  }
+
+  // The static CSS flow is the reduced-motion and initialization fallback.
+  if (prefersReducedMotion) return { onLanguageChange: () => {} }
+
+  const state = {
+    progress: 0,
+    velocity: 0,
+    cardHeights: [],
+    cardStep: 0,
+    viewportHeight: 0,
+    centerY: 0,
+    frameId: null,
+    layoutFrame: null,
+    focusTimer: null,
+    focusTimerToken: 0,
+    transition: null,
+    focusTarget: null,
+    focusSource: null,
+    focusStartedAt: -Infinity,
+    holdRequested: false,
+    focusHoldUntil: 0,
+    resumeStartedAt: performance.now(),
+    lastFrameAt: performance.now(),
+    lastIndicatorIndex: -1,
+    lastPointerMoveAt: -Infinity,
+    mode: 'ambient',
+    inViewport: false,
+    manualPause: false,
+    controlFocus: false
+  }
+
+  const aboutSection = reel.closest('.about.section') || reel
+  const hoverEnabled = () => !window.matchMedia('(max-width: 567px)').matches
+  const ambientVelocity = () => ABOUT_REEL_CONFIG.ambientSpeed * ABOUT_REEL_CONFIG.ambientDirection
+  const activeIndex = () => modulo(Math.round(state.progress), cards.length)
+
+  const circularOffset = index => {
+    let offset = index - state.progress
+    const half = cards.length / 2
+    while (offset > half) offset -= cards.length
+    while (offset < -half) offset += cards.length
+    return offset
+  }
+
+  const cancelFrame = () => {
+    if (state.frameId !== null) {
+      cancelAnimationFrame(state.frameId)
+      state.frameId = null
+    }
+  }
+
+  const clearFocusTimer = () => {
+    if (state.focusTimer !== null) {
+      clearTimeout(state.focusTimer)
+      state.focusTimer = null
+    }
+    state.focusTimerToken += 1
+    state.focusHoldUntil = 0
+  }
+
+  const ambientEligible = () => (
+    state.inViewport &&
+    !state.manualPause &&
+    !state.controlFocus &&
+    state.focusTarget === null &&
+    !document.hidden
+  )
+
+  const shouldAnimate = () => (
+    state.inViewport &&
+    !document.hidden &&
+    (Boolean(state.transition) || ambientEligible())
+  )
+
+  const updateIndicators = () => {
+    const index = activeIndex()
+    reel.dataset.activeCard = String(index + 1)
+    reel.dataset.motionMode = state.mode
+    if (state.lastIndicatorIndex === index) return
+    state.lastIndicatorIndex = index
+    indicators.forEach((indicator, indicatorIndex) => {
+      const isActive = indicatorIndex === index
+      indicator.classList.toggle('is-active', isActive)
+      indicator.setAttribute('aria-current', String(isActive))
+    })
+    updateAccessibleLabels()
+  }
+
+  const render = () => {
+    if (!state.cardStep) return
+    cards.forEach((card, index) => {
+      const offset = circularOffset(index)
+      const distance = Math.abs(offset)
+      const cardHeight = state.cardHeights[index] || state.cardHeights[0] || 0
+      const top = state.centerY - (cardHeight / 2) + (offset * state.cardStep)
+      const scale = distance <= 1
+        ? 1 - (distance * 0.06)
+        : Math.max(0.84, 0.94 - ((distance - 1) * 0.08))
+      const opacity = distance <= 1
+        ? 1 - (distance * 0.42)
+        : Math.max(0.04, 0.58 - ((distance - 1) * 0.46))
+
+      card.style.transform = `translate3d(0, ${top.toFixed(2)}px, 0) scale(${scale.toFixed(4)})`
+      card.style.opacity = opacity.toFixed(3)
+      card.style.zIndex = String(30 - Math.round(distance * 10))
+    })
+    updateIndicators()
+  }
+
+  const measure = () => {
+    const viewportRect = viewport.getBoundingClientRect()
+    state.viewportHeight = viewportRect.height
+    state.centerY = state.viewportHeight / 2
+    state.cardHeights = cards.map(card => card.offsetHeight)
+    const tallestCard = Math.max(...state.cardHeights, 0)
+    state.cardStep = tallestCard + ABOUT_REEL_CONFIG.cardGap
+    render()
+  }
+
+  const requestLayout = () => {
+    if (state.layoutFrame !== null) return
+    state.layoutFrame = requestAnimationFrame(() => {
+      state.layoutFrame = null
+      measure()
+    })
+  }
+
+  const ensureFrame = () => {
+    if (state.frameId === null && shouldAnimate()) {
+      state.frameId = requestAnimationFrame(frame)
+    }
+  }
+
+  const beginAmbient = (timestamp = performance.now()) => {
+    if (state.manualPause) {
+      state.velocity = 0
+      state.mode = 'paused'
+      cancelFrame()
+      render()
+      return
+    }
+    if (state.controlFocus || state.focusTarget !== null) {
+      state.velocity = 0
+      state.mode = state.controlFocus ? 'attention' : 'focused'
+      cancelFrame()
+      render()
+      return
+    }
+    state.resumeStartedAt = timestamp
+    state.velocity = 0
+    state.mode = 'resuming'
+    render()
+    ensureFrame()
+  }
+
+  const scheduleFocusRelease = () => {
+    clearFocusTimer()
+    const token = state.focusTimerToken
+    state.focusHoldUntil = performance.now() + ABOUT_REEL_CONFIG.focusHoldDuration
+    state.focusTimer = window.setTimeout(() => {
+      if (token !== state.focusTimerToken) return
+      state.focusTimer = null
+      state.focusHoldUntil = 0
+      state.holdRequested = false
+      if (state.focusTarget === null) return
+      state.focusTarget = null
+      state.focusSource = null
+      beginAmbient()
+    }, ABOUT_REEL_CONFIG.focusHoldDuration)
+  }
+
+  const nearestCardProgress = index => {
+    const currentCard = Math.round(state.progress)
+    const currentIndex = modulo(currentCard, cards.length)
+    let distance = index - currentIndex
+    if (distance > cards.length / 2) distance -= cards.length
+    if (distance < -cards.length / 2) distance += cards.length
+    return currentCard + distance
+  }
+
+  const focusCard = (index, source = 'manual', hold = false) => {
+    if (index < 0 || index >= cards.length) return
+    clearFocusTimer()
+    const now = performance.now()
+    state.focusTarget = index
+    state.focusSource = source
+    state.focusStartedAt = now
+    state.holdRequested = hold
+    state.velocity = 0
+    const target = nearestCardProgress(index)
+    state.transition = {
+      start: state.progress,
+      target,
+      startedAt: now
+    }
+    state.mode = 'focus'
+    if (Math.abs(target - state.progress) <= 0.001) {
+      state.progress = target
+      state.transition = null
+      state.mode = 'focused'
+      if (state.holdRequested) scheduleFocusRelease()
+      render()
+      return
+    }
+    render()
+    ensureFrame()
+  }
+
+  const releaseFocus = index => {
+    if (index !== undefined && state.focusTarget !== index) return
+    clearFocusTimer()
+    state.holdRequested = false
+    state.focusTarget = null
+    state.focusSource = null
+    state.focusStartedAt = -Infinity
+    // Keep the exact progress currently rendered. There is intentionally no
+    // pre-focus snapshot to restore and no snap-back target.
+    state.transition = null
+    state.velocity = 0
+    beginAmbient()
+  }
+
+  function frame(timestamp) {
+    state.frameId = null
+    if (!state.inViewport || document.hidden) return
+
+    const elapsed = clamp(timestamp - state.lastFrameAt, 8, ABOUT_REEL_CONFIG.frameCapMs)
+    state.lastFrameAt = timestamp
+
+    if (state.transition) {
+      const transition = state.transition
+      const transitionProgress = clamp(
+        (timestamp - transition.startedAt) / ABOUT_REEL_CONFIG.focusDuration,
+        0,
+        1
+      )
+      state.progress = transition.start + ((transition.target - transition.start) * easeOutCubic(transitionProgress))
+
+      if (transitionProgress >= 1) {
+        state.progress = transition.target
+        state.transition = null
+        state.velocity = 0
+        state.mode = state.manualPause ? 'paused' : 'focused'
+        if (state.holdRequested) scheduleFocusRelease()
+      }
+    } else if (state.focusTarget !== null || state.controlFocus || state.manualPause) {
+      state.velocity = 0
+      state.mode = state.manualPause
+        ? 'paused'
+        : (state.focusTarget === null ? 'attention' : 'focused')
+    } else if (ambientEligible()) {
+      const resumeProgress = clamp(
+        (timestamp - state.resumeStartedAt) / ABOUT_REEL_CONFIG.resumeDuration,
+        0,
+        1
+      )
+      state.velocity = ambientVelocity() * resumeProgress
+      state.progress += state.velocity * elapsed
+      state.mode = resumeProgress < 1 ? 'resuming' : 'ambient'
+      if (Math.abs(state.progress) > cards.length * 100) state.progress %= cards.length
+    }
+
+    render()
+    if (state.transition || ambientEligible()) ensureFrame()
+  }
+
+  const setManualPause = paused => {
+    state.manualPause = paused
+    toggle.dataset.paused = String(paused)
+    if (paused) {
+      clearFocusTimer()
+      state.holdRequested = false
+      state.velocity = 0
+      state.mode = 'paused'
+      if (!state.transition) cancelFrame()
+    } else {
+      state.controlFocus = false
+      state.holdRequested = false
+      state.focusTarget = null
+      state.focusSource = null
+      state.transition = null
+      state.velocity = 0
+      beginAmbient()
+    }
+    updateAccessibleLabels()
+    render()
+  }
+
+  const setInViewport = visible => {
+    if (state.inViewport === visible) return
+    state.inViewport = visible
+    reel.dataset.inViewport = String(visible)
+    if (visible) {
+      state.lastFrameAt = performance.now()
+      if (state.focusTarget === null && !state.manualPause && !state.controlFocus) {
+        state.resumeStartedAt = performance.now() - ABOUT_REEL_CONFIG.resumeDuration
+        state.velocity = ambientVelocity()
+        state.mode = 'ambient'
+      }
+      ensureFrame()
+    } else {
+      cancelFrame()
+    }
+  }
+
+  const syncViewport = () => {
+    const rect = aboutSection.getBoundingClientRect()
+    const viewportHeight = window.innerHeight || document.documentElement.clientHeight
+    const overlap = Math.min(rect.bottom, viewportHeight) - Math.max(rect.top, 0)
+    const minimumOverlap = Math.min(rect.height, viewportHeight) * ABOUT_REEL_CONFIG.viewportActivationThreshold
+    setInViewport(overlap > 0 && overlap >= minimumOverlap)
+  }
+
+  viewport.classList.add('is-ready')
+  reel.dataset.ready = 'true'
+  measure()
+  updateIndicators()
+
+  cards.forEach((card, index) => {
+    card.addEventListener('mouseenter', () => {
+      if (!hoverEnabled()) return
+      const pointerMovedSinceFocus = state.lastPointerMoveAt > state.focusStartedAt + 4
+      if (state.focusTarget === index && state.focusSource !== null) return
+      if (state.focusSource !== null && !pointerMovedSinceFocus) return
+      focusCard(index, 'hover')
+    })
+    card.addEventListener('mouseleave', () => {
+      if (!hoverEnabled()) return
+      const pointerMovedAfterFocus = state.lastPointerMoveAt > state.focusStartedAt + 4
+      if (pointerMovedAfterFocus && (state.focusSource === 'hover' || state.focusSource === 'tap')) {
+        releaseFocus(index)
+      }
+    })
+    card.addEventListener('click', () => focusCard(index, 'tap', true))
+  })
+
+  reel.addEventListener('pointermove', () => {
+    state.lastPointerMoveAt = performance.now()
+  }, { passive: true })
+
+  reel.addEventListener('mouseleave', () => {
+    if (hoverEnabled() && (state.focusSource === 'hover' || state.focusSource === 'tap')) releaseFocus()
+  })
+
+  indicators.forEach((indicator, index) => {
+    indicator.addEventListener('click', () => {
+      state.controlFocus = false
+      focusCard(index, 'indicator', true)
+    })
+  })
+
+  toggle.addEventListener('click', () => {
+    state.controlFocus = false
+    setManualPause(!state.manualPause)
+  })
+
+  reel.addEventListener('focusin', event => {
+    const card = event.target.closest('[data-about-reel-card]')
+    if (card && reel.contains(card)) {
+      focusCard(cards.indexOf(card), 'keyboard')
+      return
+    }
+    state.controlFocus = true
+    if (state.focusTarget === null && !state.manualPause) {
+      state.mode = 'attention'
+      cancelFrame()
+      render()
+    }
+  })
+
+  reel.addEventListener('focusout', event => {
+    const relatedTarget = event.relatedTarget
+    if (relatedTarget && reel.contains(relatedTarget)) return
+    const card = event.target.closest('[data-about-reel-card]')
+    if (card && reel.contains(card)) releaseFocus(cards.indexOf(card))
+    state.controlFocus = false
+    if (state.focusTarget === null && !state.manualPause) beginAmbient()
+  })
+
+  window.addEventListener('resize', requestLayout)
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      cancelFrame()
+      return
+    }
+    if (state.inViewport) {
+      state.lastFrameAt = performance.now()
+      if (ambientEligible()) beginAmbient()
+      else ensureFrame()
+    }
+  })
+
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(entries => {
+      const entry = entries[0]
+      setInViewport(Boolean(entry?.isIntersecting && entry.intersectionRatio >= ABOUT_REEL_CONFIG.viewportActivationThreshold))
+    }, { threshold: [0, ABOUT_REEL_CONFIG.viewportActivationThreshold] })
+    observer.observe(aboutSection)
+  } else {
+    syncViewport()
+    window.addEventListener('scroll', syncViewport, { passive: true })
+  }
+
+  requestAnimationFrame(syncViewport)
+
+  if ('ResizeObserver' in window) {
+    const observer = new ResizeObserver(requestLayout)
+    observer.observe(viewport)
+    cards.forEach(card => observer.observe(card))
+  }
+  document.fonts?.ready?.then(requestLayout)
+
+  return {
+    onLanguageChange: () => {
+      // Re-measure translated text without changing the live progress.
+      requestLayout()
+      render()
+      if (ambientEligible()) beginAmbient()
+    }
+  }
+}
+
+let aboutReelController = null
+try {
+  aboutReelController = initAboutReel()
+} catch (error) {
+  // Keep the static card flow usable if an enhancement fails to initialize.
+  console.error('About reel enhancement failed', error)
+}
 
 const typingTexts = [
   {
@@ -647,6 +1114,8 @@ function handleLanguageChange(event) {
     ? event.detail.lang
     : getCurrentLanguage()
 
+  aboutReelController?.onLanguageChange()
+
   // Clear any existing timeout to prevent multiple rapid calls
   if (languageChangeTimeout) {
     clearTimeout(languageChangeTimeout)
@@ -662,29 +1131,10 @@ function handleLanguageChange(event) {
   }
 
   languageChangeTimeout = setTimeout(() => {
-    // Reset about cards
-    const aboutCards = document.querySelectorAll('.about__card')
-    aboutCards.forEach(card => {
-      card.classList.remove('active')
-    })
-
     // Keep the translated text in flow until the web fonts are stable, then
     // reserve the final layout synchronously before restarting the animation.
     const fontsReady = document.fonts?.ready || Promise.resolve()
     fontsReady.then(() => startTypingAnimation(targetLang))
-
-    // Re-trigger about card animations if section is visible
-    setTimeout(() => {
-      const aboutSection = document.querySelector('.about.section')
-      if (aboutSection && elementInView(aboutSection, 1.2)) {
-        const aboutCards = document.querySelectorAll('.about__card')
-        aboutCards.forEach((card, index) => {
-          setTimeout(() => {
-            card.classList.add('active')
-          }, index * 200)
-        })
-      }
-    }, 1000)
 
     // Clear the timeout variable
     languageChangeTimeout = null
@@ -700,21 +1150,6 @@ document.addEventListener('DOMContentLoaded', () => {
   setTimeout(handleScrollAnimation, 300)
   setTimeout(handleScrollAnimation, 600)
   setTimeout(handleScrollAnimation, 1000)
-
-  // Manual check for about section after everything loads
-  setTimeout(() => {
-    const aboutSection = document.querySelector('.about.section')
-    if (aboutSection && elementInView(aboutSection, 1.5)) {
-      const aboutCards = document.querySelectorAll('.about__card')
-      aboutCards.forEach((card, index) => {
-        if (!card.classList.contains('active')) {
-          setTimeout(() => {
-            card.classList.add('active')
-          }, index * 200)
-        }
-      })
-    }
-  }, 2000)
 })
 
 // Add resize listener to recheck animations
