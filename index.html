@@ -4,6 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preload" as="image" href="assets/img/optimized/cat-480.webp" fetchpriority="high" />
   <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
   <!--==================== UNICONS 图标====================-->
   <link rel="stylesheet" href="https://unicons.iconscout.com/release/v3.0.6/css/line.css" />
@@ -56,6 +57,12 @@
             </a>
           </li>
           <li class="nav__item">
+            <a href="#portfolio" class="nav__link">
+              <i class="uil uil-scenery nav__icon"></i>
+              <p i18n="portfolio">项目集</p>
+            </a>
+          </li>
+          <li class="nav__item">
             <a href="#skills" class="nav__link">
               <i class="uil uil-file-alt nav__icon"></i>
               <p i18n="skills">技能</p>
@@ -65,12 +72,6 @@
             <a href="#qualification" class="nav__link">
               <i class="uil uil-compass nav__icon"></i>
               <p i18n="qualification">经历</p>
-            </a>
-          </li>
-          <li class="nav__item">
-            <a href="#portfolio" class="nav__link">
-              <i class="uil uil-scenery nav__icon"></i>
-              <p i18n="portfolio">项目集</p>
             </a>
           </li>
           <li class="nav__item">
@@ -139,7 +140,7 @@
                                 129.362C2.45775 97.8511 -7.48481 59.1033 6.67581 34.5279C20.9871 10.1032 59.7028
                                 -0.149132 97.9666 0.00163737C136.23 0.303176 174.193 10.857 190.312 36.4879Z"
                   fill="var(--wolf-bg)" />
-                <image class="home__blob-img" x="-10" y="10" width="180" height="180" xlink:href="assets/img/cat.png"
+                <image class="home__blob-img" x="-10" y="10" width="180" height="180" xlink:href="assets/img/optimized/cat-480.webp"
                   style="z-index:2;" />
               </g>
             </svg>
@@ -155,13 +156,17 @@
             <p class="home__research" i18n="home__research">
               研究方向：机器人安全与可靠性
             </p>
+            <p class="home__motto" i18n="home__motto">机器人会干活是一回事，我们敢不敢把它放到人群里，是另一回事。</p>
             <p class="home__description" i18n="home__description">
               AI 工具长期实践者 · 独立研究者 · 创业者
             </p>
+            <div class="home__actions">
             <a href="#contact" class="button button-flex">
               <span i18n="home__contact">联系我</span>
               <i class="uil uil-message button__icon"></i>
             </a>
+            <button type="button" class="home__read-now" data-read-now hidden i18n="home__read_now">直接阅读</button>
+            </div>
           </div>
         </div>
         <div class="home__scroll">
@@ -179,8 +184,8 @@
       <h2 class="section__title" i18n="about__title">关于我</h2>
       <span class="section__subtitle" i18n="about__subtitle">我的介绍</span>
       <div class="about__container container grid scroll-animate">
-        <figure class="about__portrait">
-          <img data-lazy-src="assets/img/about-portrait.jpg" alt="Lurek Lu 的个人形象图" class="about__img" width="2160" height="3840" loading="lazy" decoding="async" />
+        <figure class="about__portrait" data-media-frame>
+          <img src="assets/img/about-portrait.jpg" alt="Lurek Lu 的个人形象图" class="about__img" width="2160" height="3840" loading="lazy" decoding="async" srcset="assets/img/optimized/about-portrait-480.webp 480w, assets/img/optimized/about-portrait-960.webp 960w, assets/img/optimized/about-portrait-1440.webp 1440w" sizes="(max-width: 567px) 76vw, 340px" data-media-image />
         </figure>
 
         <div class="about__data">
@@ -248,6 +253,126 @@
           <div class="about__buttons">
           </div>
         </div>
+      </div>
+    </section>
+
+    <!--==================== PORTFOLIO ====================-->
+    <section class="portfolio section scroll-animate" id="portfolio">
+      <h2 class="section__title" i18n="portfolio__title">项目与研究</h2>
+      <span class="section__subtitle" i18n="portfolio__subtitle">工程、研究与个人创作</span>
+
+      <div class="portfolio__container container swiper-container scroll-animate">
+        <div class="swiper-wrapper">
+          <!--==================== PORTFOLIO 1 ====================-->
+
+          <div class="portfolio__content grid swiper-slide">
+            <div class="portfolio__media" data-media-frame><img src="assets/img/portfolio-robot-calibration.jpg" alt="工业机器人与离线运动学参数标定结果界面 / Industrial robot and offline kinematic calibration results interface" class="portfolio__img" width="1672" height="941" loading="lazy" decoding="async" srcset="assets/img/optimized/portfolio-robot-calibration-480.webp 480w, assets/img/optimized/portfolio-robot-calibration-960.webp 960w, assets/img/optimized/portfolio-robot-calibration-1440.webp 1440w" sizes="(max-width: 767px) 265px, 320px" data-media-image /></div>
+
+            <div class="portfolio_">
+              <h3 class="portfolio__title" i18n="portfolio1__title">
+                六轴工业机器人离线运动学参数标定
+              </h3>
+              <p class="portfolio__description" i18n="portfolio1__description">
+                面向六轴工业机器人的离线运动学参数标定项目，结合标准 DH、Kabsch/SVD 与最小二乘验证参数可辨识性与稳定性。
+              </p>
+              <a href="https://github.com/Lurek-st/six-axis-robot-calibration-report" target="_blank" rel="noopener noreferrer"
+                class="button button--flex button--small portfolio__button">
+                <span i18n="portfolio1__cta">查看项目</span>
+                <i class="uil uil-arrow-right button__icon"></i>
+              </a>
+            </div>
+          </div>
+
+          <!--==================== PORTFOLIO 2 ====================-->
+
+          <div class="portfolio__content grid swiper-slide">
+            <div class="portfolio__media" data-media-frame><img src="assets/img/portfolio-weather-stock-study.png" alt="天气与股票市场关系研究项目封面 / Weather-stock market relationship study project cover" class="portfolio__img" width="1183" height="657" loading="lazy" decoding="async" srcset="assets/img/optimized/portfolio-weather-stock-study-480.webp 480w, assets/img/optimized/portfolio-weather-stock-study-960.webp 960w, assets/img/optimized/portfolio-weather-stock-study-1183.webp 1183w" sizes="(max-width: 767px) 265px, 320px" data-media-image /></div>
+
+            <div class="portfolio_">
+              <h3 class="portfolio__title" i18n="portfolio2__title">
+                天气与股票市场关系研究
+              </h3>
+              <p class="portfolio__description" i18n="portfolio2__description">
+                围绕天气与市场表现的关系构建长期数据记录、研究协议与可复现分析流程，持续检验两者是否存在稳定的统计关联。
+              </p>
+              <a href="https://github.com/Lurek-st/weather-stock-china-study" target="_blank" rel="noopener noreferrer"
+                class="button button--flex button--small portfolio__button">
+                <span i18n="portfolio2__cta">查看研究</span>
+                <i class="uil uil-arrow-right button__icon"></i>
+              </a>
+            </div>
+          </div>
+
+          <!--==================== PORTFOLIO 3 ====================-->
+
+          <div class="portfolio__content grid swiper-slide">
+            <div class="portfolio__media" data-media-frame><img src="assets/img/portfolio-astock-name-semantics.png" alt="A 股公司名称语义与市场注意力研究项目封面 / A-share company-name semantics and market-attention research project cover" class="portfolio__img" width="977" height="541" loading="lazy" decoding="async" srcset="assets/img/optimized/portfolio-astock-name-semantics-480.webp 480w, assets/img/optimized/portfolio-astock-name-semantics-960.webp 960w, assets/img/optimized/portfolio-astock-name-semantics-977.webp 977w" sizes="(max-width: 767px) 265px, 320px" data-media-image /></div>
+
+            <div class="portfolio_">
+              <h3 class="portfolio__title" i18n="portfolio3__title">
+                A 股公司名称语义与市场注意力研究
+              </h3>
+              <p class="portfolio__description" i18n="portfolio3__description">
+                研究上市公司名称中的语义关联是否会影响投资者注意力、交易行为与价格表现，并构建可验证、可复现的实证研究框架。
+              </p>
+              <span class="portfolio__status" i18n="portfolio3__status">
+                研究进行中
+              </span>
+            </div>
+          </div>
+
+          <!--==================== PORTFOLIO 4 ====================-->
+
+          <div class="portfolio__content grid swiper-slide">
+            <div class="portfolio__media" data-media-frame><img src="assets/img/portfolio2.jpg" alt="马克思主义与社会思考文章项目封面 / Marxism and social thought writing project cover" class="portfolio__img" width="1284" height="872" loading="lazy" decoding="async" srcset="assets/img/optimized/portfolio2-480.webp 480w, assets/img/optimized/portfolio2-960.webp 960w, assets/img/optimized/portfolio2-1284.webp 1284w" sizes="(max-width: 767px) 265px, 320px" data-media-image /></div>
+
+            <div class="portfolio_">
+              <h3 class="portfolio__title" i18n="portfolio4__title">
+                马克思主义与社会思考
+              </h3>
+              <p class="portfolio__description" i18n="portfolio4__description">
+                围绕马克思主义、技术、社会与人工智能等议题整理长期思考、评论与随笔。
+              </p>
+              <a href="https://github.com/Lurek-st/Marxism-Blog" target="_blank" rel="noopener noreferrer"
+                class="button button--flex button--small portfolio__button">
+                <span i18n="portfolio4__cta">查看文章</span>
+                <i class="uil uil-arrow-right button__icon"></i>
+              </a>
+            </div>
+          </div>
+
+          <!--==================== PORTFOLIO 5 ====================-->
+
+          <div class="portfolio__content grid swiper-slide">
+            <div class="portfolio__media" data-media-frame><img src="assets/img/portfolio-codex-naiwa.jpg" alt="Codex 奶蛙桌宠增强版项目封面 / Enhanced Codex Naiwa Desktop Pet project cover" class="portfolio__img" width="1290" height="872" loading="lazy" decoding="async" srcset="assets/img/optimized/portfolio-codex-naiwa-480.webp 480w, assets/img/optimized/portfolio-codex-naiwa-960.webp 960w, assets/img/optimized/portfolio-codex-naiwa-1290.webp 1290w" sizes="(max-width: 767px) 265px, 320px" data-media-image /></div>
+
+            <div class="portfolio_">
+              <h3 class="portfolio__title" i18n="portfolio5__title">
+                Codex 奶蛙桌宠增强版
+              </h3>
+              <p class="portfolio__description" i18n="portfolio5__description">
+                做了一个会打字、会大笑、拖着走还会放屁的 Codex 奶蛙 🐸⌨️💨
+              </p>
+              <a href="https://github.com/Lurek-st/codex-pet-naiwa-enhanced" target="_blank" rel="noopener noreferrer"
+                class="button button--flex button--small portfolio__button">
+                <span i18n="portfolio5__cta">查看项目</span>
+                <i class="uil uil-arrow-right button__icon"></i>
+              </a>
+            </div>
+          </div>
+
+        </div>
+        <!-- add arrows-->
+        <div class="swiper-button-next">
+          <i class="uil uil-angle-right-b swiper-portfolio-icon"></i>
+        </div>
+
+        <div class="swiper-button-prev">
+          <i class="uil uil-angle-left-b swiper-portfolio-icon"></i>
+        </div>
+
+        <!-- Add Pagination -->
+        <div class="swiper-pagination"></div>
       </div>
     </section>
 
@@ -883,125 +1008,6 @@
       </div>
     </section>
 
-    <!--==================== PORTFOLIO ====================-->
-    <section class="portfolio section scroll-animate" id="portfolio">
-      <h2 class="section__title" i18n="portfolio__title">项目与研究</h2>
-      <span class="section__subtitle" i18n="portfolio__subtitle">工程、研究与个人创作</span>
-
-      <div class="portfolio__container container swiper-container scroll-animate">
-        <div class="swiper-wrapper">
-          <!--==================== PORTFOLIO 1 ====================-->
-
-          <div class="portfolio__content grid swiper-slide">
-            <img data-lazy-src="assets/img/portfolio-robot-calibration.jpg" alt="工业机器人与离线运动学参数标定结果界面 / Industrial robot and offline kinematic calibration results interface" class="portfolio__img" width="1672" height="941" loading="lazy" decoding="async" />
-
-            <div class="portfolio_">
-              <h3 class="portfolio__title" i18n="portfolio1__title">
-                六轴工业机器人离线运动学参数标定
-              </h3>
-              <p class="portfolio__description" i18n="portfolio1__description">
-                面向六轴工业机器人的离线运动学参数标定项目，结合标准 DH、Kabsch/SVD 与最小二乘验证参数可辨识性与稳定性。
-              </p>
-              <a href="https://github.com/Lurek-st/six-axis-robot-calibration-report" target="_blank" rel="noopener noreferrer"
-                class="button button--flex button--small portfolio__button">
-                <span i18n="portfolio1__cta">查看项目</span>
-                <i class="uil uil-arrow-right button__icon"></i>
-              </a>
-            </div>
-          </div>
-
-          <!--==================== PORTFOLIO 2 ====================-->
-
-          <div class="portfolio__content grid swiper-slide">
-            <img data-lazy-src="assets/img/portfolio-weather-stock-study.png" alt="天气与股票市场关系研究项目封面 / Weather-stock market relationship study project cover" class="portfolio__img" width="1183" height="657" loading="lazy" decoding="async" />
-
-            <div class="portfolio_">
-              <h3 class="portfolio__title" i18n="portfolio2__title">
-                天气与股票市场关系研究
-              </h3>
-              <p class="portfolio__description" i18n="portfolio2__description">
-                围绕天气与市场表现的关系构建长期数据记录、研究协议与可复现分析流程，持续检验两者是否存在稳定的统计关联。
-              </p>
-              <a href="https://github.com/Lurek-st/weather-stock-china-study" target="_blank" rel="noopener noreferrer"
-                class="button button--flex button--small portfolio__button">
-                <span i18n="portfolio2__cta">查看研究</span>
-                <i class="uil uil-arrow-right button__icon"></i>
-              </a>
-            </div>
-          </div>
-
-          <!--==================== PORTFOLIO 3 ====================-->
-
-          <div class="portfolio__content grid swiper-slide">
-            <img data-lazy-src="assets/img/portfolio-astock-name-semantics.png" alt="A 股公司名称语义与市场注意力研究项目封面 / A-share company-name semantics and market-attention research project cover" class="portfolio__img" width="977" height="541" loading="lazy" decoding="async" />
-
-            <div class="portfolio_">
-              <h3 class="portfolio__title" i18n="portfolio3__title">
-                A 股公司名称语义与市场注意力研究
-              </h3>
-              <p class="portfolio__description" i18n="portfolio3__description">
-                研究上市公司名称中的语义关联是否会影响投资者注意力、交易行为与价格表现，并构建可验证、可复现的实证研究框架。
-              </p>
-              <span class="portfolio__status" i18n="portfolio3__status">
-                研究进行中
-              </span>
-            </div>
-          </div>
-
-          <!--==================== PORTFOLIO 4 ====================-->
-
-          <div class="portfolio__content grid swiper-slide">
-            <img data-lazy-src="assets/img/portfolio2.jpg" alt="马克思主义与社会思考文章项目封面 / Marxism and social thought writing project cover" class="portfolio__img" width="1284" height="872" loading="lazy" decoding="async" />
-
-            <div class="portfolio_">
-              <h3 class="portfolio__title" i18n="portfolio4__title">
-                马克思主义与社会思考
-              </h3>
-              <p class="portfolio__description" i18n="portfolio4__description">
-                围绕马克思主义、技术、社会与人工智能等议题整理长期思考、评论与随笔。
-              </p>
-              <a href="https://github.com/Lurek-st/Marxism-Blog" target="_blank" rel="noopener noreferrer"
-                class="button button--flex button--small portfolio__button">
-                <span i18n="portfolio4__cta">查看文章</span>
-                <i class="uil uil-arrow-right button__icon"></i>
-              </a>
-            </div>
-          </div>
-
-          <!--==================== PORTFOLIO 5 ====================-->
-
-          <div class="portfolio__content grid swiper-slide">
-            <img data-lazy-src="assets/img/portfolio-codex-naiwa.jpg" alt="Codex 奶蛙桌宠增强版项目封面 / Enhanced Codex Naiwa Desktop Pet project cover" class="portfolio__img" width="1290" height="872" loading="lazy" decoding="async" />
-
-            <div class="portfolio_">
-              <h3 class="portfolio__title" i18n="portfolio5__title">
-                Codex 奶蛙桌宠增强版
-              </h3>
-              <p class="portfolio__description" i18n="portfolio5__description">
-                做了一个会打字、会大笑、拖着走还会放屁的 Codex 奶蛙 🐸⌨️💨
-              </p>
-              <a href="https://github.com/Lurek-st/codex-pet-naiwa-enhanced" target="_blank" rel="noopener noreferrer"
-                class="button button--flex button--small portfolio__button">
-                <span i18n="portfolio5__cta">查看项目</span>
-                <i class="uil uil-arrow-right button__icon"></i>
-              </a>
-            </div>
-          </div>
-
-        </div>
-        <!-- add arrows-->
-        <div class="swiper-button-next">
-          <i class="uil uil-angle-right-b swiper-portfolio-icon"></i>
-        </div>
-
-        <div class="swiper-button-prev">
-          <i class="uil uil-angle-left-b swiper-portfolio-icon"></i>
-        </div>
-
-        <!-- Add Pagination -->
-        <div class="swiper-pagination"></div>
-      </div>
-    </section>
 
     <!--==================== BEYOND WORK ====================-->
     <section class="beyond-work section" id="beyond-work">
@@ -1027,16 +1033,16 @@
           <p class="beyond-work__module-label" id="beyond-work-companions-label">COMPANIONS</p>
           <p class="beyond-work__lead" i18n="beyond_work_02_copy">从一只陪伴我很久的大金毛，到现在家里的一窝孟加拉豹猫。</p>
           <div class="beyond-work__companions-media">
-            <figure><img src="assets/img/beyond-work/companions/companions-golden-retriever-2x3.jpg" alt="Golden retriever portrait" loading="lazy" /></figure>
-            <figure><img src="assets/img/beyond-work/companions/companions-bengal-litter-3x4.jpg" alt="Bengal cat with litter" loading="lazy" /></figure>
-            <figure><img src="assets/img/beyond-work/companions/companions-bengal-lego-3x4.jpg" alt="Bengal cat beside LEGO bricks" loading="lazy" /></figure>
+            <figure data-media-frame><img src="assets/img/beyond-work/companions/companions-golden-retriever-2x3.jpg" alt="Golden retriever portrait" loading="lazy" srcset="assets/img/optimized/beyond-work/companions/companions-golden-retriever-2x3-480.webp 480w, assets/img/optimized/beyond-work/companions/companions-golden-retriever-2x3-960.webp 960w" sizes="(max-width: 720px) 90vw, 360px" width="960" height="1440" decoding="async" data-media-image /></figure>
+            <figure data-media-frame><img src="assets/img/beyond-work/companions/companions-bengal-litter-3x4.jpg" alt="Bengal cat with litter" loading="lazy" srcset="assets/img/optimized/beyond-work/companions/companions-bengal-litter-3x4-480.webp 480w, assets/img/optimized/beyond-work/companions/companions-bengal-litter-3x4-960.webp 960w, assets/img/optimized/beyond-work/companions/companions-bengal-litter-3x4-1276.webp 1276w" sizes="(max-width: 720px) 90vw, 360px" width="1276" height="1702" decoding="async" data-media-image /></figure>
+            <figure data-media-frame><img src="assets/img/beyond-work/companions/companions-bengal-lego-3x4.jpg" alt="Bengal cat beside LEGO bricks" loading="lazy" srcset="assets/img/optimized/beyond-work/companions/companions-bengal-lego-3x4-480.webp 480w, assets/img/optimized/beyond-work/companions/companions-bengal-lego-3x4-958.webp 958w" sizes="(max-width: 720px) 90vw, 360px" width="958" height="1278" decoding="async" data-media-image /></figure>
           </div>
         </article>
         </div>
 
         <article class="beyond-work__module beyond-work__module--moving" aria-labelledby="beyond-work-moving-label">
           <span class="beyond-work__folio beyond-work__folio--with-rule scroll-animate" aria-hidden="true"><span>03</span><span class="beyond-work__folio-rule"></span></span>
-          <p class="beyond-work__module-label" id="beyond-work-moving-label">STAY MOVING / SPORTS I LOVE</p>
+          <div class="beyond-work__moving-heading"><p class="beyond-work__module-label" id="beyond-work-moving-label">STAY MOVING / SPORTS I LOVE</p><button type="button" class="beyond-work__motion-toggle" data-beyond-work-ribbon-toggle hidden>暂停</button></div>
           <div class="beyond-work__ribbon" aria-label="Sports I love">
             <ul class="beyond-work__ribbon-items">
               <li i18n="beyond_work_03_sport_01">羽毛球</li><li i18n="beyond_work_03_sport_02">游泳</li><li i18n="beyond_work_03_sport_03">匹克球</li><li i18n="beyond_work_03_sport_04">网球</li><li i18n="beyond_work_03_sport_05">跑步</li><li i18n="beyond_work_03_sport_06">冲浪</li><li i18n="beyond_work_03_sport_07">Wargame</li>
@@ -1056,7 +1062,7 @@
         <article class="beyond-work__module beyond-work__module--brick" aria-labelledby="beyond-work-brick-label">
           <span class="beyond-work__folio scroll-animate" aria-hidden="true">05</span>
           <p class="beyond-work__module-label" id="beyond-work-brick-label" i18n="beyond_work_05_label">BRICK BY BRICK / 从小玩到大的兴趣</p>
-          <figure class="beyond-work__brick-media"><img src="assets/img/beyond-work/brick/brick-by-brick-lego-montage-1672x941.jpg" alt="LEGO build montage" loading="lazy" /></figure>
+          <figure class="beyond-work__brick-media" data-media-frame><img src="assets/img/beyond-work/brick/brick-by-brick-lego-montage-1672x941.jpg" alt="LEGO build montage" loading="lazy" srcset="assets/img/optimized/beyond-work/brick/brick-by-brick-lego-montage-1672x941-480.webp 480w, assets/img/optimized/beyond-work/brick/brick-by-brick-lego-montage-1672x941-960.webp 960w, assets/img/optimized/beyond-work/brick/brick-by-brick-lego-montage-1672x941-1440.webp 1440w" sizes="(max-width: 720px) 90vw, 360px" width="1672" height="941" decoding="async" data-media-image /></figure>
         </article>
         </div>
 
@@ -1069,8 +1075,8 @@
               <button type="button" role="option" aria-selected="true" disabled data-story="star-trek" data-tier="core"><span class="beyond-work__story-label" i18n="beyond_work_06_story_01">星际迷航</span></button><button type="button" role="option" disabled data-story="rick" data-tier="core"><span class="beyond-work__story-label" i18n="beyond_work_06_story_02">瑞克和莫蒂</span></button><button type="button" role="option" disabled data-story="orville" data-tier="secondary"><span class="beyond-work__story-label" i18n="beyond_work_06_story_03">奥维尔号</span></button><button type="button" role="option" disabled data-story="futurama" data-tier="secondary"><span class="beyond-work__story-label" i18n="beyond_work_06_story_04">飞出个未来</span></button><button type="button" role="option" disabled data-story="family" data-tier="satellite"><span class="beyond-work__story-label" i18n="beyond_work_06_story_05">恶搞之家</span></button><button type="button" role="option" disabled data-story="dad" data-tier="satellite"><span class="beyond-work__story-label" i18n="beyond_work_06_story_06">美国老爹！</span></button><button type="button" role="option" disabled data-story="bad-guys" data-tier="satellite"><span class="beyond-work__story-label" i18n="beyond_work_06_story_07">坏蛋联盟</span></button><button type="button" role="option" disabled data-story="kingsman" data-tier="satellite"><span class="beyond-work__story-label" i18n="beyond_work_06_story_08">王牌特工</span></button><button type="button" role="option" disabled data-story="pokemon" data-tier="secondary"><span class="beyond-work__story-label" i18n="beyond_work_06_story_09">精灵宝可梦</span></button><button type="button" role="option" disabled data-story="star-vs" data-tier="long"><span class="beyond-work__story-label" i18n="beyond_work_06_story_10">星蝶公主</span></button><button type="button" role="option" disabled data-story="star-wars" data-tier="secondary"><span class="beyond-work__story-label" i18n="beyond_work_06_story_11">漫威</span></button>
             </div>
             <figure class="beyond-work__stories-preview" data-beyond-work-stories-preview aria-label="Selected story preview">
-              <img class="beyond-work__stories-preview-ambient" src="assets/img/beyond-work/stories/star-trek.jpg" alt="" aria-hidden="true" loading="lazy" />
-              <img class="beyond-work__stories-preview-image" src="assets/img/beyond-work/stories/star-trek.jpg" alt="Star Trek preview image" loading="lazy" />
+              <img class="beyond-work__stories-preview-ambient" src="assets/img/beyond-work/stories/star-trek.jpg" alt="" aria-hidden="true" loading="lazy" srcset="assets/img/optimized/beyond-work/stories/star-trek-480.webp 480w, assets/img/optimized/beyond-work/stories/star-trek-960.webp 960w, assets/img/optimized/beyond-work/stories/star-trek-1290.webp 1290w" sizes="(max-width: 720px) 90vw, 360px" width="1290" height="636" decoding="async" />
+              <img class="beyond-work__stories-preview-image" src="assets/img/beyond-work/stories/star-trek.jpg" alt="Star Trek preview image" loading="lazy" srcset="assets/img/optimized/beyond-work/stories/star-trek-480.webp 480w, assets/img/optimized/beyond-work/stories/star-trek-960.webp 960w, assets/img/optimized/beyond-work/stories/star-trek-1290.webp 1290w" sizes="(max-width: 720px) 90vw, 360px" width="1290" height="636" decoding="async" />
               <figcaption i18n="beyond_work_06_story_01">星际迷航</figcaption>
             </figure>
           </div>
@@ -1099,10 +1105,10 @@
           </div>
           <div class="beyond-work__travel-stage" data-beyond-work-travel-mount aria-label="Travel destinations">
             <div class="beyond-work__travel-accordion" data-chapter="far">
-              <article class="beyond-work__travel-panel is-active" data-panel="japan" data-fit="contain"><img class="beyond-work__travel-ambient" src="assets/img/beyond-work/travel/far-japan.jpg" alt="" aria-hidden="true" loading="lazy" /><img class="beyond-work__travel-image" src="assets/img/beyond-work/travel/far-japan.jpg" alt="Travel photograph from Japan" loading="lazy" /><span class="beyond-work__travel-shade"></span><span class="beyond-work__travel-collapsed"><span lang="zh-CN">日本</span><span lang="en">JAPAN</span></span><span class="beyond-work__travel-meta"><time>2016.02</time><strong><span lang="zh-CN">日本</span><span lang="en">JAPAN</span></strong></span></article>
-              <article class="beyond-work__travel-panel" data-panel="germany-austria"><img class="beyond-work__travel-ambient" src="assets/img/beyond-work/travel/far-germany-austria.png" alt="" aria-hidden="true" loading="lazy" /><img class="beyond-work__travel-image" src="assets/img/beyond-work/travel/far-germany-austria.png" alt="Travel photograph from Germany and Austria" loading="lazy" /><span class="beyond-work__travel-shade"></span><span class="beyond-work__travel-collapsed"><span lang="zh-CN">德国 / 奥地利</span><span lang="en">GERMANY / AUSTRIA</span></span></article>
-              <article class="beyond-work__travel-panel" data-panel="malaysia-indonesia"><img class="beyond-work__travel-ambient" src="assets/img/beyond-work/travel/far-malaysia-indonesia.jpg" alt="" aria-hidden="true" loading="lazy" /><img class="beyond-work__travel-image" src="assets/img/beyond-work/travel/far-malaysia-indonesia.jpg" alt="Travel photograph from Malaysia and Indonesia" loading="lazy" /><span class="beyond-work__travel-shade"></span><span class="beyond-work__travel-collapsed"><span lang="zh-CN">马来西亚 / 印度尼西亚</span><span lang="en">MALAYSIA / INDONESIA</span></span></article>
-              <article class="beyond-work__travel-panel" data-panel="uae" data-fit="contain"><img class="beyond-work__travel-ambient" src="assets/img/beyond-work/travel/far-uae.jpg" alt="" aria-hidden="true" loading="lazy" /><img class="beyond-work__travel-image" src="assets/img/beyond-work/travel/far-uae.jpg" alt="Travel photograph from the UAE" loading="lazy" /><span class="beyond-work__travel-shade"></span><span class="beyond-work__travel-collapsed">UAE</span></article>
+              <article class="beyond-work__travel-panel is-active" data-panel="japan" data-fit="contain"><img class="beyond-work__travel-ambient" src="assets/img/beyond-work/travel/far-japan.jpg" alt="" aria-hidden="true" loading="lazy" srcset="assets/img/optimized/beyond-work/travel/far-japan-480.webp 480w, assets/img/optimized/beyond-work/travel/far-japan-960.webp 960w, assets/img/optimized/beyond-work/travel/far-japan-1440.webp 1440w" sizes="(max-width: 720px) 90vw, 720px" width="2364" height="2848" decoding="async" /><img class="beyond-work__travel-image" src="assets/img/beyond-work/travel/far-japan.jpg" alt="Travel photograph from Japan" loading="lazy" srcset="assets/img/optimized/beyond-work/travel/far-japan-480.webp 480w, assets/img/optimized/beyond-work/travel/far-japan-960.webp 960w, assets/img/optimized/beyond-work/travel/far-japan-1440.webp 1440w" sizes="(max-width: 720px) 90vw, 720px" width="2364" height="2848" decoding="async" /><span class="beyond-work__travel-shade"></span><span class="beyond-work__travel-collapsed"><span lang="zh-CN">日本</span><span lang="en">JAPAN</span></span><span class="beyond-work__travel-meta"><time>2016.02</time><strong><span lang="zh-CN">日本</span><span lang="en">JAPAN</span></strong></span></article>
+              <article class="beyond-work__travel-panel" data-panel="germany-austria"><img class="beyond-work__travel-ambient" src="assets/img/beyond-work/travel/far-germany-austria.png" alt="" aria-hidden="true" loading="lazy" srcset="assets/img/optimized/beyond-work/travel/far-germany-austria-480.webp 480w, assets/img/optimized/beyond-work/travel/far-germany-austria-800.webp 800w" sizes="(max-width: 720px) 90vw, 720px" width="800" height="600" decoding="async" /><img class="beyond-work__travel-image" src="assets/img/beyond-work/travel/far-germany-austria.png" alt="Travel photograph from Germany and Austria" loading="lazy" srcset="assets/img/optimized/beyond-work/travel/far-germany-austria-480.webp 480w, assets/img/optimized/beyond-work/travel/far-germany-austria-800.webp 800w" sizes="(max-width: 720px) 90vw, 720px" width="800" height="600" decoding="async" /><span class="beyond-work__travel-shade"></span><span class="beyond-work__travel-collapsed"><span lang="zh-CN">德国 / 奥地利</span><span lang="en">GERMANY / AUSTRIA</span></span></article>
+              <article class="beyond-work__travel-panel" data-panel="malaysia-indonesia"><img class="beyond-work__travel-ambient" src="assets/img/beyond-work/travel/far-malaysia-indonesia.jpg" alt="" aria-hidden="true" loading="lazy" srcset="assets/img/optimized/beyond-work/travel/far-malaysia-indonesia-480.webp 480w, assets/img/optimized/beyond-work/travel/far-malaysia-indonesia-960.webp 960w, assets/img/optimized/beyond-work/travel/far-malaysia-indonesia-1280.webp 1280w" sizes="(max-width: 720px) 90vw, 720px" width="1280" height="852" decoding="async" /><img class="beyond-work__travel-image" src="assets/img/beyond-work/travel/far-malaysia-indonesia.jpg" alt="Travel photograph from Malaysia and Indonesia" loading="lazy" srcset="assets/img/optimized/beyond-work/travel/far-malaysia-indonesia-480.webp 480w, assets/img/optimized/beyond-work/travel/far-malaysia-indonesia-960.webp 960w, assets/img/optimized/beyond-work/travel/far-malaysia-indonesia-1280.webp 1280w" sizes="(max-width: 720px) 90vw, 720px" width="1280" height="852" decoding="async" /><span class="beyond-work__travel-shade"></span><span class="beyond-work__travel-collapsed"><span lang="zh-CN">马来西亚 / 印度尼西亚</span><span lang="en">MALAYSIA / INDONESIA</span></span></article>
+              <article class="beyond-work__travel-panel" data-panel="uae" data-fit="contain"><img class="beyond-work__travel-ambient" src="assets/img/beyond-work/travel/far-uae.jpg" alt="" aria-hidden="true" loading="lazy" srcset="assets/img/optimized/beyond-work/travel/far-uae-480.webp 480w, assets/img/optimized/beyond-work/travel/far-uae-960.webp 960w" sizes="(max-width: 720px) 90vw, 720px" width="960" height="1280" decoding="async" /><img class="beyond-work__travel-image" src="assets/img/beyond-work/travel/far-uae.jpg" alt="Travel photograph from the UAE" loading="lazy" srcset="assets/img/optimized/beyond-work/travel/far-uae-480.webp 480w, assets/img/optimized/beyond-work/travel/far-uae-960.webp 960w" sizes="(max-width: 720px) 90vw, 720px" width="960" height="1280" decoding="async" /><span class="beyond-work__travel-shade"></span><span class="beyond-work__travel-collapsed">UAE</span></article>
             </div>
           </div>
           <p class="beyond-work__travel-note" i18n="beyond_work_08_note">下一次出发也已经在筹备中——西亚、申根区，还有北美。。。</p>
@@ -1150,10 +1156,10 @@
 
         <ul class="footer__links">
           <li>
-            <a href="#skills" class="footer__link" i18n="skills">技能</a>
+            <a href="#portfolio" class="footer__link" i18n="portfolio">项目集</a>
           </li>
           <li>
-            <a href="#portfolio" class="footer__link" i18n="portfolio">项目集</a>
+            <a href="#skills" class="footer__link" i18n="skills">技能</a>
           </li>
           <li>
             <a href="#contact" class="footer__link" i18n="contact">联系方式</a>
@@ -1193,6 +1199,8 @@
   <script src="assets/js/jquery2.1.4.min.js"></script>
   <script src="assets/js/jquery.i18n.min.js"></script>
   <!--==================== MAIN JS ====================-->
+  <script src="assets/js/image-assets.js"></script>
+  <script src="assets/js/image-loading.js"></script>
   <script src="assets/js/main.js"></script>
 
   <!-- translate JS -->
