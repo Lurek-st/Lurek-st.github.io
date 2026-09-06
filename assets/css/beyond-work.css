@@ -299,7 +299,7 @@ html[lang="zh-CN"] #beyond-work [lang="en"] { display: none; }
 /* 06 runtime enhancement: D3 owns transforms after the static fallback is ready. */
 #beyond-work .beyond-work__stories-cluster.is-stories-runtime { display: block; overflow: visible; }
 #beyond-work .beyond-work__stories-cluster.is-stories-runtime button,
-#beyond-work .beyond-work__stories-cluster.is-stories-runtime button:nth-child(n) { position: absolute; inset: auto; margin: 0; padding: 0; overflow: visible; cursor: pointer; transition: color 160ms ease, border-color 160ms ease, background-color 160ms ease; will-change: transform, width, height; }
+#beyond-work .beyond-work__stories-cluster.is-stories-runtime button:nth-child(n) { position: absolute; inset: 0 auto auto 0; justify-self: start; margin: 0; padding: 0; overflow: visible; cursor: pointer; transition: color 160ms ease, border-color 160ms ease, background-color 160ms ease; will-change: transform, width, height; }
 #beyond-work .beyond-work__story-label { position: absolute; inset: 0; display: grid; place-items: center; width: auto; max-width: none; box-sizing: border-box; padding: 0 13%; color: inherit; font: inherit; line-height: inherit; letter-spacing: inherit; text-align: center; pointer-events: none; overflow-wrap: normal; word-break: normal; white-space: normal; writing-mode: horizontal-tb; text-orientation: mixed; }
 #beyond-work .beyond-work__stories-cluster button[data-tier="core"] { border-color: var(--bw-core-border); background: var(--bw-core-surface); color: var(--bw-core-text); font-size: 18px; font-weight: 600; }
 #beyond-work .beyond-work__stories-cluster button[data-tier="secondary"] { font-size: 15px; font-weight: 600; }
