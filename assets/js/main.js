@@ -303,30 +303,7 @@ if (typeof Swiper !== 'undefined' && swiperContainer) {
   });
 }
 
-function initDeferredImages() {
-  const images = document.querySelectorAll('img[data-lazy-src]')
-  const load = image => {
-    if (!image.dataset.lazySrc) return
-    image.src = image.dataset.lazySrc
-    delete image.dataset.lazySrc
-  }
-
-  if (!('IntersectionObserver' in window)) {
-    images.forEach(load)
-    return
-  }
-
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (!entry.isIntersecting) return
-      load(entry.target)
-      observer.unobserve(entry.target)
-    })
-  })
-  images.forEach(image => observer.observe(image))
-}
-
-initDeferredImages()
+// Native image sources work without JavaScript; image-loading.js prepares upcoming media.
 
 
 /*==================== SCROLL SECTIONS ACTIVE LINK ====================*/
@@ -454,7 +431,17 @@ window.addEventListener('scroll', () => {
 })
 
 // Typing Effect
-const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)')
+let prefersReducedMotion = motionPreference.matches
+motionPreference.addEventListener('change', event => {
+  prefersReducedMotion = event.matches
+  if (event.matches) {
+    clearTimeout(languageChangeTimeout)
+    stopAllAnimations()
+    displayFullTypingTexts()
+    if (readNowButton) readNowButton.hidden = true
+  }
+})
 
 /*==================== ABOUT CARD REEL ====================*/
 // One local controller owns the continuous progress. Ambient flow, focus
@@ -487,7 +474,7 @@ function initAboutReel() {
   }
 
   // The static CSS flow is the reduced-motion and initialization fallback.
-  if (prefersReducedMotion) return { onLanguageChange: () => {} }
+  // Keep the controller available when the system motion preference changes.
 
   const state = {
     progress: 0,
@@ -546,6 +533,7 @@ function initAboutReel() {
   }
 
   const ambientEligible = () => (
+    !prefersReducedMotion &&
     state.inViewport &&
     !state.manualPause &&
     !state.controlFocus &&
@@ -554,6 +542,7 @@ function initAboutReel() {
   )
 
   const shouldAnimate = () => (
+    !prefersReducedMotion &&
     state.inViewport &&
     !document.hidden &&
     (Boolean(state.transition) || ambientEligible())
@@ -864,6 +853,16 @@ function initAboutReel() {
     if (state.focusTarget === null && !state.manualPause) beginAmbient()
   })
 
+  motionPreference.addEventListener('change', () => {
+    cancelFrame()
+    clearFocusTimer()
+    state.transition = null
+    state.focusTarget = null
+    state.controlFocus = false
+    requestLayout()
+    if (!prefersReducedMotion) beginAmbient()
+  })
+
   window.addEventListener('resize', requestLayout)
   document.addEventListener('visibilitychange', () => {
     if (document.hidden) {
@@ -938,6 +937,12 @@ const typingTexts = [
     speed: 50
   },
   {
+    element: document.querySelector('.home__motto'),
+    text: "Getting robots to work is one thing. Trusting them to work safely among people is another.",
+    textCn: "机器人会干活是一回事，我们敢不敢把它放到人群里，是另一回事。",
+    duration: 1200
+  },
+  {
     element: document.querySelector('.home__description'),
     text: 'Long-term AI Practitioner · Independent Researcher · Entrepreneur',
     textCn: 'AI 工具长期实践者 · 独立研究者 · 创业者',
@@ -947,6 +952,15 @@ const typingTexts = [
 ]
 
 
+
+const readNowButton = document.querySelector('[data-read-now]')
+readNowButton?.addEventListener('click', () => {
+  clearTimeout(languageChangeTimeout)
+  stopAllAnimations()
+  displayFullTypingTexts()
+  document.querySelector('.home__actions a')?.focus({ preventScroll: true })
+  readNowButton.hidden = true
+})
 
 function typeWriter(element, text, speed = 50, runId) {
   return new Promise((resolve, reject) => {
@@ -1077,6 +1091,7 @@ async function startTypingAnimation(targetLang = getCurrentLanguage()) {
 
   // Enable typing
   isTypingActive = true
+  if (readNowButton) readNowButton.hidden = false
   reserveTypingLayout(targetLang)
 
   // First delay for initial start
@@ -1088,7 +1103,7 @@ async function startTypingAnimation(targetLang = getCurrentLanguage()) {
       if (!isTypingActive || runId !== typingRunId) break // Check if we should stop
 
       const textToType = targetLang === 'cn' ? item.textCn : item.text
-      await typeWriter(item.element, textToType, item.speed, runId)
+      await typeWriter(item.element, textToType, item.duration ? item.duration / textToType.length : item.speed, runId)
       // Small delay between each text for better visual flow
       if (isTypingActive && runId === typingRunId) {
         await new Promise(resolve => setTimeout(resolve, 200))
@@ -1099,6 +1114,7 @@ async function startTypingAnimation(targetLang = getCurrentLanguage()) {
   } finally {
     if (runId === typingRunId) {
       isTypingActive = false
+      if (readNowButton) readNowButton.hidden = true
     }
   }
 }

@@ -60,7 +60,9 @@ async function createTravelController() {
   let resizeFrame = 0;
 
   function panelMarkup(story, chapter) {
-    return `<button class="beyond-work__travel-panel${state.active[chapter] === story.id ? " is-active" : ""}" type="button" data-panel="${story.id}" data-chapter="${chapter}" data-fit="${story.fit || "cover"}" style="--travel-focus:${story.focus}"><img class="beyond-work__travel-ambient" src="${story.image}" alt="" aria-hidden="true" loading="lazy"><img class="beyond-work__travel-image" src="${story.image}" alt="" loading="lazy"><span class="beyond-work__travel-shade"></span><span class="beyond-work__travel-collapsed"></span><span class="beyond-work__travel-meta"><time></time><strong></strong><small></small></span></button>`;
+    const srcset = window.SiteImages?.srcset(story.image) || '';
+    const responsive = `src="${story.image}" srcset="${srcset}" sizes="(max-width: 720px) 90vw, 720px" loading="lazy" decoding="async"`;
+    return `<button class="beyond-work__travel-panel${state.active[chapter] === story.id ? " is-active" : ""}" type="button" data-panel="${story.id}" data-chapter="${chapter}" data-fit="${story.fit || "cover"}" data-media-frame style="--travel-focus:${story.focus}"><img class="beyond-work__travel-ambient" ${responsive} alt="" aria-hidden="true"><img class="beyond-work__travel-image" ${responsive} alt="" data-media-image><span class="beyond-work__travel-shade"></span><span class="beyond-work__travel-collapsed"></span><span class="beyond-work__travel-meta"><time></time><strong></strong><small></small></span></button>`;
   }
   function renderRuntimeMarkup() {
     slider.classList.add("is-travel-runtime");
@@ -68,6 +70,7 @@ async function createTravelController() {
     stage.innerHTML = ["far", "near"].map((chapter) => `<section class="beyond-work__travel-chapter${chapter === state.chapter ? " is-current" : ""}" data-chapter="${chapter}" aria-hidden="${chapter === state.chapter ? "false" : "true"}"><div class="beyond-work__travel-accordion">${TRAVEL_DATA[chapter].map((story) => panelMarkup(story, chapter)).join("")}</div></section>`).join("");
   }
   renderRuntimeMarkup();
+  window.SiteImages?.enhance(stage);
   const rail = slider.querySelector(".beyond-work__travel-rail");
   const thumb = slider.querySelector("[data-beyond-work-travel-thumb]");
   const maxX = () => Math.max(0, rail.clientWidth - thumb.offsetWidth);
@@ -97,6 +100,7 @@ async function createTravelController() {
       chapter.classList.toggle("is-current", active); chapter.setAttribute("aria-hidden", String(!active)); chapter.inert = !active;
     });
     setThumb(next === "near" ? maxX() : 0, animate); syncSlider(next === "near" ? 1 : 0);
+    window.SiteImages?.prepare(stage.querySelector('.beyond-work__travel-chapter.is-current'));
   }
   function selectPanel(chapter, id) {
     if (!story(chapter, id) || state.active[chapter] === id) return;

@@ -301,27 +301,107 @@ async function createStoriesController() {
   function altFor(id) { const title = titleFor(id); return document.documentElement.lang.startsWith("zh") ? `${title} \u7684\u5c55\u793a\u56fe\u7247` : `Preview image for ${title}`; }
   function ensurePreviewMarkup() {
     if (preview.dataset.previewRenderer === "ready") return;
-    const source = preview.querySelector(".beyond-work__stories-preview-image")?.getAttribute("src") || STORY_ASSETS[selectedId];
     preview.dataset.previewRenderer = "ready";
-    preview.innerHTML = `<div class="beyond-work__stories-preview-slot is-active" data-preview-slot="0" aria-hidden="false"><img class="beyond-work__stories-preview-background" src="${source}" alt="" aria-hidden="true"><img class="beyond-work__stories-preview-foreground" src="${source}" alt="${altFor(selectedId)}"></div><div class="beyond-work__stories-preview-slot" data-preview-slot="1" aria-hidden="true"><img class="beyond-work__stories-preview-background" alt="" aria-hidden="true"><img class="beyond-work__stories-preview-foreground" alt=""></div><div class="beyond-work__stories-preview-fallback" aria-hidden="true"><span></span></div><figcaption></figcaption>`;
+    activePreviewId = null;
+    preview.innerHTML = [0, 1].map(index => `<div class="beyond-work__stories-preview-slot" data-preview-slot="${index}" aria-hidden="true"><img class="beyond-work__stories-preview-background" alt="" aria-hidden="true"><img class="beyond-work__stories-preview-foreground" alt=""></div>`).join('') + '<div class="beyond-work__stories-load-status" hidden><span role="status"></span><button type="button" hidden></button></div><figcaption></figcaption>';
+    preview.querySelector('.beyond-work__stories-load-status button').addEventListener('click', () => select(selectedId));
+  }
+  function loadImage(src) {
+    return new Promise((resolve, reject) => {
+      const image = new Image();
+      let done = false;
+      const finish = (error) => {
+        if (done) return;
+        done = true;
+        clearTimeout(timeout);
+        image.onload = null; image.onerror = null;
+        if (error) reject(error); else resolve(src);
+      };
+      const timeout = setTimeout(() => finish(new Error('Image timed out')), 15000);
+      image.onload = async () => {
+        try { if (image.decode) await image.decode(); finish(); }
+        catch (error) { finish(error); }
+      };
+      image.onerror = () => finish(new Error('Image unavailable'));
+      image.decoding = 'async';
+      image.src = src;
+    });
   }
   function preload(id) {
-    if (cache.has(id)) return cache.get(id).promise;
-    const src = STORY_ASSETS[id]; const entry = { status: "loading", promise: null };
-    entry.promise = new Promise((resolve, reject) => { const image = new Image(); image.onload = async () => { try { if (image.decode) await image.decode(); } catch (_) {} entry.status = "ready"; resolve(src); }; image.onerror = () => { entry.status = "error"; reject(new Error(`Story preview failed to load: ${id}`)); }; image.src = src; });
-    cache.set(id, entry); return entry.promise;
+    const original = STORY_ASSETS[id];
+    const src = window.SiteImages?.url(original, preview.clientWidth || 360) || original;
+    if (cache.has(src)) return cache.get(src);
+    const promise = loadImage(src).catch(async () => {
+      await new Promise(resolve => setTimeout(resolve, 450));
+      return loadImage(`${src}?retry=${Date.now()}`);
+    }).catch(error => {
+      // Failed requests must be evicted so a later selection can recover.
+      cache.delete(src);
+      throw error;
+    });
+    cache.set(src, promise);
+    return promise;
   }
-  function updatePreviewLanguage() { const caption = preview.querySelector("figcaption"); const active = preview.querySelector(".beyond-work__stories-preview-slot.is-active .beyond-work__stories-preview-foreground"); if (caption) caption.textContent = titleFor(selectedId); if (active) active.alt = altFor(selectedId); const fallback = preview.querySelector(".beyond-work__stories-preview-fallback span"); if (fallback) fallback.textContent = titleFor(selectedId); }
+  let loadingTimer;
+  function updatePreviewLanguage() {
+    const caption = preview.querySelector('figcaption');
+    const active = preview.querySelector('.is-active .beyond-work__stories-preview-foreground');
+    if (caption) caption.textContent = activePreviewId ? titleFor(activePreviewId) : '';
+    if (active && activePreviewId) active.alt = altFor(activePreviewId);
+    const status = preview.querySelector('.beyond-work__stories-load-status');
+    const cn = document.documentElement.lang.startsWith('zh');
+    const failed = preview.dataset.previewState === 'error';
+    status.querySelector('span').textContent = failed
+      ? (cn ? `${titleFor(selectedId)}：图片暂未加载` : `${titleFor(selectedId)}: image unavailable`)
+      : (cn ? `正在加载${titleFor(selectedId)}` : `Loading ${titleFor(selectedId)}`);
+    const retry = status.querySelector('button');
+    retry.hidden = !failed;
+    retry.textContent = cn ? '重试' : 'Retry';
+  }
+  function previewState(state) {
+    clearTimeout(loadingTimer);
+    preview.dataset.previewState = state;
+    preview.setAttribute('aria-busy', String(state === 'loading'));
+    const status = preview.querySelector('.beyond-work__stories-load-status');
+    status.hidden = state !== 'error';
+    updatePreviewLanguage();
+    if (state === 'loading') loadingTimer = setTimeout(() => { status.hidden = false; }, 350);
+  }
   function renderPreview(id, src) {
-    const slots = [...preview.querySelectorAll(".beyond-work__stories-preview-slot")]; const current = slots[activeSlot]; const nextIndex = activePreviewId ? 1 - activeSlot : activeSlot; const next = slots[nextIndex];
-    next.querySelector(".beyond-work__stories-preview-background").src = src; const foreground = next.querySelector(".beyond-work__stories-preview-foreground"); foreground.src = src; foreground.alt = altFor(id); next.setAttribute("aria-hidden", "false");
-    preview.querySelector(".beyond-work__stories-preview-fallback")?.classList.remove("is-active"); requestAnimationFrame(() => { next.classList.add("is-active"); if (current !== next) { current.classList.remove("is-active"); current.setAttribute("aria-hidden", "true"); current.querySelector(".beyond-work__stories-preview-foreground").alt = ""; } });
-    activeSlot = nextIndex; activePreviewId = id; updatePreviewLanguage();
+    const slots = [...preview.querySelectorAll('.beyond-work__stories-preview-slot')];
+    const current = slots[activeSlot];
+    const nextIndex = activePreviewId ? 1 - activeSlot : activeSlot;
+    const next = slots[nextIndex];
+    next.querySelector('.beyond-work__stories-preview-background').src = src;
+    const foreground = next.querySelector('.beyond-work__stories-preview-foreground');
+    foreground.src = src; foreground.alt = altFor(id);
+    next.setAttribute('aria-hidden', 'false');
+    // The image is already decoded. Synchronous state changes cannot leave a
+    // queued animation frame from an earlier selection above the latest one.
+    next.classList.add('is-active');
+    if (current !== next) {
+      current.classList.remove('is-active'); current.setAttribute('aria-hidden', 'true');
+      current.querySelector('.beyond-work__stories-preview-foreground').alt = '';
+    }
+    activeSlot = nextIndex; activePreviewId = id;
+    preview.dataset.activePreview = id;
+    previewState('ready');
   }
   function select(id) {
-    if (!nodeById.has(id)) return; selectedId = id;
-    buttons.forEach((button) => { const selected = button.dataset.story === id; button.setAttribute("aria-selected", String(selected)); button.classList.toggle("is-selected", selected); button.tabIndex = selected ? 0 : -1; });
-    const nextRequest = ++requestId; preload(id).then((src) => { if (nextRequest === requestId && selectedId === id) renderPreview(id, src); }).catch((error) => console.warn(error.message));
+    if (!nodeById.has(id)) return;
+    selectedId = id;
+    buttons.forEach(button => {
+      const selected = button.dataset.story === id;
+      button.setAttribute('aria-selected', String(selected));
+      button.classList.toggle('is-selected', selected); button.tabIndex = selected ? 0 : -1;
+    });
+    const nextRequest = ++requestId;
+    previewState('loading');
+    preload(id).then(src => {
+      if (nextRequest === requestId && selectedId === id) renderPreview(id, src);
+    }).catch(() => {
+      if (nextRequest === requestId && selectedId === id) previewState('error');
+    });
   }
   function refreshLayout() { start(true); }
 
@@ -355,6 +435,17 @@ async function createStoriesController() {
     if (document.hidden) stopFrames();
     else if (!motionMedia.matches && (nodes.some((node) => node.radiusAnimation) || simulation.alpha() > simulation.alphaMin())) wake();
   });
-  start(false); select(selectedId);
+  start(false);
+  if ('IntersectionObserver' in window) {
+    const approaching = new IntersectionObserver(entries => {
+      if (!entries.some(entry => entry.isIntersecting)) return;
+      select(selectedId);
+      // Warm only the two adjacent choices, never the complete photo collection.
+      const index = buttons.findIndex(button => button.dataset.story === selectedId);
+      [1, -1].forEach(offset => preload(buttons[(index + offset + buttons.length) % buttons.length].dataset.story).catch(() => {}));
+      approaching.disconnect();
+    }, { rootMargin: '900px 0px' });
+    approaching.observe(preview);
+  } else select(selectedId);
   return { setLanguage() { updatePreviewLanguage(); if (motionMedia.matches) settle(180); else reheat(.12); }, getState() { return { nodeCount: nodes.length, selectedId, activePreviewId, previewCount: Object.keys(STORY_ASSETS).length, width, height, layout, simulation: 1, running: Boolean(frameId), contactError: contactError(nodes, width, height, edgePadding(), FORCE.collisionPadding * 2) }; } };
 }

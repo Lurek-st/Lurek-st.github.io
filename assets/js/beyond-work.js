@@ -42,6 +42,24 @@
     let lastFrame = performance.now();
     let rafId = 0;
     let rebuildId = 0;
+    let userPaused = false;
+    let inViewport = false;
+    const toggle = document.querySelector('[data-beyond-work-ribbon-toggle]');
+
+    function updateToggle() {
+      if (!toggle) return;
+      toggle.hidden = reduced;
+      toggle.textContent = currentLanguage() === 'cn' ? (userPaused ? '继续' : '暂停') : (userPaused ? 'Play' : 'Pause');
+      toggle.setAttribute('aria-pressed', String(userPaused));
+      toggle.setAttribute('aria-label', currentLanguage() === 'cn' ? (userPaused ? '继续滚动运动文字' : '暂停滚动运动文字') : (userPaused ? 'Play sports ribbon' : 'Pause sports ribbon'));
+    }
+    function syncMotion() {
+      cancelAnimationFrame(rafId);
+      rafId = 0;
+      lastFrame = performance.now();
+      if (!reduced && !userPaused && inViewport && !document.hidden) rafId = requestAnimationFrame(tick);
+      updateToggle();
+    }
 
     function normalizedPhase() {
       if (!groupWidth) return 0;
@@ -79,6 +97,7 @@
       offset = reduced ? 0 : -phase * groupWidth;
       lastFrame = performance.now();
       applyTransform();
+      syncMotion();
     }
 
     function scheduleGeometry() {
@@ -117,25 +136,36 @@
     reducedMotion.addEventListener("change", (event) => {
       reduced = event.matches;
       currentSpeed = MOTION.baseVelocity;
+      syncMotion();
       scheduleGeometry();
     });
+
+    toggle?.addEventListener('click', () => { userPaused = !userPaused; syncMotion(); });
+    document.addEventListener('visibilitychange', syncMotion);
+    const viewportObserver = new IntersectionObserver(entries => {
+      inViewport = entries[0].isIntersecting;
+      syncMotion();
+    });
+    viewportObserver.observe(sensor);
 
     new ResizeObserver(scheduleGeometry).observe(sensor);
     document.fonts.ready.then(scheduleGeometry);
 
     document.addEventListener("app:languagechange", (event) => {
       renderLabels(event.detail?.lang === "cn" ? "cn" : "en");
+      updateToggle();
       scheduleGeometry();
     });
 
     renderLabels(currentLanguage());
     rebuildGeometry();
-    rafId = requestAnimationFrame(tick);
+    syncMotion();
 
     return {
       destroy() {
         cancelAnimationFrame(rafId);
         cancelAnimationFrame(rebuildId);
+        viewportObserver.disconnect();
       }
     };
   }

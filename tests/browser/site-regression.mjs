@@ -32,6 +32,7 @@ const mimeTypes = new Map([
   ['.mp3', 'audio/mpeg'],
   ['.png', 'image/png'],
   ['.svg', 'image/svg+xml'],
+  ['.webp', 'image/webp'],
   ['.txt', 'text/plain; charset=utf-8'],
 ]);
 
@@ -177,14 +178,16 @@ async function runTypewriterInteraction(browser, url) {
     const expected = [
       "Hi, I'm Lurek Lu",
       'Undergraduate Student at City University of Hong Kong (Dongguan)',
+      'Research focus: Robot safety & reliability',
+      'Getting robots to work is one thing. Trusting them to work safely among people is another.',
       'Long-term AI Practitioner · Independent Researcher · Entrepreneur',
     ];
-    const selectors = ['.home__title', '.home__subtitle', '.home__description'];
+    const selectors = ['.home__title', '.home__subtitle', '.home__research', '.home__motto', '.home__description'];
     return selectors.every((selector, index) => document.querySelector(selector)?.textContent === expected[index])
       && !document.querySelector('.typing-text__caret');
   }, null, { timeout: 20000 });
 
-  const finalTexts = await page.locator('.home__title, .home__subtitle, .home__description').allTextContents();
+  const finalTexts = await page.locator('.home__title, .home__subtitle, .home__research, .home__motto, .home__description').allTextContents();
   const layoutShiftValue = await page.evaluate(() => window.__testLayoutShiftValue ?? 0);
   assert(diagnostics.consoleErrors.length === 0, `Console errors: ${diagnostics.consoleErrors.join(' | ')}`);
   assert(diagnostics.pageErrors.length === 0, `Page errors: ${diagnostics.pageErrors.join(' | ')}`);
@@ -356,7 +359,7 @@ async function runCriticalInteractions(browser, url) {
 
   await page.goto(url, { waitUntil: 'load' });
   await page.evaluate(() => document.fonts.ready);
-  assert((await page.locator('img[data-lazy-src]').count()) >= 6, 'Deferred images loaded before becoming visible.');
+  assert(await page.locator('.about__img[src][srcset], .portfolio__img[src][srcset]').count() >= 6, 'About and project images require native sources for responsive loading and the no-JavaScript fallback.');
   assert(audioResponses.length === 0, 'Soundtrack loaded without a user gesture.');
 
   const selectedTab = page.locator('.qualification__button[aria-selected="true"]');
@@ -370,7 +373,8 @@ async function runCriticalInteractions(browser, url) {
   const aboutImage = page.locator('.about__img');
   await aboutImage.scrollIntoViewIfNeeded();
   await page.waitForFunction(() => document.querySelector('.about__img')?.naturalWidth > 0);
-  assert(await aboutImage.getAttribute('src') === 'assets/img/about.png', 'About image did not load on visibility.');
+  assert(await aboutImage.getAttribute('src') === 'assets/img/about-portrait.jpg', 'About portrait fallback changed.');
+  assert(await aboutImage.evaluate(image => image.currentSrc.includes('/optimized/about-portrait-')), 'About portrait did not select a delivery image.');
 
   await page.locator('#portfolio').scrollIntoViewIfNeeded();
   await page.waitForFunction(() => Array.from(document.querySelectorAll('#portfolio img')).some(image => image.naturalWidth > 0));

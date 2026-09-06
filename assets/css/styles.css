@@ -1759,6 +1759,7 @@ body:not(.dark-theme) .contact__subtitle {
 }
 
 .home__research,
+.home__motto,
 .home__description {
   opacity: 0;
 }
@@ -1907,23 +1908,6 @@ body:not(.dark-theme) .contact__subtitle {
 
 .footer__social:hover {
   transform: translateY(-3px) scale(1.1);
-}
-
-/* Floating Animation for Home Elements */
-.home__img {
-  animation: float 3s ease-in-out infinite;
-}
-
-@keyframes float {
-
-  0%,
-  100% {
-    transform: translateY(0px);
-  }
-
-  50% {
-    transform: translateY(-10px);
-  }
 }
 
 /* Pulse Animation for Skills Progress */
@@ -2437,6 +2421,7 @@ button:focus-visible,
 :root:not(.js-enabled) .footer,
 :root:not(.js-enabled) .home__title,
 :root:not(.js-enabled) .home__subtitle,
+:root:not(.js-enabled) .home__motto,
 :root:not(.js-enabled) .home__research,
 :root:not(.js-enabled) .home__description,
 :root:not(.js-enabled) .skills__data {
@@ -2446,6 +2431,7 @@ button:focus-visible,
 
 :root:not(.js-enabled) .home__title,
 :root:not(.js-enabled) .home__subtitle,
+:root:not(.js-enabled) .home__motto,
 :root:not(.js-enabled) .home__research,
 :root:not(.js-enabled) .home__description {
   opacity: 1;
@@ -2523,15 +2509,12 @@ button:focus-visible,
   .home__title,
   .home__subtitle,
   .home__research,
+  .home__motto,
   .home__description {
     opacity: 1 !important;
   }
 
-  /* Disable infinite floating and pulse animations */
-  .home__img {
-    animation: none !important;
-  }
-
+  /* Disable infinite pulse animations */
   .skills__percentage::after {
     animation: none !important;
   }
@@ -2544,4 +2527,36 @@ button:focus-visible,
     display: none !important;
     animation: none !important;
   }
+}
+
+/* Research-first reading, within the established palette and type scale. */
+.home__motto { max-width: 34em; margin-bottom: 1.25rem; font-size: var(--normal-font-size); line-height: 1.8; color: var(--text-color); }
+.home__actions { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem 1.25rem; }
+.home__read-now { min-height: 44px; padding: .5rem 0; color: var(--text-color); background: transparent; font: inherit; font-size: var(--small-font-size); text-decoration: underline; text-underline-offset: .25em; cursor: pointer; }
+.home__read-now[hidden] { display: none; }
+.home__read-now:hover { color: var(--first-color); }
+.portfolio__media { width: 265px; max-width: 100%; justify-self: center; align-self: center; border-radius: .5rem; overflow: hidden; }
+.portfolio__media .portfolio__img { display: block; width: 100%; height: auto; }
+[data-media-frame] { position: relative; background-color: var(--container-color); }
+[data-media-frame] .media-status { position: absolute; inset: auto .75rem .75rem; z-index: 5; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: .25rem .65rem; width: fit-content; max-width: calc(100% - 1.5rem); margin: auto; padding: .35rem .65rem; border-radius: .5rem; background: var(--body-color); color: var(--text-color); font: 400 .75rem/1.5 var(--body-font); }
+[data-media-frame] .media-status[hidden] { display: none; }
+.media-status button { color: var(--first-color); background: transparent; font: inherit; cursor: pointer; min-height: 32px; text-decoration: underline; text-underline-offset: .2em; }
+[data-media-state="loading"] > img[data-media-image],
+[data-media-state="error"] > img[data-media-image] { visibility: hidden; }
+@media screen and (min-width: 768px) { .portfolio__media { width: 320px; } }
+@media screen and (max-width: 567px) {
+  .home__motto { line-height: 1.8; margin-bottom: 1rem; }
+  .home__description { margin-bottom: 1.5rem; }
+  .about__container { row-gap: 1.5rem; }
+  .about__portrait { width: min(76vw, 304px); aspect-ratio: 4 / 5; }
+  .about__img { height: 100%; object-fit: cover; object-position: 50% 36%; }
+  #about .section__subtitle { margin-bottom: 2rem; }
+  .qualification__tabs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .5rem; }
+  .qualification__button { flex-direction: column; gap: .35rem; margin: 0; font-size: .875rem; text-align: center; }
+  .qualification__icon { margin: 0; }
+}
+/* Later responsive rules must not restore a clipped reel in reduced motion. */
+@media (prefers-reduced-motion: reduce) {
+  .about__cards.is-ready { height: auto; clip-path: none; -webkit-clip-path: none; }
+  .home__motto { opacity: 1 !important; }
 }

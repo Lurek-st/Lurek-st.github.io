@@ -7,8 +7,9 @@ npm install
 npx playwright install chromium
 ```
 
-Run the typewriter, deterministic visual, seven-viewport responsive,
-keyboard-accessibility, deferred-asset, and soundtrack interaction checks:
+Run the five-part bilingual-profile typewriter, deterministic visual,
+seven-viewport responsive, keyboard-accessibility, responsive-image, and
+soundtrack interaction checks:
 
 ```text
 npm run test:browser
