@@ -931,6 +931,13 @@ const typingTexts = [
     speed: 60
   },
   {
+    element: document.querySelector('.home__research'),
+    text: 'Research focus: Robot safety & reliability',
+    textCn: '研究方向：机器人安全与可靠性',
+    delay: 0,
+    speed: 50
+  },
+  {
     element: document.querySelector('.home__description'),
     text: 'Long-term AI Practitioner · Independent Researcher · Entrepreneur',
     textCn: 'AI 工具长期实践者 · 独立研究者 · 创业者',

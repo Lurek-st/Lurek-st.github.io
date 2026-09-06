@@ -26,14 +26,15 @@ const DESKTOP_SPECS = {
 };
 
 const PORTRAIT_POINTS = {
-  "star-trek": { x: .36, y: .43 }, rick: { x: .64, y: .47 }, futurama: { x: .50, y: .14 }, pokemon: { x: .23, y: .22 },
-  family: { x: .77, y: .23 }, orville: { x: .18, y: .36 }, dad: { x: .84, y: .38 }, "star-vs": { x: .18, y: .64 },
-  "bad-guys": { x: .82, y: .65 }, kingsman: { x: .35, y: .80 }, "star-wars": { x: .67, y: .84 }
+  "star-trek": { x: .32, y: .47 }, rick: { x: .68, y: .49 }, futurama: { x: .50, y: .28 }, pokemon: { x: .34, y: .09 },
+  family: { x: .66, y: .10 }, orville: { x: .12, y: .30 }, dad: { x: .88, y: .31 }, "star-vs": { x: .14, y: .66 },
+  "bad-guys": { x: .86, y: .68 }, kingsman: { x: .50, y: .66 }, "star-wars": { x: .50, y: .84 }
 };
 
 const TABLET_RADII = { core: 64, secondary: 52, satellite: 46, long: 50 };
 const MOBILE_RADII = { core: 56, secondary: 46, satellite: 42, long: 44 };
-const FORCE = { positionStrength: .055, collisionStrength: .95, collisionIterations: 3, collisionPadding: 2, desktopEdgePadding: 10, mobileEdgePadding: 8, velocityDecay: .45, desktopHoverScale: 1.4, tapScale: 1.3, expandDuration: 180, tapExpandDuration: 200, shrinkDuration: 240, hoverAlpha: .35, leaveAlpha: .28, desktopContraction: .9 };
+const FORCE = { positionStrength: .055, collisionStrength: .95, collisionIterations: 3, collisionPadding: 2, desktopEdgePadding: 10, mobileEdgePadding: 8, velocityDecay: .45, desktopHoverScale: 1.4, tapScale: 1.3, expandDuration: 180, tapExpandDuration: 200, shrinkDuration: 240, hoverAlpha: .35, leaveAlpha: .28 };
+const REST_LAYOUT = { desktopSpan: .66, portraitHeight: .68, gap: 8 };
 const STEP_MS = 1000 / 60;
 
 let controllerPromise;
@@ -85,9 +86,36 @@ async function createStoriesController() {
   function pointFor(node) {
     if (layout === "desktop") return DESKTOP_SPECS[node.id];
     const point = PORTRAIT_POINTS[node.id];
-    if (layout === "mobile" && node.id === "star-trek") return { x: .29, y: point.y };
-    if (layout === "mobile" && node.id === "rick") return { x: .71, y: point.y };
+    if (layout === "mobile" && node.isCore) {
+      const side = node.id === "star-trek" ? -1 : 1;
+      // Narrow screens need a diagonal contact: two large circles cannot
+      // expand side by side against both walls, even with space above them.
+      const stagger = Math.max(0, Math.min(1, (320 - width) / 40)) * .06;
+      return { x: side < 0 ? .29 : .71, y: point.y + side * stagger };
+    }
     return point;
+  }
+  function restPositions() {
+    const centerX = width / 2; const centerY = height / 2;
+    const spanX = layout === "desktop" ? REST_LAYOUT.desktopSpan : 1;
+    const spanY = layout === "desktop" ? REST_LAYOUT.desktopSpan : REST_LAYOUT.portraitHeight;
+    const targets = nodes.map((node) => {
+      const point = pointFor(node);
+      return { id: node.id, isCore: node.isCore, currentRadius: node.normalRadius, vx: 0, vy: 0,
+        x: centerX + (point.x * width - centerX) * spanX,
+        y: centerY + (point.y * height - centerY) * spanY };
+    });
+    // Pack the resting targets themselves, at normal size. Springs can then
+    // return to a feasible cluster without continuously fighting collisions.
+    if (!solveContacts(targets, width, height, edgePadding(), REST_LAYOUT.gap, 480)) {
+      solveContacts(targets, width, height, edgePadding(), FORCE.collisionPadding * 2, 480);
+    }
+    const left = Math.min(...targets.map((node) => node.x - node.currentRadius));
+    const right = Math.max(...targets.map((node) => node.x + node.currentRadius));
+    const top = Math.min(...targets.map((node) => node.y - node.currentRadius));
+    const bottom = Math.max(...targets.map((node) => node.y + node.currentRadius));
+    targets.forEach((node) => { node.x += centerX - (left + right) / 2; node.y += centerY - (top + bottom) / 2; });
+    return targets;
   }
   function solve(iterations) { return solveContacts(nodes, width, height, edgePadding(), FORCE.collisionPadding * 2, iterations); }
   function snapshot() {
@@ -180,7 +208,11 @@ async function createStoriesController() {
     const hasRadiusAnimation = nodes.some((node) => node.radiusAnimation);
     advanceRadii(elapsed);
     const proposed = snapshot();
-    if (hasRadiusAnimation) simulation.alpha(Math.max(.12, simulation.alpha()));
+    const returning = !hasRadiusAnimation && nodes.every((node) => !node.activeAnchor);
+    // Once interaction ends, give the home springs time to finish their job.
+    // Cooling immediately would freeze displaced circles short of the cluster.
+    if (returning) simulation.alpha(Math.max(.8, simulation.alpha()));
+    else if (hasRadiusAnimation) simulation.alpha(Math.max(.12, simulation.alpha()));
     const alpha = simulation.alpha();
     accumulatedTime = Math.min(accumulatedTime + elapsed, STEP_MS * 3);
     const steps = Math.floor(accumulatedTime / STEP_MS);
@@ -207,6 +239,10 @@ async function createStoriesController() {
       });
       blockedGrowthMs = 0;
     }
+    if (returning && nodes.every((node) => Math.hypot(node.x - node.preferredX, node.y - node.preferredY) < .12)) {
+      nodes.forEach((node) => { node.vx = 0; node.vy = 0; });
+      simulation.alpha(0);
+    }
     renderNodes();
     if (nodes.some((node) => node.radiusAnimation) || simulation.alpha() > simulation.alphaMin()) wake();
     else { lastTimestamp = 0; accumulatedTime = 0; }
@@ -219,14 +255,11 @@ async function createStoriesController() {
     const reset = motionMedia.matches || priorLayout !== layout || priorInteraction !== interaction;
     nodes.forEach((node) => { node.normalRadius = radiusFor(node); });
     if (reset) resetInteractions();
-    const centerX = width / 2; const centerY = height / 2;
-    nodes.forEach((node) => {
+    const targets = restPositions();
+    nodes.forEach((node, index) => {
       if (!node.radiusAnimation && !node.activeAnchor) node.currentRadius = node.normalRadius;
-      const point = pointFor(node); const contraction = layout === "desktop" && !node.isCore ? FORCE.desktopContraction : 1;
-      const edge = node.normalRadius + edgePadding();
-      node.preferredX = Math.max(edge, Math.min(width - edge, centerX + (point.x * width - centerX) * contraction));
-      node.preferredY = Math.max(edge, Math.min(height - edge, centerY + (point.y * height - centerY) * contraction));
-      if (preserve && oldWidth && oldHeight) {
+      node.preferredX = targets[index].x; node.preferredY = targets[index].y;
+      if (preserve && oldWidth && oldHeight && !motionMedia.matches) {
         node.x = node.x / oldWidth * width; node.y = node.y / oldHeight * height;
         if (node.activeAnchor) { node.activeAnchor.x *= width / oldWidth; node.activeAnchor.y *= height / oldHeight; }
       } else { node.x = node.preferredX; node.y = node.preferredY; }
