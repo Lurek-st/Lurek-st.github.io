@@ -209,9 +209,12 @@ function animateQualificationContent(targetContent) {
   }, 100)
 }
 
+let qualificationSwitchTimer
+
 function activateQualificationTab(tab) {
   const target = document.querySelector(tab.dataset.target)
   if (!target) return
+  clearTimeout(qualificationSwitchTimer)
 
   // Hide current content with fade out
   const currentActive = document.querySelector('.qualification__active[data-content]')
@@ -226,7 +229,7 @@ function activateQualificationTab(tab) {
   }
 
   // Switch active content after a brief delay
-  setTimeout(() => {
+  qualificationSwitchTimer = setTimeout(() => {
     tabContents.forEach(tabContent => {
       tabContent.classList.remove('qualification__active')
     })
@@ -288,8 +291,11 @@ let swiperPortfolio = null
 const swiperContainer = document.querySelector('.portfolio__container')
 if (typeof Swiper !== 'undefined' && swiperContainer) {
   swiperPortfolio = new Swiper('.portfolio__container', {
-    cssMode: true,
+    // Keep rapid direction changes on Swiper's single transition timeline.
+    cssMode: false,
     loop: true,
+    loopPreventsSlide: false,
+    speed: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 300,
 
     navigation: {
       nextEl: '.swiper-button-next',
@@ -298,9 +304,29 @@ if (typeof Swiper !== 'undefined' && swiperContainer) {
 
     pagination: {
       el: '.swiper-pagination',
+      bulletElement: 'button',
       clickable: true,
     },
   });
+
+  // This carousel shows one slide at a time. Swiper 6 derives the previous
+  // snap from the moving transform after loopFix, which can sit between snaps.
+  // Step from the logical slide, just as slideNext does, even mid-transition.
+  swiperPortfolio.slidePrev = (speed, runCallbacks, internal) => {
+    swiperPortfolio.loopFix()
+    return swiperPortfolio.slideTo(swiperPortfolio.activeIndex - 1, speed, runCallbacks, internal)
+  }
+
+  // Hidden slides must not steal keyboard focus and scroll the clipped viewport.
+  const syncPortfolioAccess = () => {
+    Array.from(swiperPortfolio.slides).forEach((slide, index) => {
+      const inactive = index !== swiperPortfolio.activeIndex
+      slide.inert = inactive
+      slide.setAttribute('aria-hidden', String(inactive))
+    })
+  }
+  swiperPortfolio.on('slideChange', syncPortfolioAccess)
+  syncPortfolioAccess()
 }
 
 // Native image sources work without JavaScript; image-loading.js prepares upcoming media.
@@ -435,6 +461,7 @@ const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)')
 let prefersReducedMotion = motionPreference.matches
 motionPreference.addEventListener('change', event => {
   prefersReducedMotion = event.matches
+  if (swiperPortfolio) swiperPortfolio.params.speed = event.matches ? 0 : 300
   if (event.matches) {
     clearTimeout(languageChangeTimeout)
     stopAllAnimations()

@@ -1201,6 +1201,10 @@ img {
 }
 
 /*==================== QUALIFICATION ====================*/
+#qualification {
+  overflow-x: clip;
+}
+
 .qualification__tabs {
   display: flex;
   justify-content: space-evenly;
@@ -1404,8 +1408,20 @@ img {
 
 
 /*==================== PORTFOLIO ====================*/
+.portfolio__frame {
+  --portfolio-controls-space: 3rem;
+  position: relative;
+  z-index: 1;
+  padding-bottom: var(--portfolio-controls-space);
+}
+
 .portfolio__container {
-  overflow: initial;
+  overflow: hidden;
+}
+
+.portfolio__frame .swiper-button-prev,
+.portfolio__frame .swiper-button-next {
+  top: calc((100% - var(--portfolio-controls-space)) / 2);
 }
 
 .portfolio__content {
@@ -1463,13 +1479,35 @@ img {
   right: -.5rem;
 }
 
-.swiper-container-horizontal>.swiper-pagination-bullets {
-  bottom: -2.5rem;
+.portfolio__frame>.swiper-pagination-bullets {
+  bottom: 0;
+  left: 0;
+  width: 100%;
 }
 
-.swiper-pagination-bullet-active {
-  background-color: var(--first-color);
+.portfolio__frame .swiper-pagination-bullet {
+  display: inline-grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  opacity: 1;
+}
 
+.portfolio__frame .swiper-pagination-bullet::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--text-color-light);
+  opacity: .45;
+}
+
+.portfolio__frame .swiper-pagination-bullet-active::before {
+  background: var(--first-color);
+  opacity: 1;
 }
 
 .swiper-button-prev,
@@ -2314,8 +2352,8 @@ body:not(.dark-theme) .contact__subtitle {
     right: -3.5rem;
   }
 
-  .swiper-container-horizontal>.swiper-pagination-bullets {
-    bottom: -4.5rem
+  .portfolio__frame {
+    --portfolio-controls-space: 5rem;
   }
 
   .contact__form {

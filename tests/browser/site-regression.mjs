@@ -33,6 +33,7 @@ const mimeTypes = new Map([
   ['.png', 'image/png'],
   ['.svg', 'image/svg+xml'],
   ['.webp', 'image/webp'],
+  ['.woff2', 'font/woff2'],
   ['.txt', 'text/plain; charset=utf-8'],
 ]);
 
@@ -359,6 +360,8 @@ async function runCriticalInteractions(browser, url) {
 
   await page.goto(url, { waitUntil: 'load' });
   await page.evaluate(() => document.fonts.ready);
+  await page.waitForSelector('.beyond-work__stories-cluster.is-stories-runtime');
+  assert(await page.locator('.beyond-work__stories-cluster [role="option"][tabindex="0"]').count() === 1, 'Story keyboard state must be initialized before its lazy preview loads.');
   assert(await page.locator('.about__img[src][srcset], .portfolio__img[src][srcset]').count() >= 6, 'About and project images require native sources for responsive loading and the no-JavaScript fallback.');
   assert(audioResponses.length === 0, 'Soundtrack loaded without a user gesture.');
 
@@ -370,6 +373,30 @@ async function runCriticalInteractions(browser, url) {
   assert(await page.locator('#qualification-tab-work').getAttribute('aria-selected') === 'true', 'Qualification ArrowRight navigation failed.');
   assert(await page.locator('#qualification-tab-work').getAttribute('tabindex') === '0', 'Qualification roving tabindex did not advance.');
 
+  // The last selection must win even when an earlier fade has not finished.
+  await page.waitForFunction(() => document.querySelector('#work').classList.contains('qualification__active'));
+  await page.locator('#qualification-tab-education').click();
+  await page.waitForTimeout(40);
+  await page.locator('#qualification-tab-work').click();
+  await page.waitForTimeout(400);
+  assert(await page.locator('#qualification-tab-work').getAttribute('aria-selected') === 'true', 'Rapid qualification selection changed the wrong tab.');
+  assert(await page.locator('[data-content].qualification__active').count() === 1, 'More than one qualification panel is active.');
+  assert(await page.locator('#work').isVisible(), 'An outdated qualification transition overwrote the latest selection.');
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  await page.locator('#qualification-tab-certifications').click();
+  const qualificationOverflow = await page.evaluate(() => new Promise(resolve => {
+    const started = performance.now();
+    let maximum = 0;
+    function sample() {
+      maximum = Math.max(maximum, document.documentElement.scrollWidth - innerWidth);
+      if (performance.now() - started < 1500) requestAnimationFrame(sample);
+      else resolve(maximum);
+    }
+    requestAnimationFrame(sample);
+  }));
+  assert(qualificationOverflow === 0, 'Qualification entrance animation created horizontal page overflow.');
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+
   const aboutImage = page.locator('.about__img');
   await aboutImage.scrollIntoViewIfNeeded();
   await page.waitForFunction(() => document.querySelector('.about__img')?.naturalWidth > 0);
@@ -378,6 +405,29 @@ async function runCriticalInteractions(browser, url) {
 
   await page.locator('#portfolio').scrollIntoViewIfNeeded();
   await page.waitForFunction(() => Array.from(document.querySelectorAll('#portfolio img')).some(image => image.naturalWidth > 0));
+
+  const projectCount = await page.locator('#portfolio .swiper-slide:not(.swiper-slide-duplicate)').count();
+  await page.locator('#portfolio .swiper-pagination-bullet').first().click();
+  for (let index = 0; index < projectCount; index += 1) {
+    await page.locator('#portfolio .swiper-button-next').click();
+  }
+  await page.locator('#portfolio .swiper-button-prev').click();
+  await page.waitForFunction(expected => document.querySelector('.portfolio__container').swiper.realIndex === expected, projectCount - 1);
+  const projectGeometry = await page.locator('#portfolio').evaluate(section => {
+    const host = section.querySelector('.portfolio__container').getBoundingClientRect();
+    const slide = section.querySelector('.swiper-slide-active').getBoundingClientRect();
+    return { offset: Math.abs(host.left - slide.left), overflow: document.documentElement.scrollWidth - innerWidth };
+  });
+  assert(projectGeometry.offset < 1 && projectGeometry.overflow === 0, 'Rapid project navigation left the slide misaligned or exposed off-screen slides.');
+  const projectDot = page.locator('#portfolio .swiper-pagination-bullet').first();
+  assert(await projectDot.evaluate(el => el.tagName === 'BUTTON' && el.clientWidth >= 24 && el.clientHeight >= 24), 'Project pagination needs usable native button targets.');
+  await projectDot.focus();
+  await page.keyboard.press('Enter');
+  await page.waitForFunction(() => document.querySelector('.portfolio__container').swiper.realIndex === 0);
+  await page.locator('#portfolio .swiper-slide-active .portfolio__button').focus();
+  await page.keyboard.press('Tab');
+  assert(await page.evaluate(() => document.activeElement.classList.contains('swiper-button-next')), 'Tab entered a hidden project instead of the navigation control.');
+  assert(await page.locator('.portfolio__container').evaluate(el => el.scrollLeft === 0), 'Keyboard focus scrolled the clipped project viewport.');
 
   await page.locator('#beyond-work .beyond-work__module--stories').scrollIntoViewIfNeeded();
   await page.waitForSelector('.beyond-work__stories-cluster.is-stories-runtime', { timeout: 15000 });

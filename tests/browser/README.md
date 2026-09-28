@@ -15,6 +15,10 @@ soundtrack interaction checks:
 npm run test:browser
 ```
 
+The interaction checks also cover rapid qualification-tab reversal, project
+carousel wrap/reversal, keyboard-operable pagination with 24px targets, and
+Stories keyboard state before its preview is lazily loaded.
+
 Only update the committed screenshot after intentional, reviewed visual changes:
 
 ```text

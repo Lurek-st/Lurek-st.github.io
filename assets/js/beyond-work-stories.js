@@ -34,7 +34,7 @@ const PORTRAIT_POINTS = {
 const TABLET_RADII = { core: 64, secondary: 52, satellite: 46, long: 50 };
 const MOBILE_RADII = { core: 56, secondary: 46, satellite: 42, long: 44 };
 const FORCE = { positionStrength: .055, collisionStrength: .95, collisionIterations: 3, collisionPadding: 2, desktopEdgePadding: 10, mobileEdgePadding: 8, velocityDecay: .45, desktopHoverScale: 1.4, tapScale: 1.3, expandDuration: 180, tapExpandDuration: 200, shrinkDuration: 240, hoverAlpha: .35, leaveAlpha: .28 };
-const REST_LAYOUT = { desktopSpan: .66, portraitHeight: .68, gap: 8 };
+const REST_LAYOUT = { desktopSpan: .60, portraitHeight: .64, gap: 5 };
 const STEP_MS = 1000 / 60;
 
 let controllerPromise;
@@ -90,7 +90,7 @@ async function createStoriesController() {
       const side = node.id === "star-trek" ? -1 : 1;
       // Narrow screens need a diagonal contact: two large circles cannot
       // expand side by side against both walls, even with space above them.
-      const stagger = Math.max(0, Math.min(1, (320 - width) / 40)) * .06;
+      const stagger = Math.max(0, Math.min(1, (320 - width) / 40)) * .10;
       return { x: side < 0 ? .29 : .71, y: point.y + side * stagger };
     }
     return point;
@@ -413,6 +413,11 @@ async function createStoriesController() {
   cluster.classList.add("is-stories-runtime"); cluster.dataset.forceStatus = "ready"; cluster.dataset.forceActive = "true";
   buttons.forEach((button) => {
     button.disabled = false;
+    // Keyboard state must be ready before lazy preview loading is triggered.
+    const selected = button.dataset.story === selectedId;
+    button.tabIndex = selected ? 0 : -1;
+    button.setAttribute('aria-selected', String(selected));
+    button.classList.toggle('is-selected', selected);
     const node = nodeById.get(button.dataset.story);
     button.addEventListener("pointerenter", () => { if (interaction === "hover") { activate(node, "hover"); select(node.id); } });
     button.addEventListener("pointerleave", () => { if (interaction === "hover" && hovered === node) { release(hovered); hovered = null; } });
