@@ -249,7 +249,8 @@ html[lang="zh-CN"] #beyond-work [lang="en"] { display: none; }
   #beyond-work .beyond-work__companions-media figure,
   #beyond-work .beyond-work__companions-media figure:nth-child(n) { position: static; width: 100%; margin: 0; box-shadow: none; }
   #beyond-work .beyond-work__companions-media figure:nth-child(1) { grid-row: span 2; }
-  #beyond-work .beyond-work__companions-media figure:nth-child(3) { margin-top: -16px; }
+  /* Keep the dog and upper cat fixed while preserving the 10px photo gutter. */
+  #beyond-work .beyond-work__companions-media figure:nth-child(3) { margin-bottom: -16px; }
   #beyond-work .beyond-work__module--moving { margin-bottom: 4.7rem; }
   #beyond-work .beyond-work__module--moving .beyond-work__module-label,
   #beyond-work .beyond-work__module--stories .beyond-work__module-label,
