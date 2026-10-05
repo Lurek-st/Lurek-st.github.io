@@ -2,8 +2,9 @@
   "name": "lurek-personal-website",
   "private": true,
   "scripts": {
-    "test:browser": "node tests/browser/site-regression.mjs",
-    "test:browser:update": "node tests/browser/site-regression.mjs --update-snapshots"
+    "test:browser": "node tests/browser/published-design.mjs",
+    "test:browser:legacy": "node tests/browser/site-regression.mjs",
+    "test:browser:legacy:update": "node tests/browser/site-regression.mjs --update-snapshots"
   },
   "devDependencies": {
     "pixelmatch": "7.2.0",

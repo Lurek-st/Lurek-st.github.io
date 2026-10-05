@@ -68,7 +68,7 @@ $(document).ready(function () {
         updateDocumentLanguage(targetLang);
         updateTranslateLabel(targetLang);
 
-        $.getJSON(`assets/i18n/i18n_${targetLang}.json`)
+        $.getJSON(`assets/i18n/i18n_${targetLang}.json?v=20261005-r10`)
             .done(function (data) {
                 if (requestId !== latestLanguageRequest) return;
 

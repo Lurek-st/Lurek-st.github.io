@@ -943,38 +943,32 @@ try {
 
 const typingTexts = [
   {
-    element: document.querySelector('.home__title'),
-    text: 'Hi, I\'m Lurek Lu',
-    textCn: '你好，我是 Lurek Lu',
+    element: document.querySelector(".home__title"),
+    text: "Hello, I'm Lurek Lu",
+    textCn: "Hello, I'm Lurek Lu",
     delay: 500,
     speed: 80
   },
   {
-    element: document.querySelector('.home__subtitle'),
-    text: 'Undergraduate Student at City University of Hong Kong (Dongguan)',
-    textCn: '香港城市大学（东莞）本科生',
+    element: document.querySelector(".home__subtitle"),
+    text: "Undergraduate Student at City University of Hong Kong (Dongguan)",
+    textCn: "香港城市大学（东莞）本科生",
     delay: 0,
     speed: 60
   },
   {
-    element: document.querySelector('.home__research'),
-    text: 'Research focus: Robot safety & reliability',
-    textCn: '研究方向：机器人安全与可靠性',
+    element: document.querySelector(".home__description"),
+    text: "A Marxist, also curious about AI, business and entrepreneurship.",
+    textCn: "一个 Marxist，同时也对 AI、商业和创业保持好奇。",
     delay: 0,
     speed: 50
   },
   {
-    element: document.querySelector('.home__motto'),
-    text: "Getting robots to work is one thing. Trusting them to work safely among people is another.",
-    textCn: "机器人会干活是一回事，我们敢不敢把它放到人群里，是另一回事。",
+    element: document.querySelector(".home__life"),
+    text: "I build projects and write down my thoughts, and make time for sports, music, games and travel.",
+    textCn: "做项目、写思考，也把时间留给运动、音乐、游戏和旅行。",
+    delay: 0,
     duration: 1200
-  },
-  {
-    element: document.querySelector('.home__description'),
-    text: 'Long-term AI Practitioner · Independent Researcher · Entrepreneur',
-    textCn: 'AI 工具长期实践者 · 独立研究者 · 创业者',
-    delay: 0,
-    speed: 50
   }
 ]
 
