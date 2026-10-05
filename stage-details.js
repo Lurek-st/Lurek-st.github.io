@@ -4,7 +4,7 @@
   const root = document.querySelector('[data-skill-showcase]');
   const stack = root?.querySelector('[data-skill-panels]');
   const panels = Array.from(root?.querySelectorAll('[data-skill-panel]') || []);
-  if (!root || !stack || panels.length !== 7) return;
+  if (!root || !stack || panels.length < 2) return;
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const canMove = () => !reduced.matches && !document.body.classList.contains('motion-paused') && typeof stack.animate === 'function';
   const ease = 'cubic-bezier(.22,.8,.22,1)';

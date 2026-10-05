@@ -329,19 +329,18 @@ body[data-stage].dark-theme { --stage-link-hover: color-mix(in srgb, var(--first
 [data-stage] .home-contact:focus-visible { outline: 2px solid var(--stage-link-hover); outline-offset: 5px; }
 [data-stage] .home-contact:active { background: var(--first-color); border-color: var(--first-color); color: #fff; }
 
-/* A deliberate seven-column / four-plus-three index with one traveling marker. */
+/* Six categories: one wide row or two balanced rows, with one traveling marker. */
 [data-stage] .skill-showcase { width: calc(100% - 48px); max-width: var(--stage-wide); margin-inline: auto; }
 [data-stage] .skill-directory {
   position: relative;
   display: grid;
-  grid-template-columns: repeat(8, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 14px 12px;
   padding-bottom: 28px;
   margin-bottom: 36px;
   border-bottom: 1px solid var(--stage-rule);
 }
 [data-stage] .skill-tab {
-  grid-column: span 2;
   position: relative;
   display: flex;
   align-items: center;
@@ -358,9 +357,6 @@ body[data-stage].dark-theme { --stage-link-hover: color-mix(in srgb, var(--first
   cursor: pointer;
   transition: color 180ms;
 }
-[data-stage] .skill-tab:nth-child(5) { grid-column: 2 / span 2; }
-[data-stage] .skill-tab:nth-child(6) { grid-column: 4 / span 2; }
-[data-stage] .skill-tab:nth-child(7) { grid-column: 6 / span 2; }
 [data-stage] .skill-tab > span { max-width: 100%; overflow-wrap: anywhere; text-wrap: balance; }
 html[lang^="en"] [data-stage] .skill-tab > span { overflow-wrap: normal; }
 [data-stage] .skill-marker {
@@ -378,7 +374,7 @@ html[lang^="en"] [data-stage] .skill-tab > span { overflow-wrap: normal; }
 [data-stage] .skill-tab:focus-visible, [data-stage] .skill-panel:focus-visible { outline: 2px solid var(--stage-link-hover); outline-offset: 4px; }
 [data-stage] .skill-panels { max-width: 968px; margin-inline: auto; overflow-anchor: none; overflow: clip; overflow-clip-margin: 6px; }
 @media (min-width: 1200px) {
-  [data-stage] .skill-directory { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1.3fr) minmax(0, 1.8fr) repeat(4, minmax(0, .9fr)); gap: 14px; }
+  [data-stage] .skill-directory { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1.3fr) minmax(0, 1.8fr) repeat(3, minmax(0, .9fr)); gap: 14px; }
   [data-stage] .skill-directory .skill-tab { grid-column: auto; font-size: 16px; }
   html[lang^="en"] [data-stage] .skill-directory .skill-tab { font-size: 15px; padding-inline: 4px; }
 }
@@ -407,10 +403,6 @@ html[lang^="en"] [data-stage] .skill-tab > span { overflow-wrap: normal; }
 @media (max-width: 559px) {
   [data-stage] .skill-directory { gap: 14px 6px; margin-bottom: 28px; padding-bottom: 24px; }
   [data-stage] .skill-tab { font-size: 13px; line-height: 1.55; padding: 10px 2px; }
-  /* Long English category names need three/two/two at phone widths to keep words intact. */
-  html[lang^="en"] [data-stage] .skill-directory { grid-template-columns: repeat(6, minmax(0, 1fr)); }
-  html[lang^="en"] [data-stage] .skill-directory .skill-tab { grid-column: span 2; }
-  html[lang^="en"] [data-stage] .skill-directory .skill-tab:nth-child(n+4) { grid-column: span 3; }
   [data-stage] .skill-panel__heading { flex-wrap: wrap; gap: 6px 16px; margin-bottom: 26px; }
   [data-stage] .skill-panel__title { width: 100%; font-size: 24px; }
   [data-stage] .skill-details { grid-template-columns: minmax(0, 1fr); gap: 26px; }

@@ -15,8 +15,8 @@ npm run test:browser
 
 The suite covers Chinese/English, light/dark, desktop/phone and reduced-motion
 states. It checks the completed homepage typing sequence, four project frames,
-real project transition frames and rapid reversal, seven skill categories and
-29 details, keyboard selection, 12 experience entries, About, Stories, eight
+real project transition frames and rapid reversal, six skill categories and
+25 details, keyboard selection, 12 experience entries, About, Stories, eight
 travel destinations, navigation, theme/language changes and resource failures.
 It also verifies image retry, script-disabled content, failed controllers,
 failed travel CDN loading and failed initial language data. Screenshots and a

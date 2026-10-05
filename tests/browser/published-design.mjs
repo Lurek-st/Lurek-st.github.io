@@ -90,7 +90,7 @@ try {
     check(id + ' page identity and meaningful rendered content', await page.title() === 'Lurek Lu Business Card' && (await page.locator('body').innerText()).length > 500 && await page.locator('vite-error-overlay,nextjs-portal').count() === 0);
     check(id + ' requested language/theme', await page.evaluate(c => document.documentElement.lang === (c.lang === 'cn' ? 'zh-CN' : 'en') && document.body.classList.contains('dark-theme') === (c.theme === 'dark'), config));
     item.content = await page.evaluate(() => ({ projects: document.querySelectorAll('[data-project-panel]').length, skills: document.querySelectorAll('.skill-detail').length, categories: document.querySelectorAll('.skill-tab').length, experiences: document.querySelectorAll('.qualification__data').length, description: document.querySelector('.home__description').textContent, life: document.querySelector('.home__life').textContent, emails: [...document.querySelectorAll('#contact a[href^="mailto:"]')].map(e => e.getAttribute('href')) }));
-    check(id + ' four projects, seven groups, 29 skills and 12 experiences', item.content.projects === 4 && item.content.skills === 29 && item.content.categories === 7 && item.content.experiences === 12, item.content);
+    check(id + ' four projects, six groups, 25 skills and 12 experiences', item.content.projects === 4 && item.content.skills === 25 && item.content.categories === 6 && item.content.experiences === 12, item.content);
     check(id + ' revised homepage and email order', item.content.description === (config.lang === 'cn' ? '一个 Marxist，同时也对 AI、商业和创业保持好奇。' : 'A Marxist, also curious about AI, business and entrepreneurship.') && item.content.life === (config.lang === 'cn' ? '做项目、写思考，也把时间留给运动、音乐、游戏和旅行。' : 'I build projects and write down my thoughts, and make time for sports, music, games and travel.') && item.content.emails.join('|') === 'mailto:lurek.st2077@gmail.com|mailto:lurek.st@outlook.com', item.content);
     item.forbiddenLinks = await page.locator('a[href]').evaluateAll(es => es.map(e => e.getAttribute('href')).filter(h => /localhost|127\.0\.0\.1|(?:^|\/)(?:stage|original|a|b)\.html/i.test(h)));
     check(id + ' no preview-only links', item.forbiddenLinks.length === 0, item.forbiddenLinks);
@@ -160,9 +160,9 @@ try {
     await screenshot(page, id + '-projects');
 
     await at(page, '#skills');
-    for (const index of [1, 4, 6]) await page.locator('.skill-tab').nth(index).click();
+    for (const index of [1, 3, 5]) await page.locator('.skill-tab').nth(index).click();
     await page.waitForFunction(() => document.querySelector('[data-skill-ready]').dataset.skillPhase === 'rest');
-    check(id + ' rapid skills select last category and retain percentages', await page.locator('.skill-tab').last().getAttribute('aria-selected') === 'true' && await page.locator('.skill-detail').count() === 29 && await page.locator('[data-skill-panel]:not([hidden])').count() === 1);
+    check(id + ' rapid skills select last category and retain percentages', await page.locator('.skill-tab').last().getAttribute('aria-selected') === 'true' && await page.locator('.skill-detail').count() === 25 && await page.locator('[data-skill-panel]:not([hidden])').count() === 1);
     await page.locator('.skill-tab').last().focus(); await page.keyboard.press('Home');
     await page.waitForFunction(() => document.querySelector('[data-skill-ready]').dataset.skillPhase === 'rest');
     check(id + ' keyboard Home selects first skill group', await page.locator('.skill-tab').first().getAttribute('aria-selected') === 'true');
@@ -236,10 +236,10 @@ try {
         await entries.nth(i).scrollIntoViewIfNeeded();
         await page.waitForFunction(index => { const img = document.querySelectorAll('[data-travel-fallback-destination]')[index].querySelector('img'); return img.complete && img.naturalWidth > 0; }, i);
       }
-      check(mode + ' full four project/29 skill/12 experience content retained', await page.locator('[data-project-panel]').count() === 4 && await page.locator('.skill-detail').count() === 29 && await page.locator('.qualification__data').count() === 12);
+      check(mode + ' full four project/25 skill/12 experience content retained', await page.locator('[data-project-panel]').count() === 4 && await page.locator('.skill-detail').count() === 25 && await page.locator('.qualification__data').count() === 12);
     } else if (mode === 'controller-failed') {
       await page.waitForFunction(() => window.__appReady);
-      check('controller failure leaves all projects and skill panels readable', await page.locator('[data-project-panel]').evaluateAll(es => es.length === 4 && es.every(e => !e.hidden)) && await page.locator('[data-skill-panel]').evaluateAll(es => es.length === 7 && es.every(e => !e.hidden)));
+      check('controller failure leaves all projects and skill panels readable', await page.locator('[data-project-panel]').evaluateAll(es => es.length === 4 && es.every(e => !e.hidden)) && await page.locator('[data-skill-panel]').evaluateAll(es => es.length === 6 && es.every(e => !e.hidden)));
       await at(page, '#portfolio');
     } else if (mode === 'i18n-failed') {
       await page.waitForFunction(() => window.__appReady && document.documentElement.lang === 'zh-CN');
