@@ -25,10 +25,24 @@
     return !!document.querySelector('[data-contact-entrance][data-entrance-state="entering"]');
   }
   function curve(index, y) {
+    if (width < 768) {
+      // A single bend per contour: no joined tangents or crossing second family.
+      // Width-based geometry stays still when mobile browser chrome changes height.
+      if (index >= 4) return 'M0 0';
+      const span = width * 2.2;
+      const phase = y / (width * 3 + 900);
+      const offset = [-18, 0, 22, 49][index] * width / 390;
+      const sway = Math.sin(phase) * width * .08;
+      const bend = Math.cos(phase * .7) * width * .06;
+      const point = (x, v) => (x * width + offset + sway).toFixed(2) + ' ' + (v * span).toFixed(2);
+      return 'M' + point(1.07, -.18) + 'Q' +
+        (width * 1.16 + offset + sway + bend).toFixed(2) + ' ' + (span * .60).toFixed(2) + ' ' +
+        point(-.32, 1.20);
+    }
     const main = index < 4;
     const n = main ? index : index - 4;
     const q = y / (height * 1.25 + 850);
-    const spread = (width < 768 ? [ -12, 0, 18, 39 ] : [ -34, 0, 48, 105 ])[n];
+    const spread = [ -34, 0, 48, 105 ][n];
     const s = Math.sin(q);
     const c = Math.cos(q * .73);
     const point = (x, v, factor = 1) => (x * width + spread * factor).toFixed(2) + ' ' + (v * height).toFixed(2);

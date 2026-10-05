@@ -96,6 +96,43 @@ try {
     check(id + ' no preview-only links', item.forbiddenLinks.length === 0, item.forbiddenLinks);
     if (config.width === 1440) check('homepage typewriter progresses', (await page.evaluate(() => [...new Set(window.__qaTypedLengths)].filter(n => n > 0 && n < 18))).length >= 3);
     await screenshot(page, id + '-home');
+    check(id + ' contact arrow is a font-independent decorative vector', await page.locator('.home-contact__arrow').evaluate(e => {
+      const box = e.getBoundingClientRect();
+      return e.namespaceURI === 'http://www.w3.org/2000/svg' && !!e.querySelector('path') &&
+        !e.textContent.trim() && e.getAttribute('aria-hidden') === 'true' &&
+        e.getAttribute('focusable') === 'false' && box.width === 25 && box.height === 25;
+    }));
+    if (config.width < 768) {
+      const contours = () => page.locator('[data-field-path]').evaluateAll(es => es.map(e => e.getAttribute('d')));
+      const before = await contours();
+      await page.setViewportSize({ width: config.width, height: 780 });
+      await page.waitForTimeout(250);
+      check(id + ' browser chrome height change leaves mobile geometry stable', JSON.stringify(await contours()) === JSON.stringify(before));
+      await page.setViewportSize({ width: config.width, height: 900 });
+      await page.waitForTimeout(250);
+      check(id + ' mobile arcs have no sharp joins or inflections', await page.locator('[data-field-path]').evaluateAll(es => {
+        const visible = es.filter(e => e.getTotalLength() > 1);
+        return visible.length === 4 && visible.every(e => {
+          const length = e.getTotalLength();
+          let previousAngle, sign;
+          for (let i = 1; i <= 240; i++) {
+            const a = e.getPointAtLength(length * (i - 1) / 240);
+            const b = e.getPointAtLength(length * i / 240);
+            const angle = Math.atan2(b.y - a.y, b.x - a.x);
+            if (previousAngle !== undefined) {
+              const turn = Math.atan2(Math.sin(angle - previousAngle), Math.cos(angle - previousAngle));
+              if (Math.abs(turn) > Math.PI / 90) return false;
+              if (Math.abs(turn) > .0001) {
+                if (sign && Math.sign(turn) !== sign) return false;
+                sign = Math.sign(turn);
+              }
+            }
+            previousAngle = angle;
+          }
+          return true;
+        });
+      }));
+    }
 
     if (config.width < 768) await page.locator('#nav-toggle').click();
     await page.locator('.nav__link[href="#beyond-work"]').click();
